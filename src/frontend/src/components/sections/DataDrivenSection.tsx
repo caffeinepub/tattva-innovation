@@ -1,3 +1,4 @@
+import { useSiteContentMap, useSiteText } from "@/hooks/useSiteContent";
 import { Database, LineChart, Target } from "lucide-react";
 import { motion } from "motion/react";
 
@@ -221,6 +222,26 @@ function DashboardMockup() {
 }
 
 export function DataDrivenSection() {
+  const contentMap = useSiteContentMap();
+
+  const sectionLabel = useSiteText(
+    contentMap,
+    "data.section_label",
+    "Campaign Intelligence",
+  );
+  const headline = useSiteText(contentMap, "data.headline", "Built for");
+  const headlineAccent = useSiteText(
+    contentMap,
+    "data.headline_accent",
+    "Data-Driven",
+  );
+  const headlineEnd = useSiteText(contentMap, "data.headline_end", "Campaigns");
+  const body = useSiteText(
+    contentMap,
+    "data.body",
+    "Modern campaigns run on structured data and intelligent systems. We help political teams organize voter databases, monitor outreach performance, analyze engagement patterns, and make informed strategic decisions.",
+  );
+
   return (
     <section
       id="campaign-intelligence"
@@ -245,18 +266,17 @@ export function DataDrivenSection() {
               className="text-xs font-bold uppercase tracking-[0.2em] block mb-3"
               style={{ color: "oklch(0.75 0.12 85)" }}
             >
-              Campaign Intelligence
+              {sectionLabel}
             </span>
             <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-foreground leading-tight mb-6">
-              Built for{" "}
-              <span style={{ color: "oklch(0.46 0.23 264)" }}>Data-Driven</span>{" "}
-              Campaigns
+              {headline}{" "}
+              <span style={{ color: "oklch(0.46 0.23 264)" }}>
+                {headlineAccent}
+              </span>{" "}
+              {headlineEnd}
             </h2>
-            <p className="text-foreground/60 text-lg leading-relaxed mb-10">
-              Modern campaigns run on structured data and intelligent systems.
-              We help political teams organize voter databases, monitor outreach
-              performance, analyze engagement patterns, and make informed
-              strategic decisions.
+            <p className="text-[#374151] text-lg leading-relaxed mb-10">
+              {body}
             </p>
 
             {/* Icon highlights */}
@@ -282,7 +302,7 @@ export function DataDrivenSection() {
                       <h3 className="font-display font-bold text-foreground text-sm mb-1">
                         {item.title}
                       </h3>
-                      <p className="text-foreground/55 text-xs leading-relaxed">
+                      <p className="text-[#374151] text-xs leading-relaxed">
                         {item.description}
                       </p>
                     </div>

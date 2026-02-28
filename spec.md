@@ -1,51 +1,32 @@
-# Tattva Innovation Website
+# Tattva Innovation
 
 ## Current State
-New project. No existing code.
+Full website for Tattva Innovation (Political Technology & AI Automation Specialist) with:
+- Hero, Services, DataDriven, StrategicAdvantage, Testimonials, FAQ, LeadForm, Footer sections
+- Admin panel at /admin with tabs for Blog Posts, Testimonials, Leads (all backend-managed)
+- Backend (Motoko): blog posts, testimonials, leads, authorization (admin roles)
+- Color system: Deep Navy #0B1F3A, Royal Blue #1E4ED8, Gold #C8A951, foreground #090b47
+- Some text on light backgrounds uses `text-foreground/55` or `text-foreground/60` which may render as low-contrast
 
 ## Requested Changes (Diff)
 
 ### Add
-- Full marketing website for Tattva Innovation, an Indian tech company
-- Hero section with headline, subheading, "Book Free Demo" CTA and "Chat on WhatsApp" CTA
-- Services section with 4 cards: Voter Management Software, Inward-Outward & Visitor Management, Website Development, Custom AI Automation Apps
-- Why Choose Us section highlighting: affordable pricing, custom-built solutions, secure data, fast deployment, local India support
-- How It Works section (3-step process)
-- Testimonials section with placeholder testimonials (swappable via admin panel)
-- FAQ section with accordion
-- Lead capture form (Name, Phone, Organization Type, Message) -- saves to backend
-- Floating WhatsApp chat button linked to +9822422123
-- Blog section: functional blog with public post listing and detail pages
-- Admin panel (login-protected) to: create/edit/delete blog posts, manage/edit testimonials
-- Authorization for admin access
+- Backend: `SiteContent` key-value store (key: Text, value: Text) with `getSiteContent`, `getAllSiteContent`, `setSiteContent` (admin-only write)
+- AdminPage: new "Site Content" tab allowing admin to edit all static text on the website (hero headline, subheadline, trust badges, service titles/descriptions, campaign intelligence section, strategic advantage items, FAQ questions/answers, lead form heading, footer tagline, etc.)
+- Frontend: all editable text sections load from backend `siteContent` and fall back to hardcoded defaults if not set
 
 ### Modify
-- Nothing (new project)
+- Fix text visibility: ensure all text on white (#FFFFFF) and light grey (#F5F7FA) backgrounds has sufficient contrast — replace opacity-reduced foreground text (like `text-foreground/55`) with proper solid colors like `text-[#4a5568]` or `text-[#374151]` that are still readable but not overpowering
+- AdminPage: add "Site Content" tab with grouped editors for each section of the site
+- HeroSection, ServicesSection, DataDrivenSection, StrategicAdvantageSection, FaqSection, LeadFormSection: read text from `useSiteContent` hook that queries backend, fall back to defaults
 
 ### Remove
-- Nothing (new project)
+- Nothing removed
 
 ## Implementation Plan
-
-### Backend (Motoko)
-- Lead model: id, name, phone, orgType, message, createdAt
-- Blog post model: id, title, slug, content (markdown), excerpt, author, publishedAt, isPublished
-- Testimonial model: id, quote, name, role, organization, isVisible
-- APIs:
-  - submitLead(name, phone, orgType, message) -> Result
-  - getPublishedPosts() -> [Post]
-  - getPost(slug) -> ?Post
-  - getTestimonials() -> [Testimonial]
-  - Admin (auth-gated): createPost, updatePost, deletePost, updateTestimonial, getLeads, toggleTestimonialVisibility
-
-### Frontend Pages/Sections
-- `/` -- Landing page with all sections (Hero, Services, Why Us, How It Works, Testimonials, FAQ, Lead Form)
-- `/blog` -- Blog listing page
-- `/blog/:slug` -- Blog post detail page
-- `/admin` -- Admin panel (login required): tabs for Blog Posts, Testimonials, Leads
-
-### Design
-- White background, blue (#1D4ED8 range) and dark charcoal (#1F2937) accents
-- Mobile-first responsive
-- Floating WhatsApp button (bottom-right, fixed) linking to https://wa.me/9822422123
-- Clean typography, professional, minimal
+1. Update `main.mo`: add SiteContent type, Map, getSiteContent/getAllSiteContent (public query), setSiteContent (admin-only), seed with initial content keys matching all site text
+2. Fix CSS contrast: update opacity-muted text classes on light backgrounds to use explicit readable colors
+3. Create `useSiteContent` hook that queries `getAllSiteContent` and returns a lookup function with fallback to defaults
+4. Update each section component to use the hook for their text
+5. Add "Site Content" tab to AdminPage with grouped fields per section — each field calls setSiteContent on save
+6. Build and validate

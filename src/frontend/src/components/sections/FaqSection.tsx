@@ -4,9 +4,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useSiteContentMap, useSiteText } from "@/hooks/useSiteContent";
 import { motion } from "motion/react";
 
-const faqs = [
+const defaultFaqs = [
   {
     q: "Do you build custom software for small organizations?",
     a: "Yes. We work with political campaign teams, NGOs, and growing organizations of all sizes. Every system is custom-built to your requirements — we do not deploy generic off-the-shelf software.",
@@ -30,6 +31,28 @@ const faqs = [
 ];
 
 export function FaqSection() {
+  const contentMap = useSiteContentMap();
+
+  // Resolve all FAQ text up-front (no hooks in map)
+  const faq1Q = useSiteText(contentMap, "faq.1.q", defaultFaqs[0].q);
+  const faq1A = useSiteText(contentMap, "faq.1.a", defaultFaqs[0].a);
+  const faq2Q = useSiteText(contentMap, "faq.2.q", defaultFaqs[1].q);
+  const faq2A = useSiteText(contentMap, "faq.2.a", defaultFaqs[1].a);
+  const faq3Q = useSiteText(contentMap, "faq.3.q", defaultFaqs[2].q);
+  const faq3A = useSiteText(contentMap, "faq.3.a", defaultFaqs[2].a);
+  const faq4Q = useSiteText(contentMap, "faq.4.q", defaultFaqs[3].q);
+  const faq4A = useSiteText(contentMap, "faq.4.a", defaultFaqs[3].a);
+  const faq5Q = useSiteText(contentMap, "faq.5.q", defaultFaqs[4].q);
+  const faq5A = useSiteText(contentMap, "faq.5.a", defaultFaqs[4].a);
+
+  const faqs = [
+    { q: faq1Q, a: faq1A },
+    { q: faq2Q, a: faq2A },
+    { q: faq3Q, a: faq3A },
+    { q: faq4Q, a: faq4A },
+    { q: faq5Q, a: faq5A },
+  ];
+
   return (
     <section id="faq" className="py-20 md:py-28 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -46,7 +69,7 @@ export function FaqSection() {
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-foreground">
             Frequently Asked Questions
           </h2>
-          <p className="mt-4 text-foreground/60 text-lg max-w-xl mx-auto">
+          <p className="mt-4 text-[#374151] text-lg max-w-xl mx-auto">
             Can't find your answer? Chat with us on WhatsApp.
           </p>
         </motion.div>
@@ -68,7 +91,7 @@ export function FaqSection() {
                 <AccordionTrigger className="text-left font-display font-semibold text-foreground py-4 hover:no-underline">
                   {faq.q}
                 </AccordionTrigger>
-                <AccordionContent className="text-foreground/65 text-sm leading-relaxed pb-4">
+                <AccordionContent className="text-[#374151] text-sm leading-relaxed pb-4">
                   {faq.a}
                 </AccordionContent>
               </AccordionItem>

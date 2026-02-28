@@ -232,7 +232,7 @@ export function BlogPostPage() {
               <h1 className="font-display text-3xl font-bold text-foreground mb-3">
                 Post Not Found
               </h1>
-              <p className="text-foreground/60 mb-8">
+              <p className="text-[#374151] mb-8">
                 The blog post you're looking for doesn't exist or has been
                 removed.
               </p>
@@ -251,7 +251,7 @@ export function BlogPostPage() {
               </h1>
 
               {resolvedPost.excerpt && (
-                <p className="text-foreground/65 text-lg leading-relaxed mb-6 border-l-4 border-primary pl-4">
+                <p className="text-[#374151] text-lg leading-relaxed mb-6 border-l-4 border-primary pl-4">
                   {resolvedPost.excerpt}
                 </p>
               )}
@@ -282,7 +282,7 @@ export function BlogPostPage() {
                 {resolvedPost.content.split("\n\n").map((para) => (
                   <p
                     key={para.slice(0, 40)}
-                    className="text-foreground/75 leading-relaxed mb-5"
+                    className="text-[#374151] leading-relaxed mb-5"
                   >
                     {para}
                   </p>
@@ -294,7 +294,7 @@ export function BlogPostPage() {
                 <h3 className="font-display font-bold text-foreground text-xl mb-2">
                   Ready to Get Started?
                 </h3>
-                <p className="text-foreground/65 text-sm mb-5">
+                <p className="text-[#374151] text-sm mb-5">
                   Book a free demo and see how Tattva Innovation can transform
                   your organization.
                 </p>

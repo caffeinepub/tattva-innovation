@@ -111,7 +111,7 @@ export function TestimonialsSection() {
                   className="w-7 h-7 mb-4 shrink-0"
                   style={{ color: "oklch(0.75 0.12 85)" }}
                 />
-                <p className="text-foreground/70 text-sm leading-relaxed flex-1">
+                <p className="text-[#374151] text-sm leading-relaxed flex-1">
                   "{t.quote}"
                 </p>
                 <div className="mt-6 pt-5 border-t border-border flex items-center gap-3">
@@ -128,7 +128,7 @@ export function TestimonialsSection() {
                     <p className="font-bold text-foreground text-sm">
                       {t.name}
                     </p>
-                    <p className="text-foreground/50 text-xs">
+                    <p className="text-[#6b7280] text-xs">
                       {t.role}, {t.organization}
                     </p>
                   </div>

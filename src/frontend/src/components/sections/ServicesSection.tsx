@@ -1,9 +1,11 @@
+import { useSiteContentMap, useSiteText } from "@/hooks/useSiteContent";
 import { ArrowRight, BarChart3, Bot, Globe, Users } from "lucide-react";
 import { motion } from "motion/react";
 
-const services = [
+const serviceIcons = [Users, Bot, BarChart3, Globe];
+
+const defaultServices = [
   {
-    icon: Users,
     title: "Voter Management Software",
     description:
       "Structure campaign data, manage field coordination, and track voter outreach through a secure centralized system built for political operations.",
@@ -11,7 +13,6 @@ const services = [
     ctaSecondary: "Explore Solution",
   },
   {
-    icon: Bot,
     title: "AI-Powered Workflow Automation",
     description:
       "Automate internal processes, eliminate repetitive tasks, and gain actionable insights through intelligent AI systems tailored to your organization.",
@@ -19,7 +20,6 @@ const services = [
     ctaSecondary: "Request Strategic Demo",
   },
   {
-    icon: BarChart3,
     title: "Campaign Data Analytics",
     description:
       "Transform raw campaign data into strategic intelligence with real-time dashboards and performance tracking built for modern political teams.",
@@ -27,7 +27,6 @@ const services = [
     ctaSecondary: "Explore Solution",
   },
   {
-    icon: Globe,
     title: "Strategic Web Infrastructure",
     description:
       "High-performance digital infrastructure built for communication, outreach, and institutional credibility that drives measurable engagement.",
@@ -50,6 +49,73 @@ const itemVariants = {
 };
 
 export function ServicesSection() {
+  const contentMap = useSiteContentMap();
+
+  const sectionLabel = useSiteText(
+    contentMap,
+    "services.section_label",
+    "Strategic Solutions",
+  );
+  const sectionTitle = useSiteText(
+    contentMap,
+    "services.section_title",
+    "Strategic Technology Solutions",
+  );
+  const sectionSubtitle = useSiteText(
+    contentMap,
+    "services.section_subtitle",
+    "Each system is engineered with one objective: giving your organization a measurable, data-backed strategic advantage.",
+  );
+
+  // Resolve all service text up-front (no hooks in map)
+  const svc1Title = useSiteText(
+    contentMap,
+    "services.1.title",
+    defaultServices[0].title,
+  );
+  const svc1Desc = useSiteText(
+    contentMap,
+    "services.1.description",
+    defaultServices[0].description,
+  );
+  const svc2Title = useSiteText(
+    contentMap,
+    "services.2.title",
+    defaultServices[1].title,
+  );
+  const svc2Desc = useSiteText(
+    contentMap,
+    "services.2.description",
+    defaultServices[1].description,
+  );
+  const svc3Title = useSiteText(
+    contentMap,
+    "services.3.title",
+    defaultServices[2].title,
+  );
+  const svc3Desc = useSiteText(
+    contentMap,
+    "services.3.description",
+    defaultServices[2].description,
+  );
+  const svc4Title = useSiteText(
+    contentMap,
+    "services.4.title",
+    defaultServices[3].title,
+  );
+  const svc4Desc = useSiteText(
+    contentMap,
+    "services.4.description",
+    defaultServices[3].description,
+  );
+
+  const services = [
+    { ...defaultServices[0], title: svc1Title, description: svc1Desc },
+    { ...defaultServices[1], title: svc2Title, description: svc2Desc },
+    { ...defaultServices[2], title: svc3Title, description: svc3Desc },
+    { ...defaultServices[3], title: svc4Title, description: svc4Desc },
+  ];
+
   const scrollToContact = () => {
     document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
   };
@@ -75,14 +141,13 @@ export function ServicesSection() {
             className="text-xs font-bold uppercase tracking-[0.2em] block mb-3"
             style={{ color: "oklch(0.75 0.12 85)" }}
           >
-            Strategic Solutions
+            {sectionLabel}
           </span>
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-foreground leading-tight">
-            Strategic Technology Solutions
+            {sectionTitle}
           </h2>
-          <p className="mt-4 text-foreground/55 text-lg max-w-2xl mx-auto leading-relaxed">
-            Each system is engineered with one objective: giving your
-            organization a measurable, data-backed strategic advantage.
+          <p className="mt-4 text-[#374151] text-lg max-w-2xl mx-auto leading-relaxed">
+            {sectionSubtitle}
           </p>
         </motion.div>
 
@@ -94,8 +159,8 @@ export function ServicesSection() {
           viewport={{ once: true }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
         >
-          {services.map((service) => {
-            const Icon = service.icon;
+          {services.map((service, idx) => {
+            const Icon = serviceIcons[idx];
             return (
               <motion.article
                 key={service.title}
@@ -119,7 +184,7 @@ export function ServicesSection() {
                 </h3>
 
                 {/* Description */}
-                <p className="text-foreground/60 text-sm leading-relaxed flex-1 mb-6">
+                <p className="text-[#374151] text-sm leading-relaxed flex-1 mb-6">
                   {service.description}
                 </p>
 
@@ -136,7 +201,7 @@ export function ServicesSection() {
                   <button
                     type="button"
                     onClick={scrollToContact}
-                    className="inline-flex items-center gap-1 text-xs font-medium text-foreground/45 hover:text-foreground/70 transition-colors"
+                    className="inline-flex items-center gap-1 text-xs font-medium text-[#6b7280] hover:text-foreground transition-colors"
                   >
                     {service.ctaSecondary}
                   </button>

@@ -51,7 +51,7 @@ function PostCard({ post }: { post: BlogPost }) {
           <h2 className="font-display font-bold text-foreground text-lg leading-snug mb-3 group-hover:text-primary transition-colors line-clamp-2">
             {post.title}
           </h2>
-          <p className="text-foreground/60 text-sm leading-relaxed mb-5 flex-1 line-clamp-3">
+          <p className="text-[#374151] text-sm leading-relaxed mb-5 flex-1 line-clamp-3">
             {post.excerpt || `${post.content.slice(0, 140)}...`}
           </p>
           <div className="flex items-center justify-between border-t border-border pt-4 mt-auto">
@@ -156,7 +156,7 @@ export function BlogListPage() {
           <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-4">
             Insights & Resources
           </h1>
-          <p className="text-foreground/60 text-lg max-w-2xl mx-auto">
+          <p className="text-[#374151] text-lg max-w-2xl mx-auto">
             Expert articles on digital transformation, software solutions, and
             technology trends for organizations across India.
           </p>
@@ -172,7 +172,7 @@ export function BlogListPage() {
         ) : posts.length === 0 ? (
           <div className="text-center py-20">
             <BookOpen className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-            <p className="text-foreground/60 text-lg">
+            <p className="text-[#374151] text-lg">
               No blog posts published yet.
             </p>
           </div>

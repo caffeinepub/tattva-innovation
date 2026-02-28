@@ -1,3 +1,4 @@
+import { useSiteContentMap, useSiteText } from "@/hooks/useSiteContent";
 import {
   Layers,
   Lock,
@@ -61,6 +62,24 @@ const itemVariants = {
 };
 
 export function StrategicAdvantageSection() {
+  const contentMap = useSiteContentMap();
+
+  const sectionLabel = useSiteText(
+    contentMap,
+    "advantage.section_label",
+    "Strategic Advantage",
+  );
+  const headline = useSiteText(
+    contentMap,
+    "advantage.headline",
+    "Why Organizations Choose",
+  );
+  const subtitle = useSiteText(
+    contentMap,
+    "advantage.subtitle",
+    "Built for institutions that require precision, security, and outcomes — not generic software.",
+  );
+
   return (
     <section id="why-us" className="py-20 md:py-28 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -81,17 +100,16 @@ export function StrategicAdvantageSection() {
             className="text-xs font-bold uppercase tracking-[0.2em] block mb-3"
             style={{ color: "oklch(0.75 0.12 85)" }}
           >
-            Strategic Advantage
+            {sectionLabel}
           </span>
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-foreground">
-            Why Organizations Choose{" "}
+            {headline}{" "}
             <span style={{ color: "oklch(0.46 0.23 264)" }}>
               Tattva Innovation
             </span>
           </h2>
-          <p className="mt-4 text-foreground/55 text-lg max-w-2xl mx-auto">
-            Built for institutions that require precision, security, and
-            outcomes — not generic software.
+          <p className="mt-4 text-[#374151] text-lg max-w-2xl mx-auto">
+            {subtitle}
           </p>
         </motion.div>
 
@@ -123,7 +141,7 @@ export function StrategicAdvantageSection() {
                     <h3 className="font-display font-bold text-foreground text-base mb-2 leading-snug">
                       {feature.title}
                     </h3>
-                    <p className="text-foreground/60 text-sm leading-relaxed">
+                    <p className="text-[#374151] text-sm leading-relaxed">
                       {feature.description}
                     </p>
                   </div>

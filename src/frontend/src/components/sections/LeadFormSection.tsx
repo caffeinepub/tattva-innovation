@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useSubmitLead } from "@/hooks/useQueries";
+import { useSiteContentMap, useSiteText } from "@/hooks/useSiteContent";
 import { CheckCircle, Loader2, MessageCircle, Phone } from "lucide-react";
 import { motion } from "motion/react";
 import { useState } from "react";
@@ -30,6 +31,28 @@ export function LeadFormSection() {
   const [orgType, setOrgType] = useState("");
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
+
+  const contentMap = useSiteContentMap();
+  const sectionLabel = useSiteText(
+    contentMap,
+    "lead.section_label",
+    "Confidential Consultation",
+  );
+  const headline = useSiteText(
+    contentMap,
+    "lead.headline",
+    "Gain Strategic Advantage with Intelligent Systems",
+  );
+  const subtext = useSiteText(
+    contentMap,
+    "lead.subtext",
+    "Book a confidential consultation to evaluate how structured data and AI automation can strengthen your operations.",
+  );
+  const ctaButton = useSiteText(
+    contentMap,
+    "lead.cta_button",
+    "Book My Strategic Demo",
+  );
 
   const submitLead = useSubmitLead();
 
@@ -80,14 +103,13 @@ export function LeadFormSection() {
               className="text-xs font-bold uppercase tracking-[0.2em] block mb-3"
               style={{ color: "oklch(0.75 0.12 85)" }}
             >
-              Confidential Consultation
+              {sectionLabel}
             </span>
             <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight">
-              Gain Strategic Advantage with Intelligent Systems
+              {headline}
             </h2>
-            <p className="mt-4 text-white/60 text-lg leading-relaxed">
-              Book a confidential consultation to evaluate how structured data
-              and AI automation can strengthen your operations.
+            <p className="mt-4 text-white/70 text-lg leading-relaxed">
+              {subtext}
             </p>
           </motion.div>
 
@@ -237,7 +259,7 @@ export function LeadFormSection() {
                       Submitting...
                     </>
                   ) : (
-                    "Book My Strategic Demo"
+                    ctaButton
                   )}
                 </button>
 
