@@ -3,40 +3,40 @@ import { useGetVisibleTestimonials } from "@/hooks/useQueries";
 import { Quote } from "lucide-react";
 import { motion } from "motion/react";
 
-// Fallback testimonials shown if backend has none yet
+// Realistic campaign-focused fallback testimonials
 const fallbackTestimonials = [
   {
     id: BigInt(1),
     quote:
-      "Tattva Innovation transformed how we manage our constituency. The voter management system is intuitive and our mobilization has improved significantly.",
-    name: "Rajesh Patil",
-    role: "Campaign Manager",
-    organization: "Maharashtra Political Campaign",
+      "The voter management system helped us structure our campaign data efficiently and improve coordination across field teams. It gave us operational clarity we didn't have before.",
+    name: "Amit Deshmukh",
+    role: "Campaign Coordinator",
+    organization: "Maharashtra Constituency Team",
     isVisible: true,
   },
   {
     id: BigInt(2),
     quote:
-      "Our housing society finally went paperless for visitor management. The support team was incredibly helpful during onboarding.",
-    name: "Priya Nair",
-    role: "Secretary",
-    organization: "Green Palms Housing Society, Pune",
+      "We moved away from spreadsheets entirely. Tattva Innovation's platform gave us real-time visibility into outreach performance across all ward divisions — that changed our decision-making.",
+    name: "Sunita Rao",
+    role: "Operations Lead",
+    organization: "Regional Campaign Office, Pune",
     isVisible: true,
   },
   {
     id: BigInt(3),
     quote:
-      "They built our school website in just 3 days! Professional, affordable, and the team understood exactly what we needed.",
-    name: "Dr. Suresh Mehta",
-    role: "Principal",
-    organization: "Sunrise Public School, Nagpur",
+      "The analytics gave our leadership team a clear picture of engagement patterns before key campaign phases. It's structured intelligence, not just raw data.",
+    name: "Prakash Joshi",
+    role: "Political Strategy Advisor",
+    organization: "Independent Campaign, Nagpur",
     isVisible: true,
   },
 ];
 
 function TestimonialSkeleton() {
   return (
-    <div className="bg-white rounded-2xl p-7 border border-border space-y-4">
+    <div className="bg-white rounded-xl p-7 border-2 border-border space-y-4">
       <Skeleton className="w-8 h-8 rounded-full" />
       <Skeleton className="h-4 w-full" />
       <Skeleton className="h-4 w-5/6" />
@@ -61,7 +61,7 @@ export function TestimonialsSection() {
       : fallbackTestimonials;
 
   return (
-    <section id="testimonials" className="py-20 md:py-28 bg-section-alt">
+    <section id="testimonials" className="py-20 md:py-28 bg-section-grey">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -70,11 +70,19 @@ export function TestimonialsSection() {
           transition={{ duration: 0.5 }}
           className="text-center mb-14"
         >
-          <span className="text-primary text-sm font-semibold uppercase tracking-widest block mb-3">
-            Testimonials
+          <div
+            className="mx-auto mb-5 h-px w-16"
+            style={{ background: "oklch(0.75 0.12 85)" }}
+            aria-hidden="true"
+          />
+          <span
+            className="text-xs font-bold uppercase tracking-[0.2em] block mb-3"
+            style={{ color: "oklch(0.75 0.12 85)" }}
+          >
+            Client Perspectives
           </span>
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-foreground">
-            What Our Clients Say
+            Trusted by Campaign Teams
           </h2>
         </motion.div>
 
@@ -87,26 +95,37 @@ export function TestimonialsSection() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {testimonials.map((t, i) => (
-              <motion.div
+              <motion.article
                 key={String(t.id)}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="bg-white rounded-2xl p-7 border border-border shadow-card hover:shadow-card-hover transition-all duration-300 flex flex-col"
+                className="bg-white rounded-xl p-7 shadow-card hover:shadow-card-hover transition-all duration-300 flex flex-col"
+                style={{
+                  border: "2px solid oklch(0.2 0.04 250 / 0.18)",
+                }}
               >
-                <Quote className="w-8 h-8 text-primary/20 mb-4 shrink-0" />
-                <p className="text-foreground/70 text-sm leading-relaxed flex-1 italic">
+                {/* Gold quote icon */}
+                <Quote
+                  className="w-7 h-7 mb-4 shrink-0"
+                  style={{ color: "oklch(0.75 0.12 85)" }}
+                />
+                <p className="text-foreground/70 text-sm leading-relaxed flex-1">
                   "{t.quote}"
                 </p>
-                <div className="mt-6 flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center shrink-0">
-                    <span className="font-display font-bold text-primary text-sm">
+                <div className="mt-6 pt-5 border-t border-border flex items-center gap-3">
+                  {/* Avatar initial */}
+                  <div
+                    className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
+                    style={{ background: "oklch(0.2 0.04 250)" }}
+                  >
+                    <span className="font-display font-bold text-white text-sm">
                       {t.name.charAt(0)}
                     </span>
                   </div>
                   <div>
-                    <p className="font-semibold text-foreground text-sm">
+                    <p className="font-bold text-foreground text-sm">
                       {t.name}
                     </p>
                     <p className="text-foreground/50 text-xs">
@@ -114,7 +133,7 @@ export function TestimonialsSection() {
                     </p>
                   </div>
                 </div>
-              </motion.div>
+              </motion.article>
             ))}
           </div>
         )}

@@ -2,57 +2,76 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Fonts loaded via Google Fonts in index.html */
+/* ─── Self-hosted Fonts ─── */
+@font-face {
+  font-family: "Bricolage Grotesque";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/assets/fonts/BricolageGrotesque.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("/assets/fonts/PlusJakartaSans.woff2") format("woff2");
+}
 
 @layer base {
   :root {
     /* ─── Tattva Innovation Brand Palette ─── */
-    /* Primary: Deep Blue (confidence, technology) */
+    /* Primary: Royal Blue #1E4ED8 */
     --brand-blue: 0.44 0.195 264;
-    /* Accent: Vivid Indigo */
-    --brand-indigo: 0.5 0.2 275;
-    /* Charcoal (text, headings) */
-    --brand-charcoal: 0.22 0.015 250;
+    /* Deep Navy #0B1F3A */
+    --brand-navy: 0.2 0.04 250;
+    /* Muted Gold #C8A951 */
+    --brand-gold: 0.75 0.12 85;
     /* WhatsApp Green */
     --brand-whatsapp: 0.62 0.19 145;
+    /* Legacy tokens kept for backward compat */
+    --brand-indigo: 0.5 0.2 275;
+    --brand-charcoal: 0.2 0.04 250;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
-    /* Light mode */
-    --background: 0.99 0.002 240;
-    --foreground: 0.22 0.015 250;
+    /* Light mode — white/grey backgrounds, #090b47 deep indigo text */
+    --background: 1 0 0;
+    --foreground: 0.206 0.107 270.7;
     --card: 1 0 0;
-    --card-foreground: 0.22 0.015 250;
+    --card-foreground: 0.206 0.107 270.7;
     --popover: 1 0 0;
-    --popover-foreground: 0.22 0.015 250;
-    --primary: 0.44 0.195 264;
+    --popover-foreground: 0.206 0.107 270.7;
+    /* Primary = Royal Blue */
+    --primary: 0.46 0.23 264;
     --primary-foreground: 0.99 0 0;
-    --secondary: 0.95 0.015 240;
-    --secondary-foreground: 0.22 0.015 250;
-    --muted: 0.96 0.008 240;
-    --muted-foreground: 0.52 0.02 250;
-    --accent: 0.94 0.04 264;
-    --accent-foreground: 0.44 0.195 264;
+    --secondary: 0.96 0.006 240;
+    --secondary-foreground: 0.206 0.107 270.7;
+    --muted: 0.97 0.004 240;
+    --muted-foreground: 0.42 0.06 270.7;
+    --accent: 0.95 0.015 264;
+    --accent-foreground: 0.46 0.23 264;
     --destructive: 0.577 0.245 27.325;
     --destructive-foreground: 0.99 0 0;
-    --border: 0.9 0.01 240;
-    --input: 0.9 0.01 240;
-    --ring: 0.44 0.195 264;
+    --border: 0.91 0.008 240;
+    --input: 0.91 0.008 240;
+    --ring: 0.46 0.23 264;
 
-    --chart-1: 0.44 0.195 264;
+    --chart-1: 0.46 0.23 264;
     --chart-2: 0.62 0.19 145;
     --chart-3: 0.65 0.22 20;
     --chart-4: 0.55 0.2 300;
     --chart-5: 0.7 0.18 50;
 
     --sidebar: 0.97 0.008 240;
-    --sidebar-foreground: 0.22 0.015 250;
-    --sidebar-primary: 0.44 0.195 264;
+    --sidebar-foreground: 0.206 0.107 270.7;
+    --sidebar-primary: 0.46 0.23 264;
     --sidebar-primary-foreground: 0.99 0 0;
     --sidebar-accent: 0.94 0.04 264;
-    --sidebar-accent-foreground: 0.44 0.195 264;
-    --sidebar-border: 0.9 0.01 240;
-    --sidebar-ring: 0.44 0.195 264;
+    --sidebar-accent-foreground: 0.46 0.23 264;
+    --sidebar-border: 0.91 0.008 240;
+    --sidebar-ring: 0.46 0.23 264;
   }
 
   * {
@@ -79,27 +98,22 @@
     font-family: "Plus Jakarta Sans", system-ui, sans-serif;
   }
 
-  /* Hero gradient background */
-  .bg-hero-gradient {
-    background: linear-gradient(
-      135deg,
-      oklch(0.99 0.002 240) 0%,
-      oklch(0.96 0.02 264) 50%,
-      oklch(0.93 0.04 264) 100%
-    );
+  /* Section background utilities */
+  .bg-section-grey {
+    background: #F5F7FA;
+  }
+
+  .bg-brand-navy {
+    background: oklch(var(--brand-navy));
   }
 
   .bg-section-alt {
-    background: oklch(0.97 0.008 240);
+    background: #F5F7FA;
   }
 
-  /* Blue gradient for CTA backgrounds */
+  /* Blue gradient kept for legacy use */
   .bg-blue-gradient {
-    background: linear-gradient(
-      135deg,
-      oklch(0.44 0.195 264) 0%,
-      oklch(0.38 0.2 280) 100%
-    );
+    background: oklch(var(--brand-navy));
   }
 
   /* Floating WhatsApp pulse animation */
@@ -110,5 +124,36 @@
   @keyframes wa-pulse-anim {
     0%, 100% { box-shadow: 0 0 0 0 oklch(0.62 0.19 145 / 0.6); }
     50% { box-shadow: 0 0 0 12px oklch(0.62 0.19 145 / 0); }
+  }
+
+  /* Hero animated background */
+  @keyframes node-pulse {
+    0%, 100% { opacity: 0.35; r: 4; }
+    50% { opacity: 1; r: 6; }
+  }
+
+  @keyframes node-pulse-slow {
+    0%, 100% { opacity: 0.25; r: 3; }
+    50% { opacity: 0.85; r: 5; }
+  }
+
+  @keyframes grid-fade {
+    0%, 100% { opacity: 0.06; }
+    50% { opacity: 0.12; }
+  }
+
+  @keyframes line-draw {
+    0% { stroke-dashoffset: 300; opacity: 0; }
+    30% { opacity: 1; }
+    100% { stroke-dashoffset: 0; opacity: 0.35; }
+  }
+
+  /* Reduced motion: disable all hero animations */
+  @media (prefers-reduced-motion: reduce) {
+    .hero-node,
+    .hero-grid-line,
+    .hero-connect-line {
+      animation: none !important;
+    }
   }
 }

@@ -12,31 +12,31 @@ const features = [
     icon: IndianRupee,
     title: "Affordable Pricing",
     description:
-      "Flexible plans built for Indian budgets. No hidden charges, no surprises.",
+      "Cost-effective plans built for Indian organizations. Transparent pricing with no hidden charges.",
   },
   {
     icon: Wrench,
     title: "Custom-Built Solutions",
     description:
-      "Every product is built from scratch to match your exact workflow and requirements.",
+      "Every system is architected from the ground up to match your operational requirements — no generic templates.",
   },
   {
     icon: Lock,
     title: "Secure Data Handling",
     description:
-      "Your data is encrypted and stored securely. Full compliance with data protection standards.",
+      "End-to-end encrypted infrastructure. Your data is never shared, never compromised, and always under your control.",
   },
   {
     icon: Rocket,
     title: "Fast Deployment",
     description:
-      "From requirement to launch in as little as 48 hours. We move fast without cutting corners.",
+      "From briefing to launch in as little as 48 hours. Rapid delivery without sacrificing security or quality.",
   },
   {
     icon: HeadphonesIcon,
     title: "Local Support in India",
     description:
-      "Dedicated support team in India. We speak your language and understand your context.",
+      "India-based team with domain knowledge in political and organizational technology. We understand your operating context.",
   },
 ];
 
@@ -52,10 +52,10 @@ export function WhyUsSection() {
           className="text-center mb-14"
         >
           <span className="text-primary text-sm font-semibold uppercase tracking-widest block mb-3">
-            Why Choose Us
+            Strategic Advantage
           </span>
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-foreground">
-            Why Organizations Trust{" "}
+            Why Leading Organizations Choose{" "}
             <span className="text-primary">Tattva Innovation</span>
           </h2>
         </motion.div>

@@ -1,4 +1,4 @@
-import { ArrowRight, Bot, Building2, Globe, Users } from "lucide-react";
+import { ArrowRight, BarChart3, Bot, Globe, Users } from "lucide-react";
 import { motion } from "motion/react";
 
 const services = [
@@ -6,33 +6,33 @@ const services = [
     icon: Users,
     title: "Voter Management Software",
     description:
-      "Organize campaigns, track voters, and mobilize support — all from one secure platform.",
-    color: "text-blue-600",
-    bgColor: "bg-blue-50",
-  },
-  {
-    icon: Building2,
-    title: "Inward-Outward & Visitor Management",
-    description:
-      "Streamline office entry, track records, and go paperless with smart digital registers.",
-    color: "text-indigo-600",
-    bgColor: "bg-indigo-50",
-  },
-  {
-    icon: Globe,
-    title: "Website Development",
-    description:
-      "Professional websites built fast and affordable for small and medium businesses across India.",
-    color: "text-violet-600",
-    bgColor: "bg-violet-50",
+      "Structure campaign data, manage field coordination, and track voter outreach through a secure centralized system built for political operations.",
+    ctaPrimary: "Request Strategic Demo",
+    ctaSecondary: "Explore Solution",
   },
   {
     icon: Bot,
-    title: "Custom AI Automation Apps",
+    title: "AI-Powered Workflow Automation",
     description:
-      "Automate repetitive tasks and workflows with AI-powered apps built specifically for your business.",
-    color: "text-purple-600",
-    bgColor: "bg-purple-50",
+      "Automate internal processes, eliminate repetitive tasks, and gain actionable insights through intelligent AI systems tailored to your organization.",
+    ctaPrimary: "Explore Solution",
+    ctaSecondary: "Request Strategic Demo",
+  },
+  {
+    icon: BarChart3,
+    title: "Campaign Data Analytics",
+    description:
+      "Transform raw campaign data into strategic intelligence with real-time dashboards and performance tracking built for modern political teams.",
+    ctaPrimary: "Request Strategic Demo",
+    ctaSecondary: "Explore Solution",
+  },
+  {
+    icon: Globe,
+    title: "Strategic Web Infrastructure",
+    description:
+      "High-performance digital infrastructure built for communication, outreach, and institutional credibility that drives measurable engagement.",
+    ctaPrimary: "Explore Solution",
+    ctaSecondary: "Request Strategic Demo",
   },
 ];
 
@@ -40,38 +40,53 @@ const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.12 },
+    transition: { staggerChildren: 0.1 },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 32 },
+  hidden: { opacity: 0, y: 28 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 
 export function ServicesSection() {
+  const scrollToContact = () => {
+    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <section id="services" className="py-20 md:py-28 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-14"
+          className="text-center mb-16"
         >
-          <span className="text-primary text-sm font-semibold uppercase tracking-widest block mb-3">
-            Our Solutions
+          {/* Gold divider accent */}
+          <div
+            className="mx-auto mb-5 h-px w-16"
+            style={{ background: "oklch(0.75 0.12 85)" }}
+            aria-hidden="true"
+          />
+          <span
+            className="text-xs font-bold uppercase tracking-[0.2em] block mb-3"
+            style={{ color: "oklch(0.75 0.12 85)" }}
+          >
+            Strategic Solutions
           </span>
-          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-foreground">
-            What We Build For You
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-foreground leading-tight">
+            Strategic Technology Solutions
           </h2>
-          <p className="mt-4 text-foreground/60 text-lg max-w-2xl mx-auto">
-            Custom digital solutions designed for the real challenges faced by
-            Indian organizations today.
+          <p className="mt-4 text-foreground/55 text-lg max-w-2xl mx-auto leading-relaxed">
+            Each system is engineered with one objective: giving your
+            organization a measurable, data-backed strategic advantage.
           </p>
         </motion.div>
 
+        {/* Service Cards */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -82,34 +97,51 @@ export function ServicesSection() {
           {services.map((service) => {
             const Icon = service.icon;
             return (
-              <motion.div
+              <motion.article
                 key={service.title}
                 variants={itemVariants}
-                className="group relative bg-white rounded-2xl p-6 border border-border shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1 flex flex-col"
+                className="group relative bg-white rounded-xl p-7 border border-border shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1 flex flex-col"
+                style={{
+                  borderTop: "3px solid oklch(0.46 0.23 264 / 0.15)",
+                }}
               >
+                {/* Icon */}
                 <div
-                  className={`w-12 h-12 rounded-xl ${service.bgColor} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-200`}
+                  className="w-12 h-12 rounded-lg flex items-center justify-center mb-5 transition-all duration-200 group-hover:scale-105"
+                  style={{ background: "oklch(0.2 0.04 250)" }}
                 >
-                  <Icon className={`w-6 h-6 ${service.color}`} />
+                  <Icon className="w-5 h-5 text-white" />
                 </div>
-                <h3 className="font-display font-bold text-foreground text-lg mb-3 leading-tight">
+
+                {/* Title */}
+                <h3 className="font-display font-bold text-foreground text-base mb-3 leading-snug">
                   {service.title}
                 </h3>
-                <p className="text-foreground/60 text-sm leading-relaxed flex-1">
+
+                {/* Description */}
+                <p className="text-foreground/60 text-sm leading-relaxed flex-1 mb-6">
                   {service.description}
                 </p>
-                <button
-                  type="button"
-                  onClick={() => {
-                    document
-                      .getElementById("contact")
-                      ?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  className="mt-4 inline-flex items-center gap-1 text-primary text-sm font-semibold hover:gap-2 transition-all"
-                >
-                  Learn More <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              </motion.div>
+
+                {/* CTAs */}
+                <div className="flex flex-col gap-2 mt-auto">
+                  <button
+                    type="button"
+                    onClick={scrollToContact}
+                    className="inline-flex items-center gap-1.5 text-sm font-bold transition-all group/btn text-foreground"
+                  >
+                    {service.ctaPrimary}
+                    <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover/btn:translate-x-1" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={scrollToContact}
+                    className="inline-flex items-center gap-1 text-xs font-medium text-foreground/45 hover:text-foreground/70 transition-colors"
+                  >
+                    {service.ctaSecondary}
+                  </button>
+                </div>
+              </motion.article>
             );
           })}
         </motion.div>

@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -10,7 +9,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useSubmitLead } from "@/hooks/useQueries";
-import { CheckCircle, Loader2, Phone } from "lucide-react";
+import { CheckCircle, Loader2, MessageCircle, Phone } from "lucide-react";
 import { motion } from "motion/react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -18,9 +17,9 @@ import { toast } from "sonner";
 const orgTypes = [
   "Political Campaign",
   "NGO",
-  "Office/Institution",
+  "Office / Institution",
   "Housing Society",
-  "School/College",
+  "School / College",
   "Small Business",
   "Other",
 ];
@@ -49,14 +48,21 @@ export function LeadFormSection() {
       setOrgType("");
       setMessage("");
     } catch {
-      toast.error("Something went wrong. Please try again or WhatsApp us.");
+      toast.error(
+        "Something went wrong. Please try again or contact us on WhatsApp.",
+      );
     }
   };
 
   return (
-    <section id="contact" className="py-20 md:py-28 bg-blue-gradient">
+    <section
+      id="contact"
+      className="py-20 md:py-28"
+      style={{ background: "oklch(0.2 0.04 250)" }}
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto">
+          {/* Section header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -64,45 +70,66 @@ export function LeadFormSection() {
             transition={{ duration: 0.5 }}
             className="text-center mb-10"
           >
-            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-white">
-              Book Your Free Demo Today
+            {/* Gold divider */}
+            <div
+              className="mx-auto mb-5 h-px w-16"
+              style={{ background: "oklch(0.75 0.12 85)" }}
+              aria-hidden="true"
+            />
+            <span
+              className="text-xs font-bold uppercase tracking-[0.2em] block mb-3"
+              style={{ color: "oklch(0.75 0.12 85)" }}
+            >
+              Confidential Consultation
+            </span>
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight">
+              Gain Strategic Advantage with Intelligent Systems
             </h2>
-            <p className="mt-4 text-white/70 text-lg">
-              Fill in your details and our team will reach out within 24 hours.
+            <p className="mt-4 text-white/60 text-lg leading-relaxed">
+              Book a confidential consultation to evaluate how structured data
+              and AI automation can strengthen your operations.
             </p>
           </motion.div>
 
+          {/* Form card */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.15 }}
-            className="bg-white rounded-2xl p-8 md:p-10 shadow-card-hover"
+            className="bg-white rounded-2xl p-8 md:p-10 shadow-navy"
           >
             {submitted ? (
               <div className="flex flex-col items-center justify-center py-8 text-center">
-                <div className="w-16 h-16 rounded-full bg-green-50 flex items-center justify-center mb-4">
-                  <CheckCircle className="w-8 h-8 text-green-600" />
+                <div
+                  className="w-16 h-16 rounded-full flex items-center justify-center mb-4"
+                  style={{ background: "oklch(0.2 0.04 250 / 0.08)" }}
+                >
+                  <CheckCircle
+                    className="w-8 h-8"
+                    style={{ color: "oklch(0.46 0.23 264)" }}
+                  />
                 </div>
                 <h3 className="font-display font-bold text-foreground text-xl mb-2">
-                  Thank you!
+                  Request Received
                 </h3>
-                <p className="text-foreground/65 text-sm">
-                  We'll reach out within 24 hours. You can also{" "}
+                <p className="text-foreground/60 text-sm leading-relaxed max-w-xs">
+                  Our team will reach out within 24 hours. For faster response,{" "}
                   <a
                     href="https://wa.me/9822422123"
-                    className="text-primary underline underline-offset-2"
+                    className="font-semibold underline underline-offset-2"
+                    style={{ color: "oklch(0.46 0.23 264)" }}
                     target="_blank"
                     rel="noreferrer"
                   >
-                    chat with us on WhatsApp
-                  </a>{" "}
-                  for faster response.
+                    contact us on WhatsApp
+                  </a>
+                  .
                 </p>
                 <button
                   type="button"
                   onClick={() => setSubmitted(false)}
-                  className="mt-6 text-sm text-primary hover:underline"
+                  className="mt-6 text-sm font-medium text-foreground/50 hover:text-foreground/80 transition-colors"
                 >
                   Submit another request
                 </button>
@@ -112,13 +139,13 @@ export function LeadFormSection() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label
-                      htmlFor="name"
-                      className="font-medium text-foreground"
+                      htmlFor="lead-name"
+                      className="font-semibold text-foreground text-sm"
                     >
                       Full Name <span className="text-destructive">*</span>
                     </Label>
                     <Input
-                      id="name"
+                      id="lead-name"
                       type="text"
                       placeholder="e.g. Rajesh Sharma"
                       value={name}
@@ -130,15 +157,15 @@ export function LeadFormSection() {
                   </div>
                   <div className="space-y-2">
                     <Label
-                      htmlFor="phone"
-                      className="font-medium text-foreground"
+                      htmlFor="lead-phone"
+                      className="font-semibold text-foreground text-sm"
                     >
                       Phone Number <span className="text-destructive">*</span>
                     </Label>
                     <div className="relative">
                       <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                       <Input
-                        id="phone"
+                        id="lead-phone"
                         type="tel"
                         placeholder="+91 98765 43210"
                         value={phone}
@@ -153,14 +180,14 @@ export function LeadFormSection() {
 
                 <div className="space-y-2">
                   <Label
-                    htmlFor="orgType"
-                    className="font-medium text-foreground"
+                    htmlFor="lead-orgType"
+                    className="font-semibold text-foreground text-sm"
                   >
                     Organization Type{" "}
                     <span className="text-destructive">*</span>
                   </Label>
                   <Select value={orgType} onValueChange={setOrgType} required>
-                    <SelectTrigger id="orgType" className="h-11">
+                    <SelectTrigger id="lead-orgType" className="h-11">
                       <SelectValue placeholder="Select your organization type..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -175,8 +202,8 @@ export function LeadFormSection() {
 
                 <div className="space-y-2">
                   <Label
-                    htmlFor="message"
-                    className="font-medium text-foreground"
+                    htmlFor="lead-message"
+                    className="font-semibold text-foreground text-sm"
                   >
                     Message{" "}
                     <span className="text-muted-foreground font-normal text-xs">
@@ -184,8 +211,8 @@ export function LeadFormSection() {
                     </span>
                   </Label>
                   <Textarea
-                    id="message"
-                    placeholder="Tell us about your specific needs or challenges..."
+                    id="lead-message"
+                    placeholder="Briefly describe your requirements or the challenge you need addressed..."
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     rows={3}
@@ -193,11 +220,16 @@ export function LeadFormSection() {
                   />
                 </div>
 
-                <Button
+                {/* Gold submit button */}
+                <button
                   type="submit"
-                  size="lg"
                   disabled={submitLead.isPending}
-                  className="w-full bg-primary text-primary-foreground hover:opacity-90 shadow-blue font-semibold text-base h-12"
+                  className="w-full inline-flex items-center justify-center rounded-md px-6 h-12 text-base font-bold transition-all hover:opacity-90 disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2"
+                  style={{
+                    background: "oklch(0.75 0.12 85)",
+                    color: "oklch(0.2 0.04 250)",
+                    boxShadow: "0 4px 20px oklch(0.75 0.12 85 / 0.3)",
+                  }}
                 >
                   {submitLead.isPending ? (
                     <>
@@ -205,22 +237,26 @@ export function LeadFormSection() {
                       Submitting...
                     </>
                   ) : (
-                    "Book My Free Demo"
+                    "Book My Strategic Demo"
                   )}
-                </Button>
+                </button>
 
-                <p className="text-center text-xs text-muted-foreground">
-                  Or{" "}
-                  <a
-                    href="https://wa.me/9822422123"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-brand-whatsapp font-medium hover:underline"
-                  >
-                    chat directly on WhatsApp
-                  </a>{" "}
-                  for an instant response.
-                </p>
+                {/* WhatsApp quick contact */}
+                <div className="flex items-center justify-center gap-2 pt-1">
+                  <MessageCircle className="w-4 h-4 text-brand-whatsapp" />
+                  <p className="text-center text-sm text-muted-foreground">
+                    Or{" "}
+                    <a
+                      href="https://wa.me/9822422123"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-brand-whatsapp font-semibold hover:underline"
+                    >
+                      chat directly on WhatsApp
+                    </a>{" "}
+                    for an instant response.
+                  </p>
+                </div>
               </form>
             )}
           </motion.div>

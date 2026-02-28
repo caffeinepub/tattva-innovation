@@ -9,23 +9,23 @@ import { motion } from "motion/react";
 const faqs = [
   {
     q: "Do you build custom software for small organizations?",
-    a: "Yes, we specialize in affordable, custom-built solutions for NGOs, housing societies, schools, and small businesses. No project is too small for us.",
+    a: "Yes. We work with political campaign teams, NGOs, and growing organizations of all sizes. Every system is custom-built to your requirements — we do not deploy generic off-the-shelf software.",
   },
   {
     q: "How long does it take to deploy?",
-    a: "Most solutions are deployed within 48–72 hours of finalizing requirements. Our streamlined process ensures fast delivery without compromising quality.",
+    a: "Most systems are deployed within 48–72 hours of finalizing requirements. Our structured delivery process ensures speed without compromising security or reliability.",
   },
   {
     q: "Is our data secure?",
-    a: "Absolutely. We use encrypted storage and follow best security practices. Your data is never shared with third parties, and we maintain full confidentiality.",
+    a: "Security is foundational to our infrastructure. All data is encrypted in transit and at rest. We operate under strict confidentiality standards and do not share client data with any third party.",
   },
   {
     q: "Do you offer ongoing support?",
-    a: "Yes, we provide dedicated post-launch support and maintenance packages. Our India-based team is always reachable via WhatsApp and phone.",
+    a: "Yes. Post-deployment support and maintenance packages are available. Our India-based team is accessible via WhatsApp and direct communication channels.",
   },
   {
     q: "Can we request changes after launch?",
-    a: "Yes, we offer flexible maintenance and upgrade plans. We believe software should evolve with your organization, and we're here to support that growth.",
+    a: "Yes. All systems are built with scalability in mind. We offer structured upgrade and maintenance engagements as your organization's needs evolve.",
   },
 ];
 

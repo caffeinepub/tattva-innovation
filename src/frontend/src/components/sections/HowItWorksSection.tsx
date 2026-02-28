@@ -5,23 +5,23 @@ const steps = [
   {
     step: "01",
     icon: CalendarCheck,
-    title: "Book a Free Demo",
+    title: "Book a Strategic Demo",
     description:
-      "Tell us about your organization and challenges. No commitment required — just a conversation.",
+      "Share your organization's objectives and operational challenges. We assess fit and outline a tailored technology approach.",
   },
   {
     step: "02",
     icon: Cpu,
     title: "We Design Your Solution",
     description:
-      "Our team builds a custom solution tailored to you — designed from scratch for your workflow.",
+      "Our team architects a secure, scalable system aligned to your workflow — built for performance, not just features.",
   },
   {
     step: "03",
     icon: TrendingUp,
-    title: "Go Live & Grow",
+    title: "Deploy & Gain Advantage",
     description:
-      "Launch fast and start seeing results immediately. We support you every step of the way.",
+      "Go live on schedule and start leveraging data intelligence from day one. Ongoing support included.",
   },
 ];
 
@@ -102,7 +102,7 @@ export function HowItWorksSection() {
             onClick={scrollToContact}
             className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-semibold px-8 py-3.5 rounded-xl shadow-blue hover:opacity-90 transition-all text-base"
           >
-            Start Your Journey Today
+            Book a Strategic Demo
           </button>
         </motion.div>
       </div>
