@@ -332,7 +332,7 @@ function AnimatedNetworkBackground() {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 80% 60% at 50% 100%, oklch(0.2 0.04 250 / 0.7) 0%, transparent 70%)",
+            "radial-gradient(ellipse 80% 60% at 50% 100%, rgba(11, 31, 58, 0.7) 0%, transparent 70%)",
         }}
       />
     </div>
@@ -382,7 +382,7 @@ export function HeroSection() {
   return (
     <section
       className="relative min-h-screen flex items-center pt-20 pb-16 md:pt-28 md:pb-24 overflow-hidden"
-      style={{ background: "oklch(0.2 0.04 250)" }}
+      style={{ background: "#0B1F3A" }}
     >
       <AnimatedNetworkBackground />
 
@@ -438,9 +438,9 @@ export function HeroSection() {
               onClick={scrollToContact}
               className="inline-flex items-center justify-center gap-2 rounded-md px-8 py-3.5 text-base font-bold transition-all hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
               style={{
-                background: "oklch(0.75 0.12 85)",
-                color: "oklch(0.2 0.04 250)",
-                boxShadow: "0 4px 20px oklch(0.75 0.12 85 / 0.4)",
+                background: "#C8A951",
+                color: "#0B1F3A",
+                boxShadow: "0 4px 20px rgba(200,169,81,0.4)",
               }}
             >
               {ctaPrimary}
@@ -453,8 +453,8 @@ export function HeroSection() {
               rel="noreferrer"
               className="inline-flex items-center justify-center gap-2 rounded-md border-2 px-8 py-3.5 text-base font-bold transition-all hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2"
               style={{
-                borderColor: "oklch(0.46 0.23 264)",
-                color: "oklch(0.46 0.23 264)",
+                borderColor: "#FFFFFF",
+                color: "#FFFFFF",
               }}
             >
               <svg
@@ -483,8 +483,8 @@ export function HeroSection() {
                 key={text}
                 className="flex items-center gap-2 rounded-full px-4 py-2"
                 style={{
-                  background: "oklch(1 0 0 / 0.07)",
-                  border: "1px solid oklch(1 0 0 / 0.15)",
+                  background: "rgba(255,255,255,0.07)",
+                  border: "1px solid rgba(255,255,255,0.15)",
                   backdropFilter: "blur(8px)",
                 }}
               >
@@ -503,7 +503,7 @@ export function HeroSection() {
         className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none"
         style={{
           background:
-            "linear-gradient(to bottom, transparent, oklch(0.2 0.04 250 / 0.5))",
+            "linear-gradient(to bottom, transparent, rgba(11, 31, 58, 0.5))",
         }}
         aria-hidden="true"
       />

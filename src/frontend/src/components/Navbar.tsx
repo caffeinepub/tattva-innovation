@@ -9,6 +9,7 @@ const navLinks = [
   { label: "AI Automation", href: "/#ai-automation" },
   { label: "About", href: "/#why-us" },
   { label: "Blog", href: "/blog" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export function Navbar() {
@@ -105,8 +106,8 @@ export function Navbar() {
               onClick={handleBookDemo}
               className="inline-flex items-center justify-center rounded-md px-5 py-2 text-sm font-bold transition-all hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
               style={{
-                background: "oklch(0.75 0.12 85)",
-                color: "oklch(0.2 0.04 250)",
+                background: "#C8A951",
+                color: "#0B1F3A",
               }}
             >
               Book Strategic Demo
@@ -177,8 +178,8 @@ export function Navbar() {
                   onClick={handleBookDemo}
                   className="w-full inline-flex items-center justify-center rounded-md px-5 py-3 text-sm font-bold transition-all hover:opacity-90"
                   style={{
-                    background: "oklch(0.75 0.12 85)",
-                    color: "oklch(0.2 0.04 250)",
+                    background: "#C8A951",
+                    color: "#0B1F3A",
                   }}
                 >
                   Book Strategic Demo

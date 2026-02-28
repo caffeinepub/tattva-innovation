@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { AdminPage } from "@/pages/AdminPage";
 import { BlogListPage } from "@/pages/BlogListPage";
 import { BlogPostPage } from "@/pages/BlogPostPage";
+import { ContactPage } from "@/pages/ContactPage";
 import { HomePage } from "@/pages/HomePage";
 import {
   Outlet,
@@ -54,12 +55,19 @@ const adminRoute = createRoute({
   component: AdminPage,
 });
 
+const contactRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/contact",
+  component: ContactPage,
+});
+
 // Router
 const routeTree = rootRoute.addChildren([
   homeRoute,
   blogListRoute,
   blogPostRoute,
   adminRoute,
+  contactRoute,
 ]);
 
 const router = createRouter({ routeTree });

@@ -72,12 +72,12 @@ export function TestimonialsSection() {
         >
           <div
             className="mx-auto mb-5 h-px w-16"
-            style={{ background: "oklch(0.75 0.12 85)" }}
+            style={{ background: "#C8A951" }}
             aria-hidden="true"
           />
           <span
             className="text-xs font-bold uppercase tracking-[0.2em] block mb-3"
-            style={{ color: "oklch(0.75 0.12 85)" }}
+            style={{ color: "#C8A951" }}
           >
             Client Perspectives
           </span>
@@ -103,13 +103,13 @@ export function TestimonialsSection() {
                 transition={{ duration: 0.5, delay: i * 0.1 }}
                 className="bg-white rounded-xl p-7 shadow-card hover:shadow-card-hover transition-all duration-300 flex flex-col"
                 style={{
-                  border: "2px solid oklch(0.2 0.04 250 / 0.18)",
+                  border: "2px solid rgba(11,31,58,0.18)",
                 }}
               >
                 {/* Gold quote icon */}
                 <Quote
                   className="w-7 h-7 mb-4 shrink-0"
-                  style={{ color: "oklch(0.75 0.12 85)" }}
+                  style={{ color: "#C8A951" }}
                 />
                 <p className="text-[#374151] text-sm leading-relaxed flex-1">
                   "{t.quote}"
@@ -118,7 +118,7 @@ export function TestimonialsSection() {
                   {/* Avatar initial */}
                   <div
                     className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
-                    style={{ background: "oklch(0.2 0.04 250)" }}
+                    style={{ background: "#0B1F3A" }}
                   >
                     <span className="font-display font-bold text-white text-sm">
                       {t.name.charAt(0)}

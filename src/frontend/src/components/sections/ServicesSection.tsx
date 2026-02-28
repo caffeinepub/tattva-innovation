@@ -134,12 +134,12 @@ export function ServicesSection() {
           {/* Gold divider accent */}
           <div
             className="mx-auto mb-5 h-px w-16"
-            style={{ background: "oklch(0.75 0.12 85)" }}
+            style={{ background: "#C8A951" }}
             aria-hidden="true"
           />
           <span
             className="text-xs font-bold uppercase tracking-[0.2em] block mb-3"
-            style={{ color: "oklch(0.75 0.12 85)" }}
+            style={{ color: "#C8A951" }}
           >
             {sectionLabel}
           </span>
@@ -167,13 +167,13 @@ export function ServicesSection() {
                 variants={itemVariants}
                 className="group relative bg-white rounded-xl p-7 border border-border shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1 flex flex-col"
                 style={{
-                  borderTop: "3px solid oklch(0.46 0.23 264 / 0.15)",
+                  borderTop: "3px solid rgba(30,78,216,0.15)",
                 }}
               >
                 {/* Icon */}
                 <div
                   className="w-12 h-12 rounded-lg flex items-center justify-center mb-5 transition-all duration-200 group-hover:scale-105"
-                  style={{ background: "oklch(0.2 0.04 250)" }}
+                  style={{ background: "#0B1F3A" }}
                 >
                   <Icon className="w-5 h-5 text-white" />
                 </div>

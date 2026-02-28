@@ -42,6 +42,7 @@ import {
   useGetAllPosts,
   useGetLeads,
   useGetVisibleTestimonials,
+  useInitializeAdmin,
   useIsCallerAdmin,
   useUpdatePost,
   useUpdateTestimonial,
@@ -1173,6 +1174,8 @@ export function AdminPage() {
   const { login, clear, isLoggingIn, identity, isInitializing } =
     useInternetIdentity();
   const { data: isAdmin, isLoading: isCheckingAdmin } = useIsCallerAdmin();
+  const initializeAdmin = useInitializeAdmin();
+  const [adminSecret, setAdminSecret] = useState("");
 
   const isAuthenticated = !!identity;
   const principal = identity?.getPrincipal().toString();
@@ -1230,32 +1233,96 @@ export function AdminPage() {
 
   // Logged in but not admin
   if (!isAdmin) {
+    const handleClaimAdmin = async (e: React.FormEvent) => {
+      e.preventDefault();
+      if (!adminSecret.trim()) {
+        toast.error("Please enter the admin secret key.");
+        return;
+      }
+      try {
+        await initializeAdmin.mutateAsync(adminSecret.trim());
+        toast.success("Admin access granted! Refreshing...");
+        setAdminSecret("");
+      } catch {
+        toast.error("Invalid secret key or admin access already claimed.");
+      }
+    };
+
     return (
       <main className="pt-24 pb-20 min-h-screen bg-section-alt">
         <div className="container mx-auto px-4 max-w-md">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-2xl p-10 shadow-card text-center mt-12"
+            className="bg-white rounded-2xl p-10 shadow-card mt-12"
           >
             <div className="w-16 h-16 rounded-2xl bg-destructive/10 flex items-center justify-center mx-auto mb-5">
               <ShieldAlert className="w-8 h-8 text-destructive" />
             </div>
-            <h1 className="font-display font-bold text-foreground text-2xl mb-2">
+            <h1 className="font-display font-bold text-foreground text-2xl mb-2 text-center">
               Access Denied
             </h1>
-            <p className="text-foreground/60 text-sm mb-2">
+            <p className="text-foreground/60 text-sm mb-2 text-center">
               Your account does not have admin access.
             </p>
             {principal && (
-              <p className="text-xs text-muted-foreground font-mono bg-muted rounded px-3 py-2 mb-6 break-all">
+              <p className="text-xs text-muted-foreground font-mono bg-muted rounded px-3 py-2 mb-6 break-all text-center">
                 {principal}
               </p>
             )}
-            <Button variant="outline" onClick={clear} className="gap-2">
-              <LogOut className="w-4 h-4" />
-              Log Out
-            </Button>
+
+            {/* Admin claim form */}
+            <div className="border-t border-border pt-6 mt-2">
+              <p className="text-sm font-semibold text-foreground mb-1">
+                Claim Admin Access
+              </p>
+              <p className="text-xs text-foreground/50 mb-4">
+                If you are the site owner, enter your admin secret key to gain
+                access.
+              </p>
+              <form onSubmit={handleClaimAdmin} className="space-y-3">
+                <div className="space-y-1.5">
+                  <Label htmlFor="admin-secret" className="text-sm font-medium">
+                    Admin Secret Key
+                  </Label>
+                  <Input
+                    id="admin-secret"
+                    type="password"
+                    placeholder="Enter admin secret key..."
+                    value={adminSecret}
+                    onChange={(e) => setAdminSecret(e.target.value)}
+                    autoComplete="off"
+                    className="h-11"
+                  />
+                </div>
+                <Button
+                  type="submit"
+                  className="w-full font-semibold"
+                  disabled={initializeAdmin.isPending}
+                >
+                  {initializeAdmin.isPending ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Verifying...
+                    </>
+                  ) : (
+                    "Claim Admin Access"
+                  )}
+                </Button>
+              </form>
+            </div>
+
+            <div className="border-t border-border pt-4 mt-4 flex justify-center">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={clear}
+                className="gap-2 text-foreground/50"
+              >
+                <LogOut className="w-4 h-4" />
+                Log Out
+              </Button>
+            </div>
           </motion.div>
         </div>
       </main>

@@ -93,20 +93,18 @@ export function StrategicAdvantageSection() {
         >
           <div
             className="mx-auto mb-5 h-px w-16"
-            style={{ background: "oklch(0.75 0.12 85)" }}
+            style={{ background: "#C8A951" }}
             aria-hidden="true"
           />
           <span
             className="text-xs font-bold uppercase tracking-[0.2em] block mb-3"
-            style={{ color: "oklch(0.75 0.12 85)" }}
+            style={{ color: "#C8A951" }}
           >
             {sectionLabel}
           </span>
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-foreground">
             {headline}{" "}
-            <span style={{ color: "oklch(0.46 0.23 264)" }}>
-              Tattva Innovation
-            </span>
+            <span style={{ color: "#1E4ED8" }}>Tattva Innovation</span>
           </h2>
           <p className="mt-4 text-[#374151] text-lg max-w-2xl mx-auto">
             {subtitle}
@@ -133,7 +131,7 @@ export function StrategicAdvantageSection() {
                   {/* Icon container — navy bg */}
                   <div
                     className="w-11 h-11 rounded-lg flex items-center justify-center shrink-0 transition-transform duration-200 group-hover:scale-105"
-                    style={{ background: "oklch(0.2 0.04 250)" }}
+                    style={{ background: "#0B1F3A" }}
                   >
                     <Icon className="w-5 h-5 text-white" />
                   </div>

@@ -8,7 +8,7 @@ export function FloatingWhatsApp() {
       rel="noreferrer"
       aria-label="Chat on WhatsApp"
       className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 rounded-full shadow-lg wa-pulse"
-      style={{ backgroundColor: "oklch(0.62 0.19 145)" }}
+      style={{ backgroundColor: "#25D366" }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
       initial={{ opacity: 0, scale: 0.5 }}

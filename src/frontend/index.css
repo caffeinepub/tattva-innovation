@@ -104,7 +104,7 @@
   }
 
   .bg-brand-navy {
-    background: oklch(var(--brand-navy));
+    background: #0B1F3A;
   }
 
   .bg-section-alt {
@@ -113,7 +113,7 @@
 
   /* Blue gradient kept for legacy use */
   .bg-blue-gradient {
-    background: oklch(var(--brand-navy));
+    background: #0B1F3A;
   }
 
   /* Floating WhatsApp pulse animation */
@@ -122,8 +122,8 @@
   }
 
   @keyframes wa-pulse-anim {
-    0%, 100% { box-shadow: 0 0 0 0 oklch(0.62 0.19 145 / 0.6); }
-    50% { box-shadow: 0 0 0 12px oklch(0.62 0.19 145 / 0); }
+    0%, 100% { box-shadow: 0 0 0 0 rgba(37,211,102,0.6); }
+    50% { box-shadow: 0 0 0 12px rgba(37,211,102,0); }
   }
 
   /* Hero animated background */

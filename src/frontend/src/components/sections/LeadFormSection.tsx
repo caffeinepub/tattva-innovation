@@ -81,7 +81,7 @@ export function LeadFormSection() {
     <section
       id="contact"
       className="py-20 md:py-28"
-      style={{ background: "oklch(0.2 0.04 250)" }}
+      style={{ background: "#0B1F3A" }}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto">
@@ -96,12 +96,12 @@ export function LeadFormSection() {
             {/* Gold divider */}
             <div
               className="mx-auto mb-5 h-px w-16"
-              style={{ background: "oklch(0.75 0.12 85)" }}
+              style={{ background: "#C8A951" }}
               aria-hidden="true"
             />
             <span
               className="text-xs font-bold uppercase tracking-[0.2em] block mb-3"
-              style={{ color: "oklch(0.75 0.12 85)" }}
+              style={{ color: "#C8A951" }}
             >
               {sectionLabel}
             </span>
@@ -125,11 +125,11 @@ export function LeadFormSection() {
               <div className="flex flex-col items-center justify-center py-8 text-center">
                 <div
                   className="w-16 h-16 rounded-full flex items-center justify-center mb-4"
-                  style={{ background: "oklch(0.2 0.04 250 / 0.08)" }}
+                  style={{ background: "rgba(11,31,58,0.08)" }}
                 >
                   <CheckCircle
                     className="w-8 h-8"
-                    style={{ color: "oklch(0.46 0.23 264)" }}
+                    style={{ color: "#1E4ED8" }}
                   />
                 </div>
                 <h3 className="font-display font-bold text-foreground text-xl mb-2">
@@ -140,7 +140,7 @@ export function LeadFormSection() {
                   <a
                     href="https://wa.me/9822422123"
                     className="font-semibold underline underline-offset-2"
-                    style={{ color: "oklch(0.46 0.23 264)" }}
+                    style={{ color: "#1E4ED8" }}
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -248,9 +248,9 @@ export function LeadFormSection() {
                   disabled={submitLead.isPending}
                   className="w-full inline-flex items-center justify-center rounded-md px-6 h-12 text-base font-bold transition-all hover:opacity-90 disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2"
                   style={{
-                    background: "oklch(0.75 0.12 85)",
-                    color: "oklch(0.2 0.04 250)",
-                    boxShadow: "0 4px 20px oklch(0.75 0.12 85 / 0.3)",
+                    background: "#C8A951",
+                    color: "#0B1F3A",
+                    boxShadow: "0 4px 20px rgba(200,169,81,0.3)",
                   }}
                 >
                   {submitLead.isPending ? (

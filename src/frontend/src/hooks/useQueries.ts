@@ -258,3 +258,17 @@ export function useIsCallerAdmin() {
     enabled: !!actor && !isFetching,
   });
 }
+
+export function useInitializeAdmin() {
+  const { actor } = useActor();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (secret: string) => {
+      if (!actor) throw new Error("Not connected");
+      await actor._initializeAccessControlWithSecret(secret);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["isAdmin"] });
+    },
+  });
+}

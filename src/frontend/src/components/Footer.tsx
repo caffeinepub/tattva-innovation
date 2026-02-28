@@ -7,14 +7,11 @@ export function Footer() {
     typeof window !== "undefined" ? window.location.hostname : "";
 
   return (
-    <footer
-      className="text-white"
-      style={{ background: "oklch(0.2 0.04 250)" }}
-    >
+    <footer className="text-white" style={{ background: "#0B1F3A" }}>
       {/* Gold top border accent */}
       <div
         className="h-px w-full"
-        style={{ background: "oklch(0.75 0.12 85 / 0.4)" }}
+        style={{ background: "rgba(200,169,81,0.4)" }}
         aria-hidden="true"
       />
 
@@ -130,7 +127,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div
           className="mt-12 pt-6 border-t flex flex-col sm:flex-row items-center justify-between gap-4"
-          style={{ borderColor: "oklch(1 0 0 / 0.08)" }}
+          style={{ borderColor: "rgba(255,255,255,0.08)" }}
         >
           <p className="text-white/35 text-xs">
             © {year} Tattva Innovation. All rights reserved.
