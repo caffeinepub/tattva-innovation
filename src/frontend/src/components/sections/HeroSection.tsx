@@ -397,7 +397,7 @@ export function HeroSection() {
           >
             <Badge
               variant="outline"
-              className="mb-6 border-brand-gold/60 text-brand-gold bg-brand-gold/10 font-semibold px-4 py-1.5 text-xs uppercase tracking-widest"
+              className="mb-6 border-white/60 text-white bg-white/10 font-semibold px-4 py-1.5 text-xs uppercase tracking-widest"
             >
               {badge}
             </Badge>

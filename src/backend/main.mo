@@ -9,7 +9,6 @@ import Principal "mo:core/Principal";
 import MixinAuthorization "authorization/MixinAuthorization";
 import AccessControl "authorization/access-control";
 
-// Grant admin to this principal always
 actor {
   type Lead = {
     id : Nat;
