@@ -99,8 +99,6 @@ async function maybeLoadMockBackend(): Promise<backendInterface | null> {
   }
 
   try {
-    // If VITE_USE_MOCK is enabled, try to load a mock backend module *if it exists*.
-    // We use import.meta.glob so builds don't fail when the mock file is absent.
     const mockModules = import.meta.glob("./mocks/backend.{ts,tsx,js,jsx}");
 
     const path = Object.keys(mockModules)[0];
@@ -139,8 +137,11 @@ export async function createActorWithConfig(
       console.error(err);
     });
   }
-  const actorOptions = {
-    ...resolvedOptions,
+
+  // Pass agent explicitly; omit agentOptions to avoid the
+  // "Detected both agent and agentOptions" warning in createActor.
+  const actorOptions: CreateActorOptions = {
+    actorOptions: resolvedOptions.actorOptions,
     agent: agent,
     processError,
   };

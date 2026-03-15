@@ -26,13 +26,20 @@ export function useActor() {
       };
 
       const actor = await createActorWithConfig(actorOptions);
-      const adminToken = getSecretParameter("caffeineAdminToken") || "";
-      await actor._initializeAccessControlWithSecret(adminToken);
+
+      // Only call _initializeAccessControlWithSecret when a token is present.
+      // Calling it with an empty string can cause backend errors that leave
+      // the actor query in a failed state, making all admin mutations throw
+      // "Not connected".
+      const adminToken = getSecretParameter("caffeineAdminToken");
+      if (adminToken) {
+        await actor._initializeAccessControlWithSecret(adminToken);
+      }
+
       return actor;
     },
     // Only refetch when identity changes
     staleTime: Number.POSITIVE_INFINITY,
-    // This will cause the actor to be recreated when the identity changes
     enabled: true,
   });
 
