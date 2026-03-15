@@ -1,3 +1,5 @@
+import { ChatbotWidget } from "@/components/ChatbotWidget";
+import { FloatingCTA } from "@/components/FloatingCTA";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
@@ -15,22 +17,25 @@ import {
   createRouter,
 } from "@tanstack/react-router";
 
-// Root route with shared layout
 const rootRoute = createRootRoute({
   component: () => (
-    <div className="flex flex-col min-h-screen">
+    <div
+      className="flex flex-col min-h-screen"
+      style={{ background: "#0A0F1F" }}
+    >
       <Navbar />
       <div className="flex-1">
         <Outlet />
       </div>
       <Footer />
       <FloatingWhatsApp />
+      <FloatingCTA />
+      <ChatbotWidget />
       <Toaster richColors position="top-right" />
     </div>
   ),
 });
 
-// Page routes
 const homeRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
@@ -61,7 +66,6 @@ const contactRoute = createRoute({
   component: ContactPage,
 });
 
-// Router
 const routeTree = rootRoute.addChildren([
   homeRoute,
   blogListRoute,

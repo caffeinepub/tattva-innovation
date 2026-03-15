@@ -35,6 +35,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { useInternetIdentity } from "@/hooks/useInternetIdentity";
 import {
+  useClaimOwnerAdmin,
   useCreatePost,
   useCreateTestimonial,
   useDeletePost,
@@ -768,263 +769,363 @@ const contentGroups: ContentGroup[] = [
     title: "Hero Section",
     fields: [
       {
-        key: "hero.badge",
+        key: "hero_badge",
         label: "Badge Text",
-        placeholder: "Political Technology & AI Automation",
+        placeholder: "AI Systems for Businesses, Governments & Campaigns",
       },
       {
-        key: "hero.headline1",
-        label: "Headline Part 1",
-        placeholder: "Intelligent Political",
+        key: "hero_headline",
+        label: "Headline",
+        multiline: true,
+        placeholder: "AI Systems Powering Businesses, Governments & Campaigns",
       },
       {
-        key: "hero.headline2",
-        label: "Headline Part 2 (Gold)",
-        placeholder: "& AI Systems",
-      },
-      {
-        key: "hero.headline3",
-        label: "Headline Part 3",
-        placeholder: "Built for Modern Campaigns",
-      },
-      {
-        key: "hero.subheadline",
+        key: "hero_subheadline",
         label: "Sub-headline",
         multiline: true,
         placeholder:
-          "From voter data management to AI-powered automation, Tattva Innovation builds secure, scalable systems that give organizations a measurable strategic advantage.",
+          "We build intelligent software that automates operations, analyzes voter data, and drives growth.",
       },
+      { key: "hero_cta1", label: "CTA Button 1", placeholder: "View Products" },
       {
-        key: "hero.cta_primary",
-        label: "Primary CTA Button",
-        placeholder: "Book Strategic Demo",
-      },
-      {
-        key: "hero.cta_whatsapp",
-        label: "WhatsApp CTA Button",
-        placeholder: "Chat on WhatsApp",
+        key: "hero_cta2",
+        label: "CTA Button 2",
+        placeholder: "Book Live Demo",
       },
     ],
   },
   {
-    id: "services",
-    title: "Services Section",
+    id: "products",
+    title: "Products Section",
     fields: [
       {
-        key: "services.section_label",
-        label: "Section Label",
-        placeholder: "Strategic Solutions",
-      },
-      {
-        key: "services.section_title",
+        key: "products_title",
         label: "Section Title",
-        placeholder: "Strategic Technology Solutions",
+        placeholder: "Our AI Product Ecosystem",
       },
       {
-        key: "services.section_subtitle",
-        label: "Section Subtitle",
+        key: "product_1_name",
+        label: "Product 1 Name",
+        placeholder: "AI Sales Agent",
+      },
+      {
+        key: "product_1_desc",
+        label: "Product 1 Description",
         multiline: true,
         placeholder:
-          "Each system is engineered with one objective: giving your organization a measurable, data-backed strategic advantage.",
+          "Automate lead qualification, follow-ups, and deal closing with intelligent AI agents.",
       },
       {
-        key: "services.1.title",
-        label: "Service 1 Title",
-        placeholder: "Voter Management Software",
+        key: "product_1_link",
+        label: "Product 1 Demo Link",
+        placeholder: "https://demo.tattvainnovation.ai/sales-agent",
       },
       {
-        key: "services.1.description",
-        label: "Service 1 Description",
+        key: "product_2_name",
+        label: "Product 2 Name",
+        placeholder: "Election Intelligence Platform",
+      },
+      {
+        key: "product_2_desc",
+        label: "Product 2 Description",
         multiline: true,
         placeholder:
-          "Structure campaign data, manage field coordination, and track voter outreach through a secure centralized system built for political operations.",
+          "Manage voter data, track field operations, and analyze campaign performance in real-time.",
       },
       {
-        key: "services.2.title",
-        label: "Service 2 Title",
-        placeholder: "AI-Powered Workflow Automation",
+        key: "product_2_link",
+        label: "Product 2 Demo Link",
+        placeholder: "https://demo.tattvainnovation.ai/election-platform",
       },
       {
-        key: "services.2.description",
-        label: "Service 2 Description",
+        key: "product_3_name",
+        label: "Product 3 Name",
+        placeholder: "Business Automation AI",
+      },
+      {
+        key: "product_3_desc",
+        label: "Product 3 Description",
         multiline: true,
         placeholder:
-          "Automate internal processes, eliminate repetitive tasks, and gain actionable insights through intelligent AI systems tailored to your organization.",
+          "Streamline workflows, reduce manual work, and unlock operational efficiency at scale.",
       },
       {
-        key: "services.3.title",
-        label: "Service 3 Title",
-        placeholder: "Campaign Data Analytics",
+        key: "product_3_link",
+        label: "Product 3 Demo Link",
+        placeholder: "https://demo.tattvainnovation.ai/business-ai",
       },
       {
-        key: "services.3.description",
-        label: "Service 3 Description",
+        key: "product_4_name",
+        label: "Product 4 Name",
+        placeholder: "AI Knowledge Assistant",
+      },
+      {
+        key: "product_4_desc",
+        label: "Product 4 Description",
         multiline: true,
         placeholder:
-          "Transform raw campaign data into strategic intelligence with real-time dashboards and performance tracking built for modern political teams.",
+          "Instant answers, document intelligence, and organizational knowledge at your fingertips.",
       },
       {
-        key: "services.4.title",
-        label: "Service 4 Title",
-        placeholder: "Strategic Web Infrastructure",
-      },
-      {
-        key: "services.4.description",
-        label: "Service 4 Description",
-        multiline: true,
-        placeholder:
-          "High-performance digital infrastructure built for communication, outreach, and institutional credibility that drives measurable engagement.",
+        key: "product_4_link",
+        label: "Product 4 Demo Link",
+        placeholder: "https://demo.tattvainnovation.ai/knowledge-ai",
       },
     ],
   },
   {
-    id: "data",
-    title: "Campaign Intelligence Section",
+    id: "solutions",
+    title: "Solutions Section",
     fields: [
       {
-        key: "data.section_label",
-        label: "Section Label",
-        placeholder: "Campaign Intelligence",
+        key: "solutions_title",
+        label: "Section Title",
+        placeholder: "Solutions We Power",
       },
       {
-        key: "data.headline",
-        label: "Headline Start",
-        placeholder: "Built for",
+        key: "solution_1_title",
+        label: "Solution 1 Title",
+        placeholder: "Political Campaign Technology",
       },
       {
-        key: "data.headline_accent",
-        label: "Headline Accent (Blue)",
-        placeholder: "Data-Driven",
-      },
-      {
-        key: "data.headline_end",
-        label: "Headline End",
-        placeholder: "Campaigns",
-      },
-      {
-        key: "data.body",
-        label: "Body Text",
+        key: "solution_1_desc",
+        label: "Solution 1 Description",
         multiline: true,
         placeholder:
-          "Modern campaigns run on structured data and intelligent systems. We help political teams organize voter databases, monitor outreach performance, analyze engagement patterns, and make informed strategic decisions.",
+          "End-to-end digital infrastructure for modern political campaigns.",
+      },
+      {
+        key: "solution_2_title",
+        label: "Solution 2 Title",
+        placeholder: "Business Automation",
+      },
+      {
+        key: "solution_2_desc",
+        label: "Solution 2 Description",
+        multiline: true,
+        placeholder:
+          "Intelligent systems that automate operations, reduce costs, and accelerate growth.",
+      },
+      {
+        key: "solution_3_title",
+        label: "Solution 3 Title",
+        placeholder: "Enterprise AI Systems",
+      },
+      {
+        key: "solution_3_desc",
+        label: "Solution 3 Description",
+        multiline: true,
+        placeholder:
+          "Custom AI platforms designed for government institutions and enterprises.",
       },
     ],
   },
   {
-    id: "advantage",
-    title: "Strategic Advantage Section",
+    id: "preview",
+    title: "Dashboard Preview Section",
     fields: [
       {
-        key: "advantage.section_label",
-        label: "Section Label",
-        placeholder: "Strategic Advantage",
+        key: "preview_title",
+        label: "Section Title",
+        placeholder: "See Our Products in Action",
       },
       {
-        key: "advantage.headline",
-        label: "Headline",
-        placeholder: "Why Organizations Choose",
+        key: "preview_1_title",
+        label: "Tab 1 Title",
+        placeholder: "Voter Analytics",
+      },
+      { key: "preview_2_title", label: "Tab 2 Title", placeholder: "AI Sales" },
+      {
+        key: "preview_3_title",
+        label: "Tab 3 Title",
+        placeholder: "Business Automation",
+      },
+    ],
+  },
+  {
+    id: "stats",
+    title: "Why Tattva / Stats Section",
+    fields: [
+      {
+        key: "stats_title",
+        label: "Section Title",
+        placeholder: "Why Tattva Innovation",
+      },
+      { key: "stat_1_number", label: "Stat 1 Number", placeholder: "100+" },
+      {
+        key: "stat_1_label",
+        label: "Stat 1 Label",
+        placeholder: "AI Features",
+      },
+      { key: "stat_2_number", label: "Stat 2 Number", placeholder: "10+" },
+      {
+        key: "stat_2_label",
+        label: "Stat 2 Label",
+        placeholder: "Automation Modules",
+      },
+      { key: "stat_3_number", label: "Stat 3 Number", placeholder: "5+" },
+      {
+        key: "stat_3_label",
+        label: "Stat 3 Label",
+        placeholder: "Industry Solutions",
+      },
+      { key: "stat_4_number", label: "Stat 4 Number", placeholder: "48hr" },
+      {
+        key: "stat_4_label",
+        label: "Stat 4 Label",
+        placeholder: "Deployment Time",
+      },
+    ],
+  },
+  {
+    id: "pricing",
+    title: "Pricing Section",
+    fields: [
+      {
+        key: "pricing_title",
+        label: "Section Title",
+        placeholder: "Simple, Transparent Pricing",
       },
       {
-        key: "advantage.subtitle",
+        key: "pricing_toggle_monthly",
+        label: "Monthly Toggle Label",
+        placeholder: "Monthly",
+      },
+      {
+        key: "pricing_toggle_yearly",
+        label: "Yearly Toggle Label",
+        placeholder: "Yearly",
+      },
+      {
+        key: "plan_starter_name",
+        label: "Starter Plan Name",
+        placeholder: "Starter",
+      },
+      {
+        key: "plan_starter_price_monthly",
+        label: "Starter Monthly Price",
+        placeholder: "₹9,999",
+      },
+      {
+        key: "plan_starter_price_yearly",
+        label: "Starter Yearly Price",
+        placeholder: "₹7,999",
+      },
+      {
+        key: "plan_starter_features",
+        label: "Starter Features (pipe-separated)",
+        multiline: true,
+        placeholder: "3 AI Modules|Basic Analytics|Email Support|1 User",
+      },
+      {
+        key: "plan_growth_name",
+        label: "Growth Plan Name",
+        placeholder: "Growth",
+      },
+      {
+        key: "plan_growth_price_monthly",
+        label: "Growth Monthly Price",
+        placeholder: "₹24,999",
+      },
+      {
+        key: "plan_growth_price_yearly",
+        label: "Growth Yearly Price",
+        placeholder: "₹19,999",
+      },
+      {
+        key: "plan_growth_features",
+        label: "Growth Features (pipe-separated)",
+        multiline: true,
+        placeholder:
+          "All AI Modules|Advanced Analytics|Priority Support|5 Users|Custom Integrations",
+      },
+      {
+        key: "plan_enterprise_name",
+        label: "Enterprise Plan Name",
+        placeholder: "Enterprise",
+      },
+      {
+        key: "plan_enterprise_price_monthly",
+        label: "Enterprise Monthly Price",
+        placeholder: "Custom",
+      },
+      {
+        key: "plan_enterprise_price_yearly",
+        label: "Enterprise Yearly Price",
+        placeholder: "Custom",
+      },
+      {
+        key: "plan_enterprise_features",
+        label: "Enterprise Features (pipe-separated)",
+        multiline: true,
+        placeholder:
+          "Unlimited Modules|Full Analytics Suite|Dedicated Support|Unlimited Users|Custom AI Training|SLA Guarantee",
+      },
+    ],
+  },
+  {
+    id: "demo",
+    title: "Demo Section",
+    fields: [
+      {
+        key: "demo_title",
+        label: "Section Title",
+        placeholder: "See Tattva AI in Action",
+      },
+      {
+        key: "demo_subtitle",
         label: "Subtitle",
-        multiline: true,
-        placeholder:
-          "Built for institutions that require precision, security, and outcomes — not generic software.",
-      },
-    ],
-  },
-  {
-    id: "faq",
-    title: "FAQ Section",
-    fields: [
-      {
-        key: "faq.1.q",
-        label: "Question 1",
-        placeholder: "Do you build custom software for small organizations?",
+        placeholder: "Explore live demos of our AI-powered products",
       },
       {
-        key: "faq.1.a",
-        label: "Answer 1",
-        multiline: true,
-        placeholder:
-          "Yes. We work with political campaign teams, NGOs, and growing organizations of all sizes. Every system is custom-built to your requirements — we do not deploy generic off-the-shelf software.",
+        key: "demo_1_title",
+        label: "Demo 1 Title",
+        placeholder: "AI Sales Agent Demo",
       },
       {
-        key: "faq.2.q",
-        label: "Question 2",
-        placeholder: "How long does it take to deploy?",
+        key: "demo_1_link",
+        label: "Demo 1 Link",
+        placeholder: "https://demo.tattvainnovation.ai/sales-agent",
       },
       {
-        key: "faq.2.a",
-        label: "Answer 2",
-        multiline: true,
-        placeholder:
-          "Most systems are deployed within 48–72 hours of finalizing requirements. Our structured delivery process ensures speed without compromising security or reliability.",
+        key: "demo_2_title",
+        label: "Demo 2 Title",
+        placeholder: "Election Platform Demo",
       },
       {
-        key: "faq.3.q",
-        label: "Question 3",
-        placeholder: "Is our data secure?",
+        key: "demo_2_link",
+        label: "Demo 2 Link",
+        placeholder: "https://demo.tattvainnovation.ai/election",
       },
       {
-        key: "faq.3.a",
-        label: "Answer 3",
-        multiline: true,
-        placeholder:
-          "Security is foundational to our infrastructure. All data is encrypted in transit and at rest. We operate under strict confidentiality standards and do not share client data with any third party.",
+        key: "demo_3_title",
+        label: "Demo 3 Title",
+        placeholder: "Business Automation Demo",
       },
       {
-        key: "faq.4.q",
-        label: "Question 4",
-        placeholder: "Do you offer ongoing support?",
-      },
-      {
-        key: "faq.4.a",
-        label: "Answer 4",
-        multiline: true,
-        placeholder:
-          "Yes. Post-deployment support and maintenance packages are available. Our India-based team is accessible via WhatsApp and direct communication channels.",
-      },
-      {
-        key: "faq.5.q",
-        label: "Question 5",
-        placeholder: "Can we request changes after launch?",
-      },
-      {
-        key: "faq.5.a",
-        label: "Answer 5",
-        multiline: true,
-        placeholder:
-          "Yes. All systems are built with scalability in mind. We offer structured upgrade and maintenance engagements as your organization's needs evolve.",
+        key: "demo_3_link",
+        label: "Demo 3 Link",
+        placeholder: "https://demo.tattvainnovation.ai/business",
       },
     ],
   },
   {
     id: "lead",
-    title: "Lead Capture Section",
+    title: "Contact / Lead Capture Section",
     fields: [
       {
-        key: "lead.section_label",
-        label: "Section Label",
-        placeholder: "Confidential Consultation",
-      },
-      {
-        key: "lead.headline",
+        key: "lead_headline",
         label: "Headline",
-        placeholder: "Gain Strategic Advantage with Intelligent Systems",
+        placeholder: "Start Working with Tattva AI Today",
       },
       {
-        key: "lead.subtext",
+        key: "lead_subtext",
         label: "Sub-text",
         multiline: true,
         placeholder:
-          "Book a confidential consultation to evaluate how structured data and AI automation can strengthen your operations.",
+          "Fill in the form below and our team will reach out within 24 hours to discuss your needs.",
       },
-      {
-        key: "lead.cta_button",
-        label: "CTA Button Text",
-        placeholder: "Book My Strategic Demo",
-      },
+      { key: "lead_cta", label: "CTA Button", placeholder: "Request Demo" },
     ],
   },
 ];
@@ -1170,11 +1271,15 @@ function SiteContentTab() {
 
 // ─── Main Admin Page ────────────────────────────────────────────────────────
 
+const OWNER_PRINCIPAL =
+  "z2iag-7b25t-riplr-gbyrt-qmnky-vat7e-hmzul-yhbll-hpuv6-pzyok-aae";
+
 export function AdminPage() {
   const { login, clear, isLoggingIn, identity, isInitializing } =
     useInternetIdentity();
   const { data: isAdmin, isLoading: isCheckingAdmin } = useIsCallerAdmin();
   const initializeAdmin = useInitializeAdmin();
+  const claimOwnerAdmin = useClaimOwnerAdmin();
   const [adminSecret, setAdminSecret] = useState("");
 
   const isAuthenticated = !!identity;
@@ -1233,7 +1338,20 @@ export function AdminPage() {
 
   // Logged in but not admin
   if (!isAdmin) {
-    const handleClaimAdmin = async (e: React.FormEvent) => {
+    const isOwner = principal === OWNER_PRINCIPAL;
+
+    const handleClaimOwner = async () => {
+      try {
+        await claimOwnerAdmin.mutateAsync();
+        toast.success("Admin access granted!");
+      } catch (err) {
+        toast.error(
+          err instanceof Error ? err.message : "Failed to claim admin access.",
+        );
+      }
+    };
+
+    const handleClaimSecretAdmin = async (e: React.FormEvent) => {
       e.preventDefault();
       if (!adminSecret.trim()) {
         toast.error("Please enter the admin secret key.");
@@ -1241,7 +1359,7 @@ export function AdminPage() {
       }
       try {
         await initializeAdmin.mutateAsync(adminSecret.trim());
-        toast.success("Admin access granted! Refreshing...");
+        toast.success("Admin access granted!");
         setAdminSecret("");
       } catch {
         toast.error("Invalid secret key or admin access already claimed.");
@@ -1256,61 +1374,103 @@ export function AdminPage() {
             animate={{ opacity: 1, y: 0 }}
             className="bg-white rounded-2xl p-10 shadow-card mt-12"
           >
-            <div className="w-16 h-16 rounded-2xl bg-destructive/10 flex items-center justify-center mx-auto mb-5">
-              <ShieldAlert className="w-8 h-8 text-destructive" />
-            </div>
-            <h1 className="font-display font-bold text-foreground text-2xl mb-2 text-center">
-              Access Denied
-            </h1>
-            <p className="text-foreground/60 text-sm mb-2 text-center">
-              Your account does not have admin access.
-            </p>
-            {principal && (
-              <p className="text-xs text-muted-foreground font-mono bg-muted rounded px-3 py-2 mb-6 break-all text-center">
-                {principal}
-              </p>
-            )}
-
-            {/* Admin claim form */}
-            <div className="border-t border-border pt-6 mt-2">
-              <p className="text-sm font-semibold text-foreground mb-1">
-                Claim Admin Access
-              </p>
-              <p className="text-xs text-foreground/50 mb-4">
-                If you are the site owner, enter your admin secret key to gain
-                access.
-              </p>
-              <form onSubmit={handleClaimAdmin} className="space-y-3">
-                <div className="space-y-1.5">
-                  <Label htmlFor="admin-secret" className="text-sm font-medium">
-                    Admin Secret Key
-                  </Label>
-                  <Input
-                    id="admin-secret"
-                    type="password"
-                    placeholder="Enter admin secret key..."
-                    value={adminSecret}
-                    onChange={(e) => setAdminSecret(e.target.value)}
-                    autoComplete="off"
-                    className="h-11"
-                  />
+            {isOwner ? (
+              /* ── Owner: one-click claim ── */
+              <>
+                <div className="w-16 h-16 rounded-2xl bg-[#0B1F3A]/10 flex items-center justify-center mx-auto mb-5">
+                  <ShieldAlert className="w-8 h-8 text-[#0B1F3A]" />
                 </div>
+                <h1 className="font-display font-bold text-foreground text-2xl mb-2 text-center">
+                  Claim Admin Access
+                </h1>
+                <p className="text-foreground/60 text-sm mb-3 text-center">
+                  Your principal is recognised as the site owner. Click below to
+                  activate full admin access.
+                </p>
+                {principal && (
+                  <p className="text-xs text-muted-foreground font-mono bg-muted rounded px-3 py-2 mb-6 break-all text-center">
+                    {principal}
+                  </p>
+                )}
                 <Button
-                  type="submit"
-                  className="w-full font-semibold"
-                  disabled={initializeAdmin.isPending}
+                  onClick={handleClaimOwner}
+                  disabled={claimOwnerAdmin.isPending}
+                  className="w-full font-semibold gap-2"
+                  size="lg"
+                  style={{ background: "#C8A951", color: "#0B1F3A" }}
                 >
-                  {initializeAdmin.isPending ? (
+                  {claimOwnerAdmin.isPending ? (
                     <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Verifying...
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Claiming...
                     </>
                   ) : (
                     "Claim Admin Access"
                   )}
                 </Button>
-              </form>
-            </div>
+              </>
+            ) : (
+              /* ── Other principal: secret key form ── */
+              <>
+                <div className="w-16 h-16 rounded-2xl bg-destructive/10 flex items-center justify-center mx-auto mb-5">
+                  <ShieldAlert className="w-8 h-8 text-destructive" />
+                </div>
+                <h1 className="font-display font-bold text-foreground text-2xl mb-2 text-center">
+                  Access Denied
+                </h1>
+                <p className="text-foreground/60 text-sm mb-2 text-center">
+                  Your account does not have admin access.
+                </p>
+                {principal && (
+                  <p className="text-xs text-muted-foreground font-mono bg-muted rounded px-3 py-2 mb-6 break-all text-center">
+                    {principal}
+                  </p>
+                )}
+
+                <div className="border-t border-border pt-6 mt-2">
+                  <p className="text-sm font-semibold text-foreground mb-1">
+                    Claim Admin Access
+                  </p>
+                  <p className="text-xs text-foreground/50 mb-4">
+                    If you are the site owner, enter your admin secret key to
+                    gain access.
+                  </p>
+                  <form onSubmit={handleClaimSecretAdmin} className="space-y-3">
+                    <div className="space-y-1.5">
+                      <Label
+                        htmlFor="admin-secret"
+                        className="text-sm font-medium"
+                      >
+                        Admin Secret Key
+                      </Label>
+                      <Input
+                        id="admin-secret"
+                        type="password"
+                        placeholder="Enter admin secret key..."
+                        value={adminSecret}
+                        onChange={(e) => setAdminSecret(e.target.value)}
+                        autoComplete="off"
+                        className="h-11"
+                      />
+                    </div>
+                    <Button
+                      type="submit"
+                      className="w-full font-semibold"
+                      disabled={initializeAdmin.isPending}
+                    >
+                      {initializeAdmin.isPending ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Verifying...
+                        </>
+                      ) : (
+                        "Claim Admin Access"
+                      )}
+                    </Button>
+                  </form>
+                </div>
+              </>
+            )}
 
             <div className="border-t border-border pt-4 mt-4 flex justify-center">
               <Button

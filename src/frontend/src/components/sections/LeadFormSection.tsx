@@ -22,6 +22,7 @@ const orgTypes = [
   "Housing Society",
   "School / College",
   "Small Business",
+  "Enterprise",
   "Other",
 ];
 
@@ -33,26 +34,17 @@ export function LeadFormSection() {
   const [submitted, setSubmitted] = useState(false);
 
   const contentMap = useSiteContentMap();
-  const sectionLabel = useSiteText(
-    contentMap,
-    "lead.section_label",
-    "Confidential Consultation",
-  );
   const headline = useSiteText(
     contentMap,
-    "lead.headline",
-    "Gain Strategic Advantage with Intelligent Systems",
+    "lead_headline",
+    "Start Working with Tattva AI Today",
   );
   const subtext = useSiteText(
     contentMap,
-    "lead.subtext",
-    "Book a confidential consultation to evaluate how structured data and AI automation can strengthen your operations.",
+    "lead_subtext",
+    "Fill in the form below and our team will reach out within 24 hours to discuss your needs.",
   );
-  const ctaButton = useSiteText(
-    contentMap,
-    "lead.cta_button",
-    "Book My Strategic Demo",
-  );
+  const ctaButton = useSiteText(contentMap, "lead_cta", "Request Demo");
 
   const submitLead = useSubmitLead();
 
@@ -62,7 +54,6 @@ export function LeadFormSection() {
       toast.error("Please fill in all required fields.");
       return;
     }
-
     try {
       await submitLead.mutateAsync({ name, phone, orgType, message });
       setSubmitted(true);
@@ -81,11 +72,12 @@ export function LeadFormSection() {
     <section
       id="contact"
       className="py-20 md:py-28"
-      style={{ background: "#0B1F3A" }}
+      style={{
+        background: "linear-gradient(135deg, #0A0F1F 0%, #131A2B 100%)",
+      }}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto">
-          {/* Section header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -93,65 +85,61 @@ export function LeadFormSection() {
             transition={{ duration: 0.5 }}
             className="text-center mb-10"
           >
-            {/* Gold divider */}
             <div
-              className="mx-auto mb-5 h-px w-16"
-              style={{ background: "#C8A951" }}
-              aria-hidden="true"
-            />
-            <span
-              className="text-xs font-bold uppercase tracking-[0.2em] block mb-3"
-              style={{ color: "#C8A951" }}
+              className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-4 text-xs font-semibold uppercase tracking-widest"
+              style={{
+                background: "rgba(0,255,193,0.1)",
+                border: "1px solid rgba(0,255,193,0.2)",
+                color: "#00FFC1",
+              }}
             >
-              {sectionLabel}
-            </span>
-            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight">
+              Get Started
+            </div>
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-white">
               {headline}
             </h2>
-            <p className="mt-4 text-white/70 text-lg leading-relaxed">
-              {subtext}
-            </p>
+            <p className="mt-4 text-white/50 leading-relaxed">{subtext}</p>
           </motion.div>
 
-          {/* Form card */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.15 }}
-            className="bg-white rounded-2xl p-8 md:p-10 shadow-navy"
+            className="glass rounded-2xl p-8 md:p-10"
+            style={{ border: "1px solid rgba(91,140,255,0.2)" }}
           >
             {submitted ? (
               <div className="flex flex-col items-center justify-center py-8 text-center">
                 <div
                   className="w-16 h-16 rounded-full flex items-center justify-center mb-4"
-                  style={{ background: "rgba(11,31,58,0.08)" }}
+                  style={{ background: "rgba(0,255,193,0.1)" }}
                 >
                   <CheckCircle
                     className="w-8 h-8"
-                    style={{ color: "#1E4ED8" }}
+                    style={{ color: "#00FFC1" }}
                   />
                 </div>
-                <h3 className="font-display font-bold text-foreground text-xl mb-2">
-                  Request Received
+                <h3 className="font-display font-bold text-white text-xl mb-2">
+                  Request Received!
                 </h3>
-                <p className="text-foreground/60 text-sm leading-relaxed max-w-xs">
+                <p className="text-white/50 text-sm leading-relaxed max-w-xs">
                   Our team will reach out within 24 hours. For faster response,{" "}
                   <a
                     href="https://wa.me/9822422123"
-                    className="font-semibold underline underline-offset-2"
-                    style={{ color: "#1E4ED8" }}
+                    className="font-semibold"
+                    style={{ color: "#00FFC1" }}
                     target="_blank"
                     rel="noreferrer"
                   >
-                    contact us on WhatsApp
+                    chat on WhatsApp
                   </a>
                   .
                 </p>
                 <button
                   type="button"
                   onClick={() => setSubmitted(false)}
-                  className="mt-6 text-sm font-medium text-foreground/50 hover:text-foreground/80 transition-colors"
+                  className="mt-6 text-sm text-white/40 hover:text-white/70 transition-colors"
                 >
                   Submit another request
                 </button>
@@ -162,9 +150,9 @@ export function LeadFormSection() {
                   <div className="space-y-2">
                     <Label
                       htmlFor="lead-name"
-                      className="font-semibold text-foreground text-sm"
+                      className="text-white/80 text-sm font-medium"
                     >
-                      Full Name <span className="text-destructive">*</span>
+                      Full Name <span style={{ color: "#ff6b6b" }}>*</span>
                     </Label>
                     <Input
                       id="lead-name"
@@ -173,19 +161,19 @@ export function LeadFormSection() {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       required
-                      autoComplete="name"
-                      className="h-11"
+                      className="h-11 bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-[#5B8CFF]"
+                      data-ocid="lead_form.name.input"
                     />
                   </div>
                   <div className="space-y-2">
                     <Label
                       htmlFor="lead-phone"
-                      className="font-semibold text-foreground text-sm"
+                      className="text-white/80 text-sm font-medium"
                     >
-                      Phone Number <span className="text-destructive">*</span>
+                      Phone Number <span style={{ color: "#ff6b6b" }}>*</span>
                     </Label>
                     <div className="relative">
-                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
                       <Input
                         id="lead-phone"
                         type="tel"
@@ -193,23 +181,25 @@ export function LeadFormSection() {
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         required
-                        autoComplete="tel"
-                        className="h-11 pl-9"
+                        className="h-11 pl-9 bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-[#5B8CFF]"
+                        data-ocid="lead_form.email.input"
                       />
                     </div>
                   </div>
                 </div>
-
                 <div className="space-y-2">
                   <Label
                     htmlFor="lead-orgType"
-                    className="font-semibold text-foreground text-sm"
+                    className="text-white/80 text-sm font-medium"
                   >
                     Organization Type{" "}
-                    <span className="text-destructive">*</span>
+                    <span style={{ color: "#ff6b6b" }}>*</span>
                   </Label>
                   <Select value={orgType} onValueChange={setOrgType} required>
-                    <SelectTrigger id="lead-orgType" className="h-11">
+                    <SelectTrigger
+                      id="lead-orgType"
+                      className="h-11 bg-white/5 border-white/10 text-white"
+                    >
                       <SelectValue placeholder="Select your organization type..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -221,62 +211,57 @@ export function LeadFormSection() {
                     </SelectContent>
                   </Select>
                 </div>
-
                 <div className="space-y-2">
                   <Label
                     htmlFor="lead-message"
-                    className="font-semibold text-foreground text-sm"
+                    className="text-white/80 text-sm font-medium"
                   >
                     Message{" "}
-                    <span className="text-muted-foreground font-normal text-xs">
+                    <span className="text-white/30 font-normal text-xs">
                       (optional)
                     </span>
                   </Label>
                   <Textarea
                     id="lead-message"
-                    placeholder="Briefly describe your requirements or the challenge you need addressed..."
+                    placeholder="Briefly describe your requirements..."
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     rows={3}
-                    className="resize-none"
+                    className="resize-none bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-[#5B8CFF]"
                   />
                 </div>
-
-                {/* Gold submit button */}
                 <button
                   type="submit"
                   disabled={submitLead.isPending}
-                  className="w-full inline-flex items-center justify-center rounded-md px-6 h-12 text-base font-bold transition-all hover:opacity-90 disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2"
-                  style={{
-                    background: "#C8A951",
-                    color: "#0B1F3A",
-                    boxShadow: "0 4px 20px rgba(200,169,81,0.3)",
-                  }}
+                  className="w-full btn-neon h-12 text-base disabled:opacity-60"
+                  data-ocid="lead_form.submit.submit_button"
                 >
                   {submitLead.isPending ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <span className="flex items-center justify-center gap-2">
+                      <Loader2 className="h-4 w-4 animate-spin" />
                       Submitting...
-                    </>
+                    </span>
                   ) : (
                     ctaButton
                   )}
                 </button>
-
-                {/* WhatsApp quick contact */}
-                <div className="flex items-center justify-center gap-2 pt-1">
-                  <MessageCircle className="w-4 h-4 text-brand-whatsapp" />
-                  <p className="text-center text-sm text-muted-foreground">
+                <div className="flex items-center justify-center gap-2">
+                  <MessageCircle
+                    className="w-4 h-4"
+                    style={{ color: "#25D366" }}
+                  />
+                  <p className="text-center text-sm text-white/40">
                     Or{" "}
                     <a
                       href="https://wa.me/9822422123"
                       target="_blank"
                       rel="noreferrer"
-                      className="text-brand-whatsapp font-semibold hover:underline"
+                      className="font-semibold hover:underline"
+                      style={{ color: "#25D366" }}
                     >
-                      chat directly on WhatsApp
+                      chat on WhatsApp
                     </a>{" "}
-                    for an instant response.
+                    for instant response.
                   </p>
                 </div>
               </form>

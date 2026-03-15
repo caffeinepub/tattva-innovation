@@ -1,16 +1,7 @@
-import { Badge } from "@/components/ui/badge";
 import { useSiteContentMap, useSiteText } from "@/hooks/useSiteContent";
-import { Lock, MapPin, Shield, Users2 } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import { motion } from "motion/react";
 
-const trustBadges = [
-  { icon: Shield, text: "Secure Data Infrastructure" },
-  { icon: MapPin, text: "India-Focused Deployment" },
-  { icon: Users2, text: "Strategic Technology Partner" },
-  { icon: Lock, text: "Confidential & Compliant Systems" },
-];
-
-// Node positions as percentages [x, y, delay, duration]
 const nodes: [number, number, number, number][] = [
   [12, 18, 0, 9],
   [38, 8, 1.5, 11],
@@ -22,7 +13,6 @@ const nodes: [number, number, number, number][] = [
   [5, 50, 1.8, 10],
 ];
 
-// Connecting lines between node pairs [from index, to index]
 const connections: [number, number][] = [
   [0, 1],
   [1, 2],
@@ -51,231 +41,39 @@ function AnimatedNetworkBackground() {
         aria-hidden="true"
         role="presentation"
       >
-        {/* Grid lines - horizontal */}
-        <line
-          key="h-0"
-          x1="0"
-          y1={0}
-          x2="100"
-          y2={0}
-          stroke="#1E4ED8"
-          strokeWidth="0.08"
-          style={{
-            animation: "grid-fade 10s ease-in-out infinite",
-            animationDelay: "0s",
-          }}
-        />
-        <line
-          key="h-1"
-          x1="0"
-          y1={14}
-          x2="100"
-          y2={14}
-          stroke="#1E4ED8"
-          strokeWidth="0.08"
-          style={{
-            animation: "grid-fade 10.7s ease-in-out infinite",
-            animationDelay: "0.4s",
-          }}
-        />
-        <line
-          key="h-2"
-          x1="0"
-          y1={28}
-          x2="100"
-          y2={28}
-          stroke="#1E4ED8"
-          strokeWidth="0.08"
-          style={{
-            animation: "grid-fade 11.4s ease-in-out infinite",
-            animationDelay: "0.8s",
-          }}
-        />
-        <line
-          key="h-3"
-          x1="0"
-          y1={42}
-          x2="100"
-          y2={42}
-          stroke="#1E4ED8"
-          strokeWidth="0.08"
-          style={{
-            animation: "grid-fade 12.1s ease-in-out infinite",
-            animationDelay: "1.2s",
-          }}
-        />
-        <line
-          key="h-4"
-          x1="0"
-          y1={56}
-          x2="100"
-          y2={56}
-          stroke="#1E4ED8"
-          strokeWidth="0.08"
-          style={{
-            animation: "grid-fade 12.8s ease-in-out infinite",
-            animationDelay: "1.6s",
-          }}
-        />
-        <line
-          key="h-5"
-          x1="0"
-          y1={70}
-          x2="100"
-          y2={70}
-          stroke="#1E4ED8"
-          strokeWidth="0.08"
-          style={{
-            animation: "grid-fade 13.5s ease-in-out infinite",
-            animationDelay: "2s",
-          }}
-        />
-        <line
-          key="h-6"
-          x1="0"
-          y1={84}
-          x2="100"
-          y2={84}
-          stroke="#1E4ED8"
-          strokeWidth="0.08"
-          style={{
-            animation: "grid-fade 14.2s ease-in-out infinite",
-            animationDelay: "2.4s",
-          }}
-        />
-        <line
-          key="h-7"
-          x1="0"
-          y1={98}
-          x2="100"
-          y2={98}
-          stroke="#1E4ED8"
-          strokeWidth="0.08"
-          style={{
-            animation: "grid-fade 14.9s ease-in-out infinite",
-            animationDelay: "2.8s",
-          }}
-        />
-        {/* Grid lines - vertical */}
-        <line
-          key="v-0"
-          x1={0}
-          y1="0"
-          x2={0}
-          y2="100"
-          stroke="#1E4ED8"
-          strokeWidth="0.08"
-          style={{
-            animation: "grid-fade 11s ease-in-out infinite",
-            animationDelay: "0s",
-          }}
-        />
-        <line
-          key="v-1"
-          x1={13}
-          y1="0"
-          x2={13}
-          y2="100"
-          stroke="#1E4ED8"
-          strokeWidth="0.08"
-          style={{
-            animation: "grid-fade 11.5s ease-in-out infinite",
-            animationDelay: "0.3s",
-          }}
-        />
-        <line
-          key="v-2"
-          x1={26}
-          y1="0"
-          x2={26}
-          y2="100"
-          stroke="#1E4ED8"
-          strokeWidth="0.08"
-          style={{
-            animation: "grid-fade 12s ease-in-out infinite",
-            animationDelay: "0.6s",
-          }}
-        />
-        <line
-          key="v-3"
-          x1={39}
-          y1="0"
-          x2={39}
-          y2="100"
-          stroke="#1E4ED8"
-          strokeWidth="0.08"
-          style={{
-            animation: "grid-fade 12.5s ease-in-out infinite",
-            animationDelay: "0.9s",
-          }}
-        />
-        <line
-          key="v-4"
-          x1={52}
-          y1="0"
-          x2={52}
-          y2="100"
-          stroke="#1E4ED8"
-          strokeWidth="0.08"
-          style={{
-            animation: "grid-fade 13s ease-in-out infinite",
-            animationDelay: "1.2s",
-          }}
-        />
-        <line
-          key="v-5"
-          x1={65}
-          y1="0"
-          x2={65}
-          y2="100"
-          stroke="#1E4ED8"
-          strokeWidth="0.08"
-          style={{
-            animation: "grid-fade 13.5s ease-in-out infinite",
-            animationDelay: "1.5s",
-          }}
-        />
-        <line
-          key="v-6"
-          x1={78}
-          y1="0"
-          x2={78}
-          y2="100"
-          stroke="#1E4ED8"
-          strokeWidth="0.08"
-          style={{
-            animation: "grid-fade 14s ease-in-out infinite",
-            animationDelay: "1.8s",
-          }}
-        />
-        <line
-          key="v-7"
-          x1={91}
-          y1="0"
-          x2={91}
-          y2="100"
-          stroke="#1E4ED8"
-          strokeWidth="0.08"
-          style={{
-            animation: "grid-fade 14.5s ease-in-out infinite",
-            animationDelay: "2.1s",
-          }}
-        />
-        <line
-          key="v-8"
-          x1={100}
-          y1="0"
-          x2={100}
-          y2="100"
-          stroke="#1E4ED8"
-          strokeWidth="0.08"
-          style={{
-            animation: "grid-fade 15s ease-in-out infinite",
-            animationDelay: "2.4s",
-          }}
-        />
-
-        {/* Connecting lines between nodes */}
+        <title>Background network animation</title>
+        {/* Grid lines */}
+        {[0, 14, 28, 42, 56, 70, 84, 98].map((y, i) => (
+          <line
+            key={`h-${y}`}
+            x1="0"
+            y1={y}
+            x2="100"
+            y2={y}
+            stroke="#5B8CFF"
+            strokeWidth="0.06"
+            style={{
+              animation: `grid-fade ${10 + i * 0.7}s ease-in-out infinite`,
+              animationDelay: `${i * 0.4}s`,
+            }}
+          />
+        ))}
+        {[0, 13, 26, 39, 52, 65, 78, 91, 100].map((x, i) => (
+          <line
+            key={`v-${x}`}
+            x1={x}
+            y1="0"
+            x2={x}
+            y2="100"
+            stroke="#5B8CFF"
+            strokeWidth="0.06"
+            style={{
+              animation: `grid-fade ${11 + i * 0.5}s ease-in-out infinite`,
+              animationDelay: `${i * 0.3}s`,
+            }}
+          />
+        ))}
+        {/* Connection lines */}
         {connections.map(([a, b]) => (
           <line
             key={`conn-${a}-${b}`}
@@ -283,227 +81,364 @@ function AnimatedNetworkBackground() {
             y1={nodes[a][1]}
             x2={nodes[b][0]}
             y2={nodes[b][1]}
-            stroke="#1E4ED8"
-            strokeWidth="0.15"
+            stroke="#5B8CFF"
+            strokeWidth="0.2"
             strokeDasharray="300"
             strokeDashoffset="300"
             style={{
-              opacity: 0.3,
+              opacity: 0.35,
               animation: `line-draw ${nodes[a][3]}s ease-in-out infinite`,
               animationDelay: `${(a + b) * 0.3}s`,
             }}
           />
         ))}
-
-        {/* Glowing nodes */}
-        {nodes.map(([x, y, delay, duration]) => (
+        {/* Nodes */}
+        {nodes.map(([x, y, delay, dur]) => (
           <g key={`node-${x}-${y}`}>
-            {/* Outer glow ring */}
             <circle
               cx={x}
               cy={y}
-              r="2.5"
+              r="2.8"
               fill="none"
-              stroke="#1E4ED8"
-              strokeWidth="0.2"
+              stroke="#5B8CFF"
+              strokeWidth="0.15"
               style={{
                 opacity: 0.2,
-                animation: `node-pulse ${duration + 2}s ease-in-out infinite`,
+                animation: `node-pulse ${dur + 2}s ease-in-out infinite`,
                 animationDelay: `${delay}s`,
               }}
             />
-            {/* Core node */}
             <circle
               cx={x}
               cy={y}
-              r="1.2"
-              fill="#1E4ED8"
+              r="1"
+              fill="#5B8CFF"
               style={{
-                animation: `node-pulse ${duration}s ease-in-out infinite`,
+                animation: `node-pulse ${dur}s ease-in-out infinite`,
                 animationDelay: `${delay}s`,
               }}
             />
           </g>
         ))}
       </svg>
-
-      {/* Subtle radial vignette at bottom for text clarity */}
+      {/* Neon glow spots */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 80% 60% at 50% 100%, rgba(11, 31, 58, 0.7) 0%, transparent 70%)",
+            "radial-gradient(ellipse 60% 50% at 80% 20%, rgba(91,140,255,0.08) 0%, transparent 70%)",
+        }}
+      />
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 40% 40% at 20% 80%, rgba(0,255,193,0.06) 0%, transparent 70%)",
         }}
       />
     </div>
   );
 }
 
+function AIDashboardVisual() {
+  return (
+    <div className="relative hidden lg:block">
+      {/* Main dashboard panel */}
+      <div
+        className="glass rounded-2xl p-5 w-[380px] animate-float-slow"
+        style={{
+          border: "1px solid rgba(91,140,255,0.25)",
+          boxShadow:
+            "0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(91,140,255,0.1)",
+        }}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <div className="text-xs text-white/50 mb-0.5">
+              AI Analytics Dashboard
+            </div>
+            <div className="text-sm font-semibold text-white">
+              Campaign Overview
+            </div>
+          </div>
+          <div className="flex gap-1.5">
+            {["#5B8CFF", "#00FFC1", "#a78bfa"].map((c) => (
+              <div
+                key={c}
+                className="w-2 h-2 rounded-full"
+                style={{ background: c, opacity: 0.8 }}
+              />
+            ))}
+          </div>
+        </div>
+        {/* Metric cards */}
+        <div className="grid grid-cols-3 gap-2 mb-4">
+          {[
+            { label: "Voters", value: "48.2K", color: "#5B8CFF" },
+            { label: "Outreach", value: "89%", color: "#00FFC1" },
+            { label: "AI Score", value: "9.4", color: "#a78bfa" },
+          ].map((m) => (
+            <div
+              key={m.label}
+              className="rounded-xl p-3"
+              style={{ background: "rgba(255,255,255,0.05)" }}
+            >
+              <div className="text-lg font-bold" style={{ color: m.color }}>
+                {m.value}
+              </div>
+              <div className="text-[10px] text-white/40 mt-0.5">{m.label}</div>
+            </div>
+          ))}
+        </div>
+        {/* Chart bars */}
+        <div
+          className="rounded-xl p-3 mb-3"
+          style={{ background: "rgba(255,255,255,0.03)" }}
+        >
+          <div className="text-[10px] text-white/40 mb-2">
+            Weekly Performance
+          </div>
+          <div className="flex items-end gap-1 h-12">
+            {[
+              { h: 45, c: "rgba(91,140,255,0.3)", id: "h0" },
+              { h: 62, c: "rgba(91,140,255,0.3)", id: "h1" },
+              { h: 38, c: "rgba(91,140,255,0.3)", id: "h2" },
+              { h: 78, c: "rgba(91,140,255,0.3)", id: "h3" },
+              { h: 55, c: "rgba(91,140,255,0.3)", id: "h4" },
+              {
+                h: 90,
+                c: "linear-gradient(to top, #5B8CFF, #00FFC1)",
+                id: "h5",
+              },
+              { h: 71, c: "rgba(91,140,255,0.3)", id: "h6" },
+            ].map((bar) => (
+              <div
+                key={bar.id}
+                className="flex-1 rounded-t"
+                style={{
+                  height: `${bar.h}%`,
+                  background: bar.c,
+                  transition: "height 0.3s ease",
+                }}
+              />
+            ))}
+          </div>
+        </div>
+        {/* AI Activity feed */}
+        <div className="space-y-2">
+          {[
+            { text: "AI agent processed 1,240 leads", dot: "#00FFC1" },
+            { text: "Voter segment analysis complete", dot: "#5B8CFF" },
+          ].map((item) => (
+            <div key={item.text} className="flex items-center gap-2">
+              <div
+                className="w-1.5 h-1.5 rounded-full shrink-0"
+                style={{ background: item.dot }}
+              />
+              <span className="text-[10px] text-white/50">{item.text}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* Floating card 1 */}
+      <div
+        className="absolute -top-6 -right-8 glass rounded-xl p-3 w-36 animate-float"
+        style={{
+          border: "1px solid rgba(0,255,193,0.2)",
+          boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
+        }}
+      >
+        <div className="text-[10px] text-white/40 mb-1">AI Automation</div>
+        <div className="text-xl font-bold" style={{ color: "#00FFC1" }}>
+          +127%
+        </div>
+        <div className="text-[10px] text-white/40">Efficiency gain</div>
+      </div>
+      {/* Floating card 2 */}
+      <div
+        className="absolute -bottom-4 -left-6 glass rounded-xl p-3 w-40 animate-float-delay"
+        style={{
+          border: "1px solid rgba(91,140,255,0.2)",
+          boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
+        }}
+      >
+        <div className="text-[10px] text-white/40 mb-1">Campaigns Active</div>
+        <div className="text-xl font-bold text-white">24 Live</div>
+        <div className="flex gap-1 mt-1.5">
+          {[0, 1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="h-1.5 flex-1 rounded"
+              style={{
+                background: i < 3 ? "#5B8CFF" : "rgba(255,255,255,0.1)",
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function HeroSection() {
   const contentMap = useSiteContentMap();
-
   const badge = useSiteText(
     contentMap,
-    "hero.badge",
-    "Political Technology & AI Automation",
+    "hero_badge",
+    "AI Systems for Businesses, Governments & Campaigns",
   );
-  const headline1 = useSiteText(
+  const headline = useSiteText(
     contentMap,
-    "hero.headline1",
-    "Intelligent Political",
-  );
-  const headline2 = useSiteText(contentMap, "hero.headline2", "& AI Systems");
-  const headline3 = useSiteText(
-    contentMap,
-    "hero.headline3",
-    "Built for Modern Campaigns",
+    "hero_headline",
+    "AI Systems Powering Businesses, Governments & Campaigns",
   );
   const subheadline = useSiteText(
     contentMap,
-    "hero.subheadline",
-    "From voter data management to AI-powered automation, Tattva Innovation builds secure, scalable systems that give organizations a measurable strategic advantage.",
+    "hero_subheadline",
+    "We build intelligent software that automates operations, analyzes voter data, and drives growth.",
   );
-  const ctaPrimary = useSiteText(
-    contentMap,
-    "hero.cta_primary",
-    "Book Strategic Demo",
-  );
-  const ctaWhatsapp = useSiteText(
-    contentMap,
-    "hero.cta_whatsapp",
-    "Chat on WhatsApp",
-  );
+  const cta1 = useSiteText(contentMap, "hero_cta1", "View Products");
+  const cta2 = useSiteText(contentMap, "hero_cta2", "Book Live Demo");
 
-  const scrollToContact = () => {
-    const el = document.getElementById("contact");
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
+
+  const trustBadges = [
+    "Secure Data Infrastructure",
+    "India-Focused Deployment",
+    "Strategic Technology Partner",
+    "Confidential & Compliant Systems",
+  ];
 
   return (
     <section
       className="relative min-h-screen flex items-center pt-20 pb-16 md:pt-28 md:pb-24 overflow-hidden"
-      style={{ background: "#0B1F3A" }}
+      style={{
+        background: "linear-gradient(135deg, #0A0F1F 0%, #131A2B 100%)",
+      }}
     >
       <AnimatedNetworkBackground />
 
-      {/* Content */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="max-w-3xl">
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Badge
-              variant="outline"
-              className="mb-6 border-white/60 text-white bg-white/10 font-semibold px-4 py-1.5 text-xs uppercase tracking-widest"
+        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+          {/* Left content */}
+          <div className="flex-1 max-w-2xl">
+            {/* Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 rounded-full px-4 py-2 mb-6 text-xs font-semibold uppercase tracking-widest"
+              style={{
+                background: "rgba(91,140,255,0.12)",
+                border: "1px solid rgba(91,140,255,0.3)",
+                color: "#5B8CFF",
+              }}
             >
+              <div className="w-1.5 h-1.5 rounded-full bg-current neon-pulse" />
               {badge}
-            </Badge>
-          </motion.div>
+            </motion.div>
 
-          {/* Headline */}
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.1 }}
-            className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-[1.08] mb-6 tracking-tight"
-          >
-            {headline1} <span className="text-brand-gold">{headline2}</span>
-            <br />
-            {headline3}
-          </motion.h1>
-
-          {/* Subheadline */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.2 }}
-            className="text-white/70 text-lg sm:text-xl leading-relaxed mb-10 max-w-2xl"
-          >
-            {subheadline}
-          </motion.p>
-
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.3 }}
-            className="flex flex-col sm:flex-row gap-4 mb-12"
-          >
-            {/* Gold CTA */}
-            <button
-              type="button"
-              onClick={scrollToContact}
-              className="inline-flex items-center justify-center gap-2 rounded-md px-8 py-3.5 text-base font-bold transition-all hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-              style={{
-                background: "#C8A951",
-                color: "#0B1F3A",
-                boxShadow: "0 4px 20px rgba(200,169,81,0.4)",
-              }}
+            {/* Headline */}
+            <motion.h1
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.65, delay: 0.1 }}
+              className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.1] mb-6 tracking-tight"
             >
-              {ctaPrimary}
-            </button>
+              {headline.includes("Businesses") ? (
+                <>
+                  AI Systems Powering{" "}
+                  <span className="gradient-text">Businesses, Governments</span>{" "}
+                  & Campaigns
+                </>
+              ) : (
+                headline
+              )}
+            </motion.h1>
 
-            {/* Royal Blue outline WhatsApp CTA */}
-            <a
-              href="https://wa.me/9822422123"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-md border-2 px-8 py-3.5 text-base font-bold transition-all hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2"
-              style={{
-                borderColor: "#FFFFFF",
-                color: "#FFFFFF",
-              }}
+            {/* Subheadline */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.65, delay: 0.2 }}
+              className="text-white/60 text-lg leading-relaxed mb-10"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="w-5 h-5"
-                role="img"
-                aria-label="WhatsApp"
-              >
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-              </svg>
-              {ctaWhatsapp}
-            </a>
-          </motion.div>
+              {subheadline}
+            </motion.p>
 
-          {/* Trust badges */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.45 }}
-            className="flex flex-wrap gap-3"
-          >
-            {trustBadges.map(({ icon: Icon, text }) => (
-              <div
-                key={text}
-                className="flex items-center gap-2 rounded-full px-4 py-2"
-                style={{
-                  background: "rgba(255,255,255,0.07)",
-                  border: "1px solid rgba(255,255,255,0.15)",
-                  backdropFilter: "blur(8px)",
-                }}
+            {/* CTA Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.65, delay: 0.3 }}
+              className="flex flex-col sm:flex-row gap-4 mb-10"
+            >
+              <button
+                type="button"
+                onClick={() => scrollToSection("products")}
+                className="btn-neon text-base"
+                data-ocid="hero.view_products.primary_button"
               >
-                <Icon className="w-3.5 h-3.5 text-brand-gold shrink-0" />
-                <span className="text-xs font-semibold text-white/80 whitespace-nowrap">
-                  {text}
-                </span>
-              </div>
-            ))}
+                {cta1}
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollToSection("contact")}
+                className="inline-flex items-center justify-center rounded-lg px-7 py-3.5 text-base font-bold text-white transition-all hover:bg-white/10"
+                style={{ border: "2px solid rgba(255,255,255,0.3)" }}
+                data-ocid="hero.book_demo.secondary_button"
+              >
+                {cta2}
+              </button>
+            </motion.div>
+
+            {/* Trust badges */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.65, delay: 0.45 }}
+              className="flex flex-wrap gap-2"
+            >
+              {trustBadges.map((text) => (
+                <div
+                  key={text}
+                  className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs"
+                  style={{
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                  }}
+                >
+                  <CheckCircle
+                    className="w-3 h-3 shrink-0"
+                    style={{ color: "#00FFC1" }}
+                  />
+                  <span className="text-white/70">{text}</span>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+
+          {/* Right: animated dashboard */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="shrink-0"
+          >
+            <AIDashboardVisual />
           </motion.div>
         </div>
       </div>
 
-      {/* Bottom gradient transition */}
+      {/* Bottom fade */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none"
+        className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
         style={{
-          background:
-            "linear-gradient(to bottom, transparent, rgba(11, 31, 58, 0.5))",
+          background: "linear-gradient(to bottom, transparent, #0A0F1F)",
         }}
         aria-hidden="true"
       />

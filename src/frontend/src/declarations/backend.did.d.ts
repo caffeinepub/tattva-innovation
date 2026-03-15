@@ -32,6 +32,8 @@ export type LeadResult = { 'ok' : bigint } |
   { 'err' : string };
 export type PostResult = { 'ok' : bigint } |
   { 'err' : string };
+export type Sorry = { 'ok' : null } |
+  { 'err' : string };
 export interface Testimonial {
   'id' : bigint,
   'name' : string,
@@ -51,6 +53,7 @@ export type UserRole = { 'admin' : null } |
 export interface _SERVICE {
   '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
   'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
+  'claimOwnerAdmin' : ActorMethod<[], Sorry>,
   'createPost' : ActorMethod<
     [string, string, string, string, string, boolean],
     PostResult
@@ -62,6 +65,7 @@ export interface _SERVICE {
   'deletePost' : ActorMethod<[bigint], UpdateResult>,
   'deleteSiteContent' : ActorMethod<[string], undefined>,
   'deleteTestimonial' : ActorMethod<[bigint], UpdateResult>,
+  'getAllPosts' : ActorMethod<[], Array<BlogPost>>,
   'getAllSiteContent' : ActorMethod<[], Array<[string, string]>>,
   'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
   'getCallerUserRole' : ActorMethod<[], UserRole>,

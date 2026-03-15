@@ -1,21 +1,24 @@
-import { DataDrivenSection } from "@/components/sections/DataDrivenSection";
-import { FaqSection } from "@/components/sections/FaqSection";
+import { DashboardPreviewSection } from "@/components/sections/DashboardPreviewSection";
+import { DemoSection } from "@/components/sections/DemoSection";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { LeadFormSection } from "@/components/sections/LeadFormSection";
-import { ServicesSection } from "@/components/sections/ServicesSection";
-import { StrategicAdvantageSection } from "@/components/sections/StrategicAdvantageSection";
+import { PricingSection } from "@/components/sections/PricingSection";
+import { ProductsSection } from "@/components/sections/ProductsSection";
+import { SolutionsSection } from "@/components/sections/SolutionsSection";
+import { StatsSection } from "@/components/sections/StatsSection";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 
 export function HomePage() {
   return (
     <main>
       <HeroSection />
-      <ServicesSection />
-      <DataDrivenSection />
-      <section id="ai-automation" className="sr-only" aria-hidden="true" />
-      <StrategicAdvantageSection />
+      <ProductsSection />
+      <SolutionsSection />
+      <DashboardPreviewSection />
+      <StatsSection />
+      <PricingSection />
+      <DemoSection />
       <TestimonialsSection />
-      <FaqSection />
       <LeadFormSection />
     </main>
   );

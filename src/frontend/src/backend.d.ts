@@ -7,6 +7,13 @@ export interface None {
     __kind__: "None";
 }
 export type Option<T> = Some<T> | None;
+export type Sorry = {
+    __kind__: "ok";
+    ok: null;
+} | {
+    __kind__: "err";
+    err: string;
+};
 export type TestimonialResult = {
     __kind__: "ok";
     ok: bigint;
@@ -71,11 +78,13 @@ export enum UserRole {
 }
 export interface backendInterface {
     assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
+    claimOwnerAdmin(): Promise<Sorry>;
     createPost(title: string, slug: string, content: string, excerpt: string, author: string, isPublished: boolean): Promise<PostResult>;
     createTestimonial(quote: string, name: string, role: string, organization: string, isVisible: boolean): Promise<TestimonialResult>;
     deletePost(id: bigint): Promise<UpdateResult>;
     deleteSiteContent(key: string): Promise<void>;
     deleteTestimonial(id: bigint): Promise<UpdateResult>;
+    getAllPosts(): Promise<Array<BlogPost>>;
     getAllSiteContent(): Promise<Array<[string, string]>>;
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;

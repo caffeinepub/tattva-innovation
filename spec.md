@@ -1,32 +1,56 @@
-# Tattva Innovation
+# Tattva Innovation — AI SaaS Redesign
 
 ## Current State
-Full website for Tattva Innovation (Political Technology & AI Automation Specialist) with:
-- Hero, Services, DataDriven, StrategicAdvantage, Testimonials, FAQ, LeadForm, Footer sections
-- Admin panel at /admin with tabs for Blog Posts, Testimonials, Leads (all backend-managed)
-- Backend (Motoko): blog posts, testimonials, leads, authorization (admin roles)
-- Color system: Deep Navy #0B1F3A, Royal Blue #1E4ED8, Gold #C8A951, foreground #090b47
-- Some text on light backgrounds uses `text-foreground/55` or `text-foreground/60` which may render as low-contrast
+The site is a political technology consultancy website with these sections: Hero, Services (4 cards), Data-Driven Campaigns, Strategic Advantage, Testimonials, How It Works, FAQ, Lead Form, Blog. It uses a navy/gold institutional color scheme. Admin panel at /admin allows editing site content via `setSiteContent`/`getSiteContent`, managing blog posts, testimonials, and viewing leads. Backend exposes `setSiteContent`, `getSiteContent`, `getAllSiteContent`, `getVisibleTestimonials`, `createTestimonial`, `updateTestimonial`, `deleteTestimonial`, `getAllPosts`, `createPost`, `updatePost`, `deletePost`, `getLeads`, `submitLead`, `isCallerAdmin`, `claimOwnerAdmin`.
 
 ## Requested Changes (Diff)
 
 ### Add
-- Backend: `SiteContent` key-value store (key: Text, value: Text) with `getSiteContent`, `getAllSiteContent`, `setSiteContent` (admin-only write)
-- AdminPage: new "Site Content" tab allowing admin to edit all static text on the website (hero headline, subheadline, trust badges, service titles/descriptions, campaign intelligence section, strategic advantage items, FAQ questions/answers, lead form heading, footer tagline, etc.)
-- Frontend: all editable text sections load from backend `siteContent` and fall back to hardcoded defaults if not set
+- New dark tech color system globally: #0A0F1F (primary), #5B8CFF (accent), #00FFC1 (secondary neon), gradient dark (#0A0F1F → #131A2B)
+- Fonts: Inter (body) + Sora (headings) via Google Fonts
+- New Products section ("Our AI Product Ecosystem") with 4 editable product cards with icon, name, description, demo link, hover animation
+- New Solutions section ("Solutions We Power") with 3 editable solution cards
+- New Dashboard Preview section with 3 CSS/SVG mockup panels (voter analytics, AI sales, business automation) with hover effects
+- New Stats/Why Tattva section with editable numbers (100+ AI Features, 10+ Automation Modules, Multiple Industry Solutions)
+- New Pricing section with monthly/yearly toggle, 3 tiers (Starter, Growth highlighted, Enterprise), editable from admin
+- New Demo section ("See Tattva AI in Action") with 3 demo cards with external links and video preview placeholders
+- Animated hero background: CSS grid animation with glowing nodes and connecting lines
+- Glassmorphism card styles throughout
+- Scroll-triggered fade-in animations via Intersection Observer
+- Floating CTA button (Book Demo)
+- Dark/light mode toggle in navbar
+- Interactive AI chatbot assistant widget (floating)
+- Micro-interactions: button hover glow, card lift effects
 
 ### Modify
-- Fix text visibility: ensure all text on white (#FFFFFF) and light grey (#F5F7FA) backgrounds has sufficient contrast — replace opacity-reduced foreground text (like `text-foreground/55`) with proper solid colors like `text-[#4a5568]` or `text-[#374151]` that are still readable but not overpowering
-- AdminPage: add "Site Content" tab with grouped editors for each section of the site
-- HeroSection, ServicesSection, DataDrivenSection, StrategicAdvantageSection, FaqSection, LeadFormSection: read text from `useSiteContent` hook that queries backend, fall back to defaults
+- Hero: new headline "AI Systems Powering Businesses, Governments & Campaigns", subheadline, two CTAs [View Products][Book Live Demo], all editable
+- Navbar: restructure to Home | Products | Solutions | Pricing | Demo | About | Contact + Book Demo button (gold/neon gradient)
+- Testimonials: keep existing backend, reskin cards with glassmorphism dark style
+- Lead form/Contact: keep backend `submitLead`, update to dark theme with editable CTA
+- Footer: dark theme, editable links and copyright via siteContent
+- Admin panel: add new content keys for all new sections (products, solutions, stats, pricing, demo titles/descriptions)
+- All text content loaded from `getSiteContent` and editable in admin "Site Content" tab
 
 ### Remove
-- Nothing removed
+- Old color system (navy/gold institutional palette)
+- Old section designs (HowItWorks, FAQ, DataDriven, StrategicAdvantage, WhyUs, Services) — replaced by new sections
+- Old political-focused copy tone
 
 ## Implementation Plan
-1. Update `main.mo`: add SiteContent type, Map, getSiteContent/getAllSiteContent (public query), setSiteContent (admin-only), seed with initial content keys matching all site text
-2. Fix CSS contrast: update opacity-muted text classes on light backgrounds to use explicit readable colors
-3. Create `useSiteContent` hook that queries `getAllSiteContent` and returns a lookup function with fallback to defaults
-4. Update each section component to use the hook for their text
-5. Add "Site Content" tab to AdminPage with grouped fields per section — each field calls setSiteContent on save
-6. Build and validate
+1. Update `index.css` and global styles: dark background, Inter + Sora fonts, CSS variables for new palette, glassmorphism utilities, scroll animation utilities
+2. Rewrite `Navbar.tsx`: new links, dark sticky glass navbar, Book Demo CTA, dark/light toggle
+3. Rewrite `HeroSection.tsx`: animated canvas/CSS background, new copy, two CTAs, trust badges
+4. Create `ProductsSection.tsx`: 4 product cards with icon, name, desc, demo link — all content from siteContent
+5. Create `SolutionsSection.tsx`: 3 solution cards from siteContent
+6. Create `DashboardPreviewSection.tsx`: CSS-built mockup panels with hover animations
+7. Create `StatsSection.tsx` (Why Tattva): animated counters, editable stats
+8. Create `PricingSection.tsx`: monthly/yearly toggle, 3 plan cards, editable from siteContent
+9. Create `DemoSection.tsx`: 3 demo cards with links, video placeholder thumbnails
+10. Keep `TestimonialsSection.tsx`: reskin to dark glassmorphism
+11. Keep `LeadFormSection.tsx`/`ContactPage.tsx`: reskin to dark theme
+12. Rewrite `Footer.tsx`: dark theme, editable via siteContent
+13. Add `FloatingCTA.tsx`: floating "Book Demo" button
+14. Add `ChatbotWidget.tsx`: simple floating AI assistant widget (static UI)
+15. Update `HomePage.tsx`: new section order
+16. Update `AdminPage.tsx`: add new content keys for all new sections
+17. Validate and fix any build errors

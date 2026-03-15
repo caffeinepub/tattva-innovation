@@ -9,6 +9,8 @@ import Principal "mo:core/Principal";
 import MixinAuthorization "authorization/MixinAuthorization";
 import AccessControl "authorization/access-control";
 
+
+
 actor {
   type Lead = {
     id : Nat;
@@ -41,6 +43,11 @@ actor {
 
   public type UserProfile = {
     name : Text;
+  };
+
+  type Sorry = {
+    #ok;
+    #err : Text;
   };
 
   module BlogPost {
@@ -152,6 +159,10 @@ actor {
   };
 
   // --- Posts ---
+  public query func getAllPosts() : async [BlogPost] {
+    posts.values().toArray();
+  };
+
   public query func getPublishedPosts() : async [BlogPost] {
     posts.values().toArray().filter(func(p) { p.isPublished }).sort(BlogPost.compareByPublishedAt);
   };
@@ -221,7 +232,13 @@ actor {
     testimonials.values().toArray().filter(func(t) { t.isVisible });
   };
 
-  public shared ({ caller }) func createTestimonial(quote : Text, name : Text, role : Text, organization : Text, isVisible : Bool) : async TestimonialResult {
+  public shared ({ caller }) func createTestimonial(
+    quote : Text,
+    name : Text,
+    role : Text,
+    organization : Text,
+    isVisible : Bool,
+  ) : async TestimonialResult {
     if (not (AccessControl.isAdmin(accessControlState, caller))) {
       Runtime.trap("Unauthorized: Only admins can perform this action");
     };
@@ -239,7 +256,14 @@ actor {
     #ok id;
   };
 
-  public shared ({ caller }) func updateTestimonial(id : Nat, quote : Text, name : Text, role : Text, organization : Text, isVisible : Bool) : async UpdateResult {
+  public shared ({ caller }) func updateTestimonial(
+    id : Nat,
+    quote : Text,
+    name : Text,
+    role : Text,
+    organization : Text,
+    isVisible : Bool,
+  ) : async UpdateResult {
     if (not (AccessControl.isAdmin(accessControlState, caller))) {
       Runtime.trap("Unauthorized: Only admins can perform this action");
     };
@@ -271,6 +295,20 @@ actor {
         #ok ();
       };
     };
+  };
+
+  // --- Owner Admin Claim ---
+  public shared ({ caller }) func claimOwnerAdmin() : async Sorry {
+    if (accessControlState.adminAssigned) {
+      return #err "Admin role has already been claimed";
+    };
+    if (caller.toText() != "z2iag-7b25t-riplr-gbyrt-qmnky-vat7e-hmzul-yhbll-hpuv6-pzyok-aae") {
+      return #err "Unauthorized: Only the specified principal can claim admin role";
+    };
+
+    accessControlState.userRoles.add(caller, #admin : AccessControl.UserRole);
+    accessControlState.adminAssigned := true;
+    #ok;
   };
 
   // --- Seed Data ---

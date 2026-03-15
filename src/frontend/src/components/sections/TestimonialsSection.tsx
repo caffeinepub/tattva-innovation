@@ -3,7 +3,6 @@ import { useGetVisibleTestimonials } from "@/hooks/useQueries";
 import { Quote } from "lucide-react";
 import { motion } from "motion/react";
 
-// Realistic campaign-focused fallback testimonials
 const fallbackTestimonials = [
   {
     id: BigInt(1),
@@ -26,42 +25,29 @@ const fallbackTestimonials = [
   {
     id: BigInt(3),
     quote:
-      "The analytics gave our leadership team a clear picture of engagement patterns before key campaign phases. It's structured intelligence, not just raw data.",
+      "The AI automation reduced our manual workload by 60%. Our team now focuses on strategy instead of repetitive data tasks. The ROI was visible within 30 days.",
     name: "Prakash Joshi",
-    role: "Political Strategy Advisor",
-    organization: "Independent Campaign, Nagpur",
+    role: "Business Owner",
+    organization: "SME, Nagpur",
     isVisible: true,
   },
 ];
 
-function TestimonialSkeleton() {
-  return (
-    <div className="bg-white rounded-xl p-7 border-2 border-border space-y-4">
-      <Skeleton className="w-8 h-8 rounded-full" />
-      <Skeleton className="h-4 w-full" />
-      <Skeleton className="h-4 w-5/6" />
-      <Skeleton className="h-4 w-4/6" />
-      <div className="flex items-center gap-3 pt-2">
-        <Skeleton className="w-10 h-10 rounded-full" />
-        <div className="space-y-2">
-          <Skeleton className="h-3 w-24" />
-          <Skeleton className="h-3 w-32" />
-        </div>
-      </div>
-    </div>
-  );
-}
+const accentColors = ["#5B8CFF", "#00FFC1", "#a78bfa"];
 
 export function TestimonialsSection() {
   const { data: backendTestimonials, isLoading } = useGetVisibleTestimonials();
-
   const testimonials =
     backendTestimonials && backendTestimonials.length > 0
       ? backendTestimonials
       : fallbackTestimonials;
 
   return (
-    <section id="testimonials" className="py-20 md:py-28 bg-section-grey">
+    <section
+      id="testimonials"
+      className="py-20 md:py-28"
+      style={{ background: "#131A2B" }}
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -71,25 +57,29 @@ export function TestimonialsSection() {
           className="text-center mb-14"
         >
           <div
-            className="mx-auto mb-5 h-px w-16"
-            style={{ background: "#C8A951" }}
-            aria-hidden="true"
-          />
-          <span
-            className="text-xs font-bold uppercase tracking-[0.2em] block mb-3"
-            style={{ color: "#C8A951" }}
+            className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-4 text-xs font-semibold uppercase tracking-widest"
+            style={{
+              background: "rgba(91,140,255,0.1)",
+              border: "1px solid rgba(91,140,255,0.2)",
+              color: "#5B8CFF",
+            }}
           >
             Client Perspectives
-          </span>
-          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-foreground">
-            Trusted by Campaign Teams
+          </div>
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-white">
+            Trusted by Organizations Across India
           </h2>
         </motion.div>
 
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[1, 2, 3].map((i) => (
-              <TestimonialSkeleton key={i} />
+              <div key={i} className="glass rounded-2xl p-6 space-y-3">
+                <Skeleton className="w-8 h-8 rounded-full bg-white/10" />
+                <Skeleton className="h-3 w-full bg-white/10" />
+                <Skeleton className="h-3 w-5/6 bg-white/10" />
+                <Skeleton className="h-3 w-4/6 bg-white/10" />
+              </div>
             ))}
           </div>
         ) : (
@@ -101,34 +91,32 @@ export function TestimonialsSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="bg-white rounded-xl p-7 shadow-card hover:shadow-card-hover transition-all duration-300 flex flex-col"
-                style={{
-                  border: "2px solid rgba(11,31,58,0.18)",
-                }}
+                className="glass card-lift rounded-2xl p-7 flex flex-col"
+                style={{ border: `1px solid ${accentColors[i % 3]}20` }}
               >
-                {/* Gold quote icon */}
                 <Quote
                   className="w-7 h-7 mb-4 shrink-0"
-                  style={{ color: "#C8A951" }}
+                  style={{ color: accentColors[i % 3] }}
                 />
-                <p className="text-[#374151] text-sm leading-relaxed flex-1">
-                  "{t.quote}"
+                <p className="text-white/60 text-sm leading-relaxed flex-1">
+                  &#8220;{t.quote}&#8221;
                 </p>
-                <div className="mt-6 pt-5 border-t border-border flex items-center gap-3">
-                  {/* Avatar initial */}
+                <div
+                  className="mt-6 pt-5 flex items-center gap-3"
+                  style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
+                >
                   <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
-                    style={{ background: "#0B1F3A" }}
+                    className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 font-display font-bold text-sm"
+                    style={{
+                      background: `${accentColors[i % 3]}20`,
+                      color: accentColors[i % 3],
+                    }}
                   >
-                    <span className="font-display font-bold text-white text-sm">
-                      {t.name.charAt(0)}
-                    </span>
+                    {t.name.charAt(0)}
                   </div>
                   <div>
-                    <p className="font-bold text-foreground text-sm">
-                      {t.name}
-                    </p>
-                    <p className="text-[#6b7280] text-xs">
+                    <p className="font-bold text-white text-sm">{t.name}</p>
+                    <p className="text-white/40 text-xs">
                       {t.role}, {t.organization}
                     </p>
                   </div>

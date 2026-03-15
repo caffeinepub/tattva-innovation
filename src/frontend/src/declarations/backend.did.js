@@ -13,21 +13,13 @@ export const UserRole = IDL.Variant({
   'user' : IDL.Null,
   'guest' : IDL.Null,
 });
+export const Sorry = IDL.Variant({ 'ok' : IDL.Null, 'err' : IDL.Text });
 export const PostResult = IDL.Variant({ 'ok' : IDL.Nat, 'err' : IDL.Text });
 export const TestimonialResult = IDL.Variant({
   'ok' : IDL.Nat,
   'err' : IDL.Text,
 });
 export const UpdateResult = IDL.Variant({ 'ok' : IDL.Null, 'err' : IDL.Text });
-export const UserProfile = IDL.Record({ 'name' : IDL.Text });
-export const Lead = IDL.Record({
-  'id' : IDL.Nat,
-  'orgType' : IDL.Text,
-  'name' : IDL.Text,
-  'createdAt' : IDL.Int,
-  'message' : IDL.Text,
-  'phone' : IDL.Text,
-});
 export const BlogPost = IDL.Record({
   'id' : IDL.Nat,
   'title' : IDL.Text,
@@ -37,6 +29,15 @@ export const BlogPost = IDL.Record({
   'publishedAt' : IDL.Int,
   'author' : IDL.Text,
   'excerpt' : IDL.Text,
+});
+export const UserProfile = IDL.Record({ 'name' : IDL.Text });
+export const Lead = IDL.Record({
+  'id' : IDL.Nat,
+  'orgType' : IDL.Text,
+  'name' : IDL.Text,
+  'createdAt' : IDL.Int,
+  'message' : IDL.Text,
+  'phone' : IDL.Text,
 });
 export const Testimonial = IDL.Record({
   'id' : IDL.Nat,
@@ -51,6 +52,7 @@ export const LeadResult = IDL.Variant({ 'ok' : IDL.Nat, 'err' : IDL.Text });
 export const idlService = IDL.Service({
   '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
   'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+  'claimOwnerAdmin' : IDL.Func([], [Sorry], []),
   'createPost' : IDL.Func(
       [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Bool],
       [PostResult],
@@ -64,6 +66,7 @@ export const idlService = IDL.Service({
   'deletePost' : IDL.Func([IDL.Nat], [UpdateResult], []),
   'deleteSiteContent' : IDL.Func([IDL.Text], [], []),
   'deleteTestimonial' : IDL.Func([IDL.Nat], [UpdateResult], []),
+  'getAllPosts' : IDL.Func([], [IDL.Vec(BlogPost)], ['query']),
   'getAllSiteContent' : IDL.Func(
       [],
       [IDL.Vec(IDL.Tuple(IDL.Text, IDL.Text))],
@@ -109,18 +112,10 @@ export const idlFactory = ({ IDL }) => {
     'user' : IDL.Null,
     'guest' : IDL.Null,
   });
+  const Sorry = IDL.Variant({ 'ok' : IDL.Null, 'err' : IDL.Text });
   const PostResult = IDL.Variant({ 'ok' : IDL.Nat, 'err' : IDL.Text });
   const TestimonialResult = IDL.Variant({ 'ok' : IDL.Nat, 'err' : IDL.Text });
   const UpdateResult = IDL.Variant({ 'ok' : IDL.Null, 'err' : IDL.Text });
-  const UserProfile = IDL.Record({ 'name' : IDL.Text });
-  const Lead = IDL.Record({
-    'id' : IDL.Nat,
-    'orgType' : IDL.Text,
-    'name' : IDL.Text,
-    'createdAt' : IDL.Int,
-    'message' : IDL.Text,
-    'phone' : IDL.Text,
-  });
   const BlogPost = IDL.Record({
     'id' : IDL.Nat,
     'title' : IDL.Text,
@@ -130,6 +125,15 @@ export const idlFactory = ({ IDL }) => {
     'publishedAt' : IDL.Int,
     'author' : IDL.Text,
     'excerpt' : IDL.Text,
+  });
+  const UserProfile = IDL.Record({ 'name' : IDL.Text });
+  const Lead = IDL.Record({
+    'id' : IDL.Nat,
+    'orgType' : IDL.Text,
+    'name' : IDL.Text,
+    'createdAt' : IDL.Int,
+    'message' : IDL.Text,
+    'phone' : IDL.Text,
   });
   const Testimonial = IDL.Record({
     'id' : IDL.Nat,
@@ -144,6 +148,7 @@ export const idlFactory = ({ IDL }) => {
   return IDL.Service({
     '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
     'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+    'claimOwnerAdmin' : IDL.Func([], [Sorry], []),
     'createPost' : IDL.Func(
         [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Bool],
         [PostResult],
@@ -157,6 +162,7 @@ export const idlFactory = ({ IDL }) => {
     'deletePost' : IDL.Func([IDL.Nat], [UpdateResult], []),
     'deleteSiteContent' : IDL.Func([IDL.Text], [], []),
     'deleteTestimonial' : IDL.Func([IDL.Nat], [UpdateResult], []),
+    'getAllPosts' : IDL.Func([], [IDL.Vec(BlogPost)], ['query']),
     'getAllSiteContent' : IDL.Func(
         [],
         [IDL.Vec(IDL.Tuple(IDL.Text, IDL.Text))],

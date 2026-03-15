@@ -1,20 +1,22 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { Menu, X } from "lucide-react";
+import { Menu, Moon, Sun, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 
 const navLinks = [
-  { label: "Solutions", href: "/#services" },
-  { label: "Campaign Intelligence", href: "/#campaign-intelligence" },
-  { label: "AI Automation", href: "/#ai-automation" },
-  { label: "About", href: "/#why-us" },
-  { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/contact" },
+  { label: "Home", href: "/" },
+  { label: "Products", href: "/#products" },
+  { label: "Solutions", href: "/#solutions" },
+  { label: "Pricing", href: "/#pricing" },
+  { label: "Demo", href: "/#demo" },
+  { label: "About", href: "/#why-tattva" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
   const location = useLocation();
   const isHomePage = location.pathname === "/";
 
@@ -26,6 +28,7 @@ export function Navbar() {
 
   const handleScrollTo = (href: string) => {
     setMobileOpen(false);
+    if (href === "/") return;
     if (href.startsWith("/#") && isHomePage) {
       const id = href.slice(2);
       const el = document.getElementById(id);
@@ -43,85 +46,94 @@ export function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-white/97 backdrop-blur-md shadow-xs border-b border-border"
-          : "bg-transparent"
-      }`}
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+      style={{
+        background: scrolled ? "rgba(10,15,31,0.95)" : "rgba(10,15,31,0.6)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+        borderBottom: scrolled
+          ? "1px solid rgba(91,140,255,0.15)"
+          : "1px solid transparent",
+        boxShadow: scrolled ? "0 4px 30px rgba(0,0,0,0.4)" : "none",
+      }}
     >
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 shrink-0">
-            <img
-              src="/assets/generated/tattva-logo-transparent.dim_400x120.png"
-              alt="Tattva Innovation"
-              className={`h-9 md:h-11 w-auto object-contain transition-all duration-300 ${
-                scrolled ? "" : "brightness-0 invert"
-              }`}
-            />
+            <div className="flex flex-col leading-none">
+              <span className="font-display font-bold text-base md:text-lg tracking-tight text-white">
+                Tattva Innovation
+              </span>
+              <span
+                className="text-[10px] md:text-xs font-medium tracking-widest uppercase"
+                style={{ color: "#00FFC1" }}
+              >
+                AI Systems for Businesses, Governments & Campaigns
+              </span>
+            </div>
           </Link>
 
           {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-7">
+          <div className="hidden md:flex items-center gap-6">
             {navLinks.map((link) =>
-              link.href.startsWith("/#") ? (
+              link.href === "/" ? (
+                <Link
+                  key={link.label}
+                  to="/"
+                  className="text-sm font-medium text-white/70 hover:text-white transition-colors"
+                  data-ocid="navbar.home.link"
+                >
+                  {link.label}
+                </Link>
+              ) : (
                 <a
                   key={link.label}
                   href={link.href}
                   onClick={(e) => {
-                    if (isHomePage) {
+                    if (isHomePage && link.href.startsWith("/#")) {
                       e.preventDefault();
                       handleScrollTo(link.href);
                     }
                   }}
-                  className={`text-sm font-medium transition-colors ${
-                    scrolled
-                      ? "text-foreground/70 hover:text-foreground"
-                      : "text-white/75 hover:text-white"
-                  }`}
+                  className="text-sm font-medium text-white/70 hover:text-white transition-colors"
+                  data-ocid={`navbar.${link.label.toLowerCase()}.link`}
                 >
                   {link.label}
                 </a>
-              ) : (
-                <Link
-                  key={link.label}
-                  to={link.href}
-                  className={`text-sm font-medium transition-colors ${
-                    scrolled
-                      ? "text-foreground/70 hover:text-foreground"
-                      : "text-white/75 hover:text-white"
-                  }`}
-                >
-                  {link.label}
-                </Link>
               ),
             )}
           </div>
 
-          {/* Desktop CTA — gold button */}
+          {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-3">
             <button
               type="button"
-              onClick={handleBookDemo}
-              className="inline-flex items-center justify-center rounded-md px-5 py-2 text-sm font-bold transition-all hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-              style={{
-                background: "#C8A951",
-                color: "#0B1F3A",
-              }}
+              onClick={() => setDarkMode(!darkMode)}
+              className="p-2 rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-colors"
+              aria-label="Toggle theme"
+              data-ocid="navbar.theme_toggle.toggle"
             >
-              Book Strategic Demo
+              {darkMode ? (
+                <Sun className="w-4 h-4" />
+              ) : (
+                <Moon className="w-4 h-4" />
+              )}
+            </button>
+            <button
+              type="button"
+              onClick={handleBookDemo}
+              className="btn-neon text-sm"
+              data-ocid="navbar.book_demo.button"
+            >
+              Book Demo
             </button>
           </div>
 
           {/* Mobile hamburger */}
           <button
             type="button"
-            className={`md:hidden p-2 rounded-lg transition-colors ${
-              scrolled
-                ? "text-foreground hover:bg-accent"
-                : "text-white hover:bg-white/10"
-            }`}
+            className="md:hidden p-2 rounded-lg text-white hover:bg-white/10 transition-colors"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label="Toggle menu"
           >
@@ -141,48 +153,49 @@ export function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white border-b border-border overflow-hidden shadow-md"
+            className="md:hidden overflow-hidden"
+            style={{
+              background: "rgba(10,15,31,0.98)",
+              borderBottom: "1px solid rgba(91,140,255,0.2)",
+            }}
           >
             <div className="container mx-auto px-4 py-5 flex flex-col gap-1">
               {navLinks.map((link) =>
-                link.href.startsWith("/#") ? (
+                link.href === "/" ? (
+                  <Link
+                    key={link.label}
+                    to="/"
+                    onClick={() => setMobileOpen(false)}
+                    className="py-2.5 px-3 text-sm font-medium text-white/70 hover:text-white rounded-lg hover:bg-white/5 transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                ) : (
                   <a
                     key={link.label}
                     href={link.href}
                     onClick={(e) => {
-                      if (isHomePage) {
+                      if (isHomePage && link.href.startsWith("/#")) {
                         e.preventDefault();
                         handleScrollTo(link.href);
                       } else {
                         setMobileOpen(false);
                       }
                     }}
-                    className="py-2.5 px-2 text-sm font-medium text-foreground/70 hover:text-foreground rounded-md hover:bg-accent/50 transition-colors"
+                    className="py-2.5 px-3 text-sm font-medium text-white/70 hover:text-white rounded-lg hover:bg-white/5 transition-colors"
                   >
                     {link.label}
                   </a>
-                ) : (
-                  <Link
-                    key={link.label}
-                    to={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    className="py-2.5 px-2 text-sm font-medium text-foreground/70 hover:text-foreground rounded-md hover:bg-accent/50 transition-colors"
-                  >
-                    {link.label}
-                  </Link>
                 ),
               )}
               <div className="pt-3 pb-1">
                 <button
                   type="button"
                   onClick={handleBookDemo}
-                  className="w-full inline-flex items-center justify-center rounded-md px-5 py-3 text-sm font-bold transition-all hover:opacity-90"
-                  style={{
-                    background: "#C8A951",
-                    color: "#0B1F3A",
-                  }}
+                  className="w-full btn-neon text-sm py-3"
+                  data-ocid="navbar.book_demo.button"
                 >
-                  Book Strategic Demo
+                  Book Demo
                 </button>
               </div>
             </div>
