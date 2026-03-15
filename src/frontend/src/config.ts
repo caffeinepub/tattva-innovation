@@ -126,9 +126,12 @@ export async function createActorWithConfig(
   }
 
   const config = await loadConfig();
-  const resolvedOptions = options ?? {};
+  // Destructure to extract agentOptions separately so it is not forwarded
+  // alongside `agent` (which would trigger the "both agent and agentOptions"
+  // warning from createActor).
+  const { agentOptions, ...restOptions } = options ?? {};
   const agent = new HttpAgent({
-    ...resolvedOptions.agentOptions,
+    ...agentOptions,
     host: config.backend_host,
   });
   if (config.backend_host?.includes("localhost")) {
@@ -139,9 +142,10 @@ export async function createActorWithConfig(
       console.error(err);
     });
   }
+  // Only pass `agent`, never `agentOptions`, to avoid the duplicate warning.
   const actorOptions = {
-    ...resolvedOptions,
-    agent: agent,
+    ...restOptions,
+    agent,
     processError,
   };
 
