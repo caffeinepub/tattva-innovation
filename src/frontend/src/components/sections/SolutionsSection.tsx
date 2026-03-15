@@ -1,4 +1,5 @@
 import { useSiteContentMap, useSiteText } from "@/hooks/useSiteContent";
+import { Link } from "@tanstack/react-router";
 import { Building2, Network, Vote } from "lucide-react";
 import { motion } from "motion/react";
 
@@ -13,6 +14,7 @@ export function SolutionsSection() {
   const solutions = [
     {
       icon: Vote,
+      slug: "political-campaign",
       color: "#5B8CFF",
       bg: "rgba(91,140,255,0.08)",
       title: useSiteText(
@@ -28,6 +30,7 @@ export function SolutionsSection() {
     },
     {
       icon: Building2,
+      slug: "business-automation",
       color: "#00FFC1",
       bg: "rgba(0,255,193,0.08)",
       title: useSiteText(contentMap, "solution_2_title", "Business Automation"),
@@ -39,6 +42,7 @@ export function SolutionsSection() {
     },
     {
       icon: Network,
+      slug: "enterprise-ai",
       color: "#a78bfa",
       bg: "rgba(167,139,250,0.08)",
       title: useSiteText(
@@ -117,7 +121,10 @@ export function SolutionsSection() {
                 <p className="text-white/50 text-sm leading-relaxed flex-1">
                   {sol.desc}
                 </p>
-                <div
+                <Link
+                  to="/solutions/$slug"
+                  params={{ slug: sol.slug }}
+                  data-ocid={`solutions.item.${i + 1}`}
                   className="mt-6 pt-5 flex items-center gap-2 text-sm font-semibold cursor-pointer hover:opacity-80 transition-opacity"
                   style={{
                     borderTop: "1px solid rgba(255,255,255,0.06)",
@@ -126,7 +133,7 @@ export function SolutionsSection() {
                 >
                   Explore Solution
                   <span>→</span>
-                </div>
+                </Link>
               </motion.div>
             );
           })}

@@ -10,7 +10,7 @@ export function FloatingCTA() {
     <button
       type="button"
       onClick={scrollToContact}
-      className="fixed bottom-24 right-5 z-40 flex items-center gap-2 rounded-full px-5 py-3 text-sm font-bold float-pulse transition-all hover:scale-105 active:scale-95 md:bottom-8 md:right-8"
+      className="fixed bottom-24 right-5 z-40 flex items-center gap-2 rounded-full px-5 py-3 text-sm font-bold float-pulse transition-all hover:scale-105 active:scale-95 md:bottom-24 md:right-8"
       style={{
         background: "linear-gradient(135deg, #5B8CFF, #00FFC1)",
         color: "#0A0F1F",

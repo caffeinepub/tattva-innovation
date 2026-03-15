@@ -9,6 +9,7 @@ import { BlogListPage } from "@/pages/BlogListPage";
 import { BlogPostPage } from "@/pages/BlogPostPage";
 import { ContactPage } from "@/pages/ContactPage";
 import { HomePage } from "@/pages/HomePage";
+import { SolutionDetailPage } from "@/pages/SolutionDetailPage";
 import {
   Outlet,
   RouterProvider,
@@ -60,6 +61,12 @@ const adminRoute = createRoute({
   component: AdminPage,
 });
 
+const solutionRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/solutions/$slug",
+  component: SolutionDetailPage,
+});
+
 const contactRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/contact",
@@ -72,6 +79,7 @@ const routeTree = rootRoute.addChildren([
   blogPostRoute,
   adminRoute,
   contactRoute,
+  solutionRoute,
 ]);
 
 const router = createRouter({ routeTree });

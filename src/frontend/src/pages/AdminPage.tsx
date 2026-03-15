@@ -921,6 +921,126 @@ const contentGroups: ContentGroup[] = [
     ],
   },
   {
+    id: "solution_pages",
+    title: "Solution Detail Pages",
+    fields: [
+      {
+        key: "sol_page_1_bg",
+        label: "Page 1 Background CSS",
+        placeholder: "linear-gradient(135deg, #0A0F1F 0%, #131A2B 100%)",
+      },
+      {
+        key: "sol_page_1_headline",
+        label: "Page 1 Headline",
+        placeholder: "Political Campaign Technology",
+      },
+      {
+        key: "sol_page_1_tagline",
+        label: "Page 1 Tagline",
+        placeholder:
+          "End-to-end digital infrastructure for modern political campaigns",
+      },
+      {
+        key: "sol_page_1_desc",
+        label: "Page 1 Description",
+        multiline: true,
+        placeholder:
+          "Our Political Campaign Technology platform gives campaigns the tools they need to win.",
+      },
+      {
+        key: "sol_page_1_demo_link",
+        label: "Page 1 Demo Link",
+        placeholder: "https://demo.tattvainnovation.ai/election-platform",
+      },
+      {
+        key: "sol_page_1_demo_label",
+        label: "Page 1 Demo Button Label",
+        placeholder: "View Live Demo",
+      },
+      {
+        key: "sol_page_1_img_caption",
+        label: "Page 1 Image Caption",
+        placeholder: "Voter Analytics Dashboard",
+      },
+      {
+        key: "sol_page_2_bg",
+        label: "Page 2 Background CSS",
+        placeholder: "linear-gradient(135deg, #0A0F1F 0%, #0D1F1A 100%)",
+      },
+      {
+        key: "sol_page_2_headline",
+        label: "Page 2 Headline",
+        placeholder: "Business Automation",
+      },
+      {
+        key: "sol_page_2_tagline",
+        label: "Page 2 Tagline",
+        placeholder:
+          "Intelligent systems that automate operations and accelerate growth",
+      },
+      {
+        key: "sol_page_2_desc",
+        label: "Page 2 Description",
+        multiline: true,
+        placeholder:
+          "Our Business Automation AI platform replaces manual workflows with intelligent processes.",
+      },
+      {
+        key: "sol_page_2_demo_link",
+        label: "Page 2 Demo Link",
+        placeholder: "https://demo.tattvainnovation.ai/business-ai",
+      },
+      {
+        key: "sol_page_2_demo_label",
+        label: "Page 2 Demo Button Label",
+        placeholder: "View Live Demo",
+      },
+      {
+        key: "sol_page_2_img_caption",
+        label: "Page 2 Image Caption",
+        placeholder: "Automation Control Center",
+      },
+      {
+        key: "sol_page_3_bg",
+        label: "Page 3 Background CSS",
+        placeholder: "linear-gradient(135deg, #0A0F1F 0%, #130A1F 100%)",
+      },
+      {
+        key: "sol_page_3_headline",
+        label: "Page 3 Headline",
+        placeholder: "Enterprise AI Systems",
+      },
+      {
+        key: "sol_page_3_tagline",
+        label: "Page 3 Tagline",
+        placeholder:
+          "Custom AI platforms for government institutions and large enterprises",
+      },
+      {
+        key: "sol_page_3_desc",
+        label: "Page 3 Description",
+        multiline: true,
+        placeholder:
+          "Our Enterprise AI Systems are built for organizations that require scale, security, and precision.",
+      },
+      {
+        key: "sol_page_3_demo_link",
+        label: "Page 3 Demo Link",
+        placeholder: "https://demo.tattvainnovation.ai/business-ai",
+      },
+      {
+        key: "sol_page_3_demo_label",
+        label: "Page 3 Demo Button Label",
+        placeholder: "View Live Demo",
+      },
+      {
+        key: "sol_page_3_img_caption",
+        label: "Page 3 Image Caption",
+        placeholder: "Enterprise AI Control Panel",
+      },
+    ],
+  },
+  {
     id: "preview",
     title: "Dashboard Preview Section",
     fields: [
