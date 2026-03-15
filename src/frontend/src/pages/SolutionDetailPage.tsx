@@ -8,7 +8,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const SLUG_MAP: Record<string, number> = {
   "political-campaign": 1,
@@ -22,6 +22,7 @@ interface Slide {
   description: string;
   features: string[];
   dashboardType: "analytics" | "automation" | "enterprise";
+  imageUrl?: string;
 }
 
 const DEFAULT_DATA: Record<
@@ -611,7 +612,15 @@ function Slide({
         </div>
         {/* Dashboard content */}
         <div className="absolute top-9 left-0 right-0 bottom-0">
-          <DashComponent accent={accent} />
+          {slide.imageUrl ? (
+            <img
+              src={slide.imageUrl}
+              alt={slide.title}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <DashComponent accent={accent} />
+          )}
         </div>
         {/* Floating badge */}
         <motion.div
@@ -662,6 +671,15 @@ export function SolutionDetailPage() {
   );
 
   const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const slide1Img = useSiteText(contentMap, `${prefix}slide_1_img`, "");
+  const slide2Img = useSiteText(contentMap, `${prefix}slide_2_img`, "");
+  const slide3Img = useSiteText(contentMap, `${prefix}slide_3_img`, "");
+  const slideImages = [slide1Img, slide2Img, slide3Img];
   const totalSlides = defaults.slides.length;
 
   const goNext = () => setCurrentSlide((s) => (s + 1) % totalSlides);
@@ -752,7 +770,7 @@ export function SolutionDetailPage() {
             {defaults.slides.map((slide, i) => (
               <Slide
                 key={slide.title}
-                slide={slide}
+                slide={{ ...slide, imageUrl: slideImages[i] || undefined }}
                 accent={defaults.accent}
                 isActive={currentSlide === i}
               />

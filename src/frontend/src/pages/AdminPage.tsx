@@ -963,6 +963,21 @@ const contentGroups: ContentGroup[] = [
         placeholder: "Voter Analytics Dashboard",
       },
       {
+        key: "sol_page_1_slide_1_img",
+        label: "Page 1 - Slide 1 Image URL",
+        placeholder: "https://...",
+      },
+      {
+        key: "sol_page_1_slide_2_img",
+        label: "Page 1 - Slide 2 Image URL",
+        placeholder: "https://...",
+      },
+      {
+        key: "sol_page_1_slide_3_img",
+        label: "Page 1 - Slide 3 Image URL",
+        placeholder: "https://...",
+      },
+      {
         key: "sol_page_2_bg",
         label: "Page 2 Background CSS",
         placeholder: "linear-gradient(135deg, #0A0F1F 0%, #0D1F1A 100%)",
@@ -1001,6 +1016,21 @@ const contentGroups: ContentGroup[] = [
         placeholder: "Automation Control Center",
       },
       {
+        key: "sol_page_2_slide_1_img",
+        label: "Page 2 - Slide 1 Image URL",
+        placeholder: "https://...",
+      },
+      {
+        key: "sol_page_2_slide_2_img",
+        label: "Page 2 - Slide 2 Image URL",
+        placeholder: "https://...",
+      },
+      {
+        key: "sol_page_2_slide_3_img",
+        label: "Page 2 - Slide 3 Image URL",
+        placeholder: "https://...",
+      },
+      {
         key: "sol_page_3_bg",
         label: "Page 3 Background CSS",
         placeholder: "linear-gradient(135deg, #0A0F1F 0%, #130A1F 100%)",
@@ -1037,6 +1067,21 @@ const contentGroups: ContentGroup[] = [
         key: "sol_page_3_img_caption",
         label: "Page 3 Image Caption",
         placeholder: "Enterprise AI Control Panel",
+      },
+      {
+        key: "sol_page_3_slide_1_img",
+        label: "Page 3 - Slide 1 Image URL",
+        placeholder: "https://...",
+      },
+      {
+        key: "sol_page_3_slide_2_img",
+        label: "Page 3 - Slide 2 Image URL",
+        placeholder: "https://...",
+      },
+      {
+        key: "sol_page_3_slide_3_img",
+        label: "Page 3 - Slide 3 Image URL",
+        placeholder: "https://...",
       },
     ],
   },
