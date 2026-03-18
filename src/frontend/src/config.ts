@@ -139,8 +139,11 @@ export async function createActorWithConfig(
       console.error(err);
     });
   }
+
+  // Strip agentOptions to avoid passing both agent and agentOptions to createActor
+  const { agentOptions: _agentOptions, ...restOptions } = resolvedOptions;
   const actorOptions = {
-    ...resolvedOptions,
+    ...restOptions,
     agent: agent,
     processError,
   };
