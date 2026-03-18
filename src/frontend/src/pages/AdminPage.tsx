@@ -1071,6 +1071,24 @@ const simpleSections: SimpleSection[] = [
         label: "Tab 3 Title",
         placeholder: "Business Automation",
       },
+      {
+        key: "preview_1_img",
+        label: "Tab 1 Image",
+        placeholder: "",
+        isImage: true,
+      },
+      {
+        key: "preview_2_img",
+        label: "Tab 2 Image",
+        placeholder: "",
+        isImage: true,
+      },
+      {
+        key: "preview_3_img",
+        label: "Tab 3 Image",
+        placeholder: "",
+        isImage: true,
+      },
     ],
   },
   {

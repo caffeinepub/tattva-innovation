@@ -11,7 +11,6 @@ function VoterDashboard() {
         border: "1px solid rgba(91,140,255,0.2)",
       }}
     >
-      {/* Titlebar */}
       <div
         className="flex items-center gap-2 px-4 py-3"
         style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
@@ -23,7 +22,6 @@ function VoterDashboard() {
         <span className="text-xs text-white/40">Voter Analytics Dashboard</span>
       </div>
       <div className="p-4 flex gap-4">
-        {/* Sidebar */}
         <div className="w-24 shrink-0 space-y-2">
           {["Overview", "Segments", "Outreach", "Reports"].map((item, i) => (
             <div
@@ -39,7 +37,6 @@ function VoterDashboard() {
             </div>
           ))}
         </div>
-        {/* Content */}
         <div className="flex-1 space-y-3">
           <div className="grid grid-cols-3 gap-2">
             {[
@@ -232,7 +229,7 @@ function AutomationDashboard() {
   );
 }
 
-const dashboards = [
+const defaultDashboards = [
   { key: "voter", component: VoterDashboard },
   { key: "sales", component: SalesDashboard },
   { key: "automation", component: AutomationDashboard },
@@ -250,8 +247,16 @@ export function DashboardPreviewSection() {
     useSiteText(contentMap, "preview_2_title", "AI Sales"),
     useSiteText(contentMap, "preview_3_title", "Business Automation"),
   ];
+  const images = contentMap
+    ? [
+        contentMap.get("preview_1_img") ?? "",
+        contentMap.get("preview_2_img") ?? "",
+        contentMap.get("preview_3_img") ?? "",
+      ]
+    : ["", "", ""];
   const [active, setActive] = useState(0);
-  const ActiveDash = dashboards[active].component;
+  const ActiveDash = defaultDashboards[active].component;
+  const activeImage = images[active];
 
   return (
     <section
@@ -307,7 +312,16 @@ export function DashboardPreviewSection() {
           transition={{ duration: 0.35 }}
           className="max-w-2xl mx-auto"
         >
-          <ActiveDash />
+          {activeImage ? (
+            <img
+              src={activeImage}
+              alt={tabs[active]}
+              className="w-full rounded-xl object-cover"
+              style={{ border: "1px solid rgba(91,140,255,0.2)" }}
+            />
+          ) : (
+            <ActiveDash />
+          )}
         </motion.div>
       </div>
     </section>
