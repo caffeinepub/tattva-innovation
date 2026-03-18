@@ -26,7 +26,6 @@ export function useActor() {
       };
 
       const actor = await createActorWithConfig(actorOptions);
-      // Only initialize access control if a token is present in the URL
       const adminToken = getSecretParameter("caffeineAdminToken");
       if (adminToken) {
         await actor._initializeAccessControlWithSecret(adminToken);
