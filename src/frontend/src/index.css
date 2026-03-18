@@ -1,0 +1,344 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Sora:wght@400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Self-hosted Fonts ─── */
+@font-face {
+  font-family: "Bricolage Grotesque";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/assets/fonts/BricolageGrotesque.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("/assets/fonts/PlusJakartaSans.woff2") format("woff2");
+}
+
+@layer base {
+  :root {
+    /* ─── Dark Tech Brand Palette ─── */
+    --tech-navy: #0a0f1f;
+    --tech-navy2: #131a2b;
+    --tech-accent: #5b8cff;
+    --tech-neon: #00ffc1;
+    --brand-blue: 0.44 0.195 264;
+    --brand-navy: 0.2 0.04 250;
+    --brand-gold: 0.75 0.12 85;
+    --brand-whatsapp: 0.62 0.19 145;
+    --brand-indigo: 0.5 0.2 275;
+    --brand-charcoal: 0.2 0.04 250;
+    --radius: 0.5rem;
+
+    --background: 1 0 0;
+    --foreground: 0.206 0.107 270.7;
+    --card: 0.1 0.02 250;
+    --card-foreground: 0.206 0.107 270.7;
+    --popover: 0.13 0.025 250;
+    --popover-foreground: 0.206 0.107 270.7;
+    --primary: 0.46 0.23 264;
+    --primary-foreground: 0.99 0 0;
+    --secondary: 0.96 0.006 240;
+    --secondary-foreground: 0.206 0.107 270.7;
+    --muted: 0.97 0.004 240;
+    --muted-foreground: 0.42 0.06 270.7;
+    --accent: 0.95 0.015 264;
+    --accent-foreground: 0.46 0.23 264;
+    --destructive: 0.577 0.245 27.325;
+    --destructive-foreground: 0.99 0 0;
+    --border: 0.91 0.008 240;
+    --input: 0.91 0.008 240;
+    --ring: 0.46 0.23 264;
+    --chart-1: 0.46 0.23 264;
+    --chart-2: 0.62 0.19 145;
+    --chart-3: 0.65 0.22 20;
+    --chart-4: 0.55 0.2 300;
+    --chart-5: 0.7 0.18 50;
+    --sidebar: 0.12 0.03 250;
+    --sidebar-foreground: 0.9 0.01 240;
+    --sidebar-primary: 0.46 0.23 264;
+    --sidebar-primary-foreground: 0.99 0 0;
+    --sidebar-accent: 0.18 0.04 250;
+    --sidebar-accent-foreground: 0.9 0.01 240;
+    --sidebar-border: 0.25 0.04 250;
+    --sidebar-ring: 0.46 0.23 264;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: #0a0f1f;
+    color: #e2e8f0;
+    font-family: "Inter", "Plus Jakarta Sans", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Sora", "Bricolage Grotesque", system-ui, sans-serif;
+    font-weight: 700;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: "Sora", "Bricolage Grotesque", system-ui, sans-serif;
+  }
+  .font-body {
+    font-family: "Inter", "Plus Jakarta Sans", system-ui, sans-serif;
+  }
+
+  /* Dark tech backgrounds */
+  .bg-tech-navy {
+    background: #0a0f1f;
+  }
+  .bg-tech-navy2 {
+    background: #131a2b;
+  }
+  .bg-tech-gradient {
+    background: linear-gradient(135deg, #0a0f1f 0%, #131a2b 100%);
+  }
+
+  /* Glassmorphism */
+  .glass {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+  }
+  .glass-blue {
+    background: rgba(91, 140, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(91, 140, 255, 0.2);
+    border-radius: 16px;
+  }
+  .glass-hover:hover {
+    background: rgba(91, 140, 255, 0.12);
+    border-color: rgba(91, 140, 255, 0.4);
+    box-shadow: 0 0 30px rgba(91, 140, 255, 0.15);
+    transform: translateY(-4px);
+    transition: all 0.3s ease;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    background: linear-gradient(135deg, #5b8cff, #00ffc1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .gradient-text-blue {
+    background: linear-gradient(135deg, #5b8cff, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Neon button */
+  .btn-neon {
+    background: linear-gradient(135deg, #5b8cff, #00ffc1);
+    color: #0a0f1f;
+    font-weight: 700;
+    border-radius: 8px;
+    padding: 12px 28px;
+    transition: all 0.2s;
+    box-shadow: 0 0 20px rgba(91, 140, 255, 0.3);
+  }
+  .btn-neon:hover {
+    box-shadow: 0 0 40px rgba(91, 140, 255, 0.6);
+    transform: translateY(-2px);
+  }
+
+  /* Neon glow border */
+  .neon-border {
+    border: 1px solid rgba(91, 140, 255, 0.5);
+    box-shadow: 0 0 20px rgba(91, 140, 255, 0.15), inset 0 0 20px
+      rgba(91, 140, 255, 0.05);
+  }
+  .neon-border-green {
+    border: 1px solid rgba(0, 255, 193, 0.4);
+    box-shadow: 0 0 20px rgba(0, 255, 193, 0.1);
+  }
+
+  /* Scroll animations */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Section utilities */
+  .bg-section-grey {
+    background: #f5f7fa;
+  }
+  .bg-brand-navy {
+    background: #0b1f3a;
+  }
+  .bg-section-alt {
+    background: #f5f7fa;
+  }
+  .bg-blue-gradient {
+    background: #0b1f3a;
+  }
+
+  /* WhatsApp pulse */
+  .wa-pulse {
+    animation: wa-pulse-anim 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  @keyframes wa-pulse-anim {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6);
+    }
+    50% {
+      box-shadow: 0 0 0 12px rgba(37, 211, 102, 0);
+    }
+  }
+
+  /* Floating pulse for CTA */
+  .float-pulse {
+    animation: float-pulse-anim 2s ease-in-out infinite;
+  }
+  @keyframes float-pulse-anim {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(91, 140, 255, 0.5);
+    }
+    50% {
+      box-shadow: 0 0 0 10px rgba(91, 140, 255, 0);
+    }
+  }
+
+  /* Neon glow pulse */
+  .neon-pulse {
+    animation: neon-pulse-anim 3s ease-in-out infinite;
+  }
+  @keyframes neon-pulse-anim {
+    0%,
+    100% {
+      box-shadow: 0 0 20px rgba(91, 140, 255, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(91, 140, 255, 0.6), 0 0 60px
+        rgba(0, 255, 193, 0.2);
+    }
+  }
+
+  /* Hero animated background */
+  @keyframes node-pulse {
+    0%,
+    100% {
+      opacity: 0.35;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+  @keyframes node-pulse-slow {
+    0%,
+    100% {
+      opacity: 0.25;
+    }
+    50% {
+      opacity: 0.85;
+    }
+  }
+  @keyframes grid-fade {
+    0%,
+    100% {
+      opacity: 0.06;
+    }
+    50% {
+      opacity: 0.12;
+    }
+  }
+  @keyframes line-draw {
+    0% {
+      stroke-dashoffset: 300;
+      opacity: 0;
+    }
+    30% {
+      opacity: 1;
+    }
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0.35;
+    }
+  }
+
+  /* Float animation for hero visuals */
+  @keyframes float-y {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  .animate-float {
+    animation: float-y 4s ease-in-out infinite;
+  }
+  .animate-float-slow {
+    animation: float-y 6s ease-in-out infinite;
+  }
+  .animate-float-delay {
+    animation: float-y 5s ease-in-out 1s infinite;
+  }
+
+  /* Counter animation */
+  @keyframes count-up {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Micro-interaction: card lift */
+  .card-lift {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .card-lift:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-node,
+    .hero-grid-line,
+    .hero-connect-line,
+    .fade-in,
+    .animate-float,
+    .animate-float-slow,
+    .animate-float-delay {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+}

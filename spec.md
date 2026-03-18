@@ -1,34 +1,32 @@
 # Tattva Innovation
 
 ## Current State
-- FloatingCTA (Book Demo) is at `bottom-24 right-5` mobile and `md:bottom-8 md:right-8` desktop, overlapping with FloatingWhatsApp at `bottom-6 right-6 z-50`
-- Select dropdowns (e.g. organization type in Book Demo form) use `bg-popover` which renders transparently on the dark background
-- Admin panel Dialogs/AlertDialogs/popovers have transparent backgrounds due to same CSS variable issue
-- Solutions section cards have an "Explore Solution" link but it's not clickable and goes nowhere
-- No solution detail pages exist
+- AdminPage has a flat `SiteContentTab` that renders all content groups as sequential cards -- hard to navigate with many fields
+- Solution detail pages support 3 hardcoded slides per solution; slide images are editable via URL in admin but slide text (title, subtitle, description, features) is not editable
+- No ability to add/remove slides from admin
+- Image fields are URL-only; no file upload capability
+- Home page hero has no image upload support
 
 ## Requested Changes (Diff)
 
 ### Add
-- Solution detail pages at `/solutions/political-campaign`, `/solutions/business-automation`, `/solutions/enterprise-ai`
-- Each solution page shows: hero with editable background color/gradient, title, tagline, long description, product images (placeholder SVG/CSS), demo link button
-- New content group in AdminPage `contentGroups` for each solution page: background, headline, tagline, description, demo link, image caption
-- Routes for solution pages in App.tsx
-- A dynamic route `/solutions/:slug` handled by a `SolutionDetailPage` component
+- Per-slide text editing in admin: `sol_page_{n}_slide_{s}_title`, `sol_page_{n}_slide_{s}_subtitle`, `sol_page_{n}_slide_{s}_desc`, `sol_page_{n}_slide_{s}_features` (pipe-separated) site content keys
+- Slide count per solution stored as `sol_page_{n}_slide_count` (1–5); admin can add slides up to 5, remove down to 1
+- Image upload component: file picker that uploads to blob storage and saves the resulting URL as site content; used for slide images and hero image
+- Hero image upload: `hero_image` site content key; HeroSection shows uploaded image if set
+- `useImageUpload` hook that uses StorageClient to upload and return a public URL
 
 ### Modify
-- FloatingCTA: change desktop position from `md:bottom-8 md:right-8` to `md:bottom-24 md:right-8` so it sits above WhatsApp
-- `index.css`: set `--popover` CSS variable to a dark solid color (e.g. `0.13 0.03 250` in oklch ≈ #131A2B dark navy) to fix transparent dropdown backgrounds everywhere
-- SolutionsSection: make "Explore Solution" a real link using TanStack Router `Link` to `/solutions/:slug`
-- AdminPage: add new "Solution Pages" content group with fields for each solution's page-specific content (bg, headline, tagline, long description, demo link)
+- AdminPage `SiteContentTab`: replace flat sequential cards with an accordion-based UI grouped by section; each group is collapsible, clearly labelled, with a save button per section
+- Solution detail admin section: render per-solution accordion items, each with sub-tabs for page settings and per-slide editing; slide add/remove controls
+- SolutionDetailPage: read slide count from site content; read per-slide text from site content with fallbacks to defaults; support up to 5 slides
 
 ### Remove
-- Nothing removed
+- The raw URL-only image fields for slides (replaced with upload + optional manual URL fallback)
 
 ## Implementation Plan
-1. Fix FloatingCTA bottom positioning on desktop
-2. Fix `--popover` CSS variable to solid dark background in index.css
-3. Create `SolutionDetailPage.tsx` that reads solution slug from URL, loads content via `useSiteText`, renders editable sections
-4. Add solution routes to App.tsx
-5. Update SolutionsSection to link cards to solution pages using TanStack Router Link
-6. Add solution page content fields to AdminPage contentGroups
+1. Create `useImageUpload` hook in `src/frontend/src/hooks/useImageUpload.ts` using StorageClient and loadConfig
+2. Create `ImageUploadField` component for admin: shows current image thumbnail if set, file picker button, and optional URL override input
+3. Rewrite `SiteContentTab` in AdminPage: use shadcn Accordion for collapsible groups; hero section includes image upload; keep per-group save buttons
+4. Rewrite solution detail admin section with per-solution accordion, per-slide editing (title, subtitle, description, features, image upload), add/remove slide buttons
+5. Update `SolutionDetailPage`: read `sol_page_{n}_slide_count`, read per-slide text from site content with fallback to DEFAULT_DATA, render dynamic number of slides

@@ -1,4 +1,10 @@
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -33,6 +39,7 @@ import {
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
+import { useImageUpload } from "@/hooks/useImageUpload";
 import { useInternetIdentity } from "@/hooks/useInternetIdentity";
 import {
   useClaimOwnerAdmin,
@@ -54,6 +61,7 @@ import {
 } from "@/hooks/useSiteContent";
 import {
   FileText,
+  ImageIcon,
   Inbox,
   LayoutTemplate,
   Loader2,
@@ -64,9 +72,11 @@ import {
   ShieldAlert,
   Star,
   Trash2,
+  Upload,
+  X,
 } from "lucide-react";
 import { motion } from "motion/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 import type { BlogPost, Lead, Testimonial } from "../backend.d";
 
@@ -88,6 +98,117 @@ function formatDate(ns: bigint) {
     month: "short",
     day: "numeric",
   });
+}
+
+// ─── ImageUploadField ───────────────────────────────────────────────────────
+
+function ImageUploadField({
+  value,
+  onChange,
+  label,
+}: {
+  value: string;
+  onChange: (url: string) => void;
+  label: string;
+}) {
+  const { upload, isUploading } = useImageUpload();
+  const [progress, setProgress] = useState(0);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      setProgress(0);
+      const url = await upload(file, (pct) => setProgress(pct));
+      onChange(url);
+      toast.success("Image uploaded successfully");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Upload failed");
+    } finally {
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
+  return (
+    <div className="space-y-2">
+      <Label className="text-sm font-semibold text-foreground">{label}</Label>
+
+      {/* Preview */}
+      {value && (
+        <div className="relative inline-block">
+          <img
+            src={value}
+            alt="preview"
+            className="h-20 w-32 object-cover rounded-lg border border-border"
+          />
+          <button
+            type="button"
+            onClick={() => onChange("")}
+            className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center"
+          >
+            <X className="w-3 h-3" />
+          </button>
+        </div>
+      )}
+
+      {/* Upload button */}
+      <div className="flex items-center gap-2">
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          disabled={isUploading}
+          onClick={() => fileInputRef.current?.click()}
+          className="gap-2"
+          data-ocid="admin.upload_button"
+        >
+          {isUploading ? (
+            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+          ) : (
+            <Upload className="w-3.5 h-3.5" />
+          )}
+          {isUploading ? `Uploading ${progress}%` : "Upload Image"}
+        </Button>
+        {!value && (
+          <span className="text-xs text-muted-foreground flex items-center gap-1">
+            <ImageIcon className="w-3 h-3" />
+            No image set
+          </span>
+        )}
+      </div>
+
+      {/* Progress bar */}
+      {isUploading && (
+        <div className="h-1.5 rounded-full bg-muted overflow-hidden">
+          <div
+            className="h-full rounded-full bg-primary transition-all duration-200"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+      )}
+
+      {/* URL input */}
+      <div className="space-y-1">
+        <Label className="text-xs text-muted-foreground">Or paste URL</Label>
+        <Input
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder="https://..."
+          className="text-sm"
+          data-ocid="admin.input"
+        />
+      </div>
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={handleFileSelect}
+      />
+    </div>
+  );
 }
 
 // ─── Blog Post Modal ────────────────────────────────────────────────────────
@@ -172,27 +293,22 @@ function PostModal({
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label>Title *</Label>
-              <Input
-                required
-                value={form.title}
-                onChange={(e) => handleTitleChange(e.target.value)}
-                placeholder="Post title..."
-              />
-            </div>
-            <div className="space-y-2">
-              <Label>Slug *</Label>
-              <Input
-                required
-                value={form.slug}
-                onChange={(e) =>
-                  setForm((f) => ({ ...f, slug: e.target.value }))
-                }
-                placeholder="auto-generated-from-title"
-              />
-            </div>
+          <div className="space-y-2">
+            <Label>Title *</Label>
+            <Input
+              required
+              value={form.title}
+              onChange={(e) => handleTitleChange(e.target.value)}
+              placeholder="Post title..."
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Slug</Label>
+            <Input
+              value={form.slug}
+              onChange={(e) => setForm((f) => ({ ...f, slug: e.target.value }))}
+              placeholder="url-friendly-slug"
+            />
           </div>
           <div className="space-y-2">
             <Label>Author</Label>
@@ -695,7 +811,7 @@ function LeadsTab() {
       ) : !leads?.length ? (
         <div className="text-center py-12 text-muted-foreground">
           <Inbox className="w-10 h-10 mx-auto mb-3 opacity-40" />
-          <p>No leads yet. They'll appear here when submitted.</p>
+          <p>No leads yet. They&apos;ll appear here when submitted.</p>
         </div>
       ) : (
         <div className="border border-border rounded-xl overflow-hidden">
@@ -715,27 +831,18 @@ function LeadsTab() {
                 .map((lead: Lead) => (
                   <TableRow key={String(lead.id)}>
                     <TableCell className="font-medium">{lead.name}</TableCell>
-                    <TableCell>
-                      <a
-                        href={`https://wa.me/${lead.phone.replace(/[^0-9]/g, "")}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-primary hover:underline text-sm"
-                      >
-                        {lead.phone}
-                      </a>
+                    <TableCell className="text-sm text-muted-foreground">
+                      {lead.phone || "-"}
                     </TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className="text-xs">
-                        {lead.orgType}
-                      </Badge>
+                    <TableCell className="text-sm text-muted-foreground">
+                      {lead.orgType || "-"}
                     </TableCell>
-                    <TableCell className="text-muted-foreground text-sm max-w-xs">
+                    <TableCell className="text-sm text-muted-foreground max-w-xs">
                       <span className="line-clamp-2">
                         {lead.message || "-"}
                       </span>
                     </TableCell>
-                    <TableCell className="text-muted-foreground text-sm whitespace-nowrap">
+                    <TableCell className="text-sm text-muted-foreground">
                       {formatDate(lead.createdAt)}
                     </TableCell>
                   </TableRow>
@@ -750,23 +857,25 @@ function LeadsTab() {
 
 // ─── Site Content Tab ────────────────────────────────────────────────────────
 
-type ContentField = {
+// Simple field definitions for non-solution-page sections
+type SimpleField = {
   key: string;
   label: string;
   multiline?: boolean;
   placeholder: string;
+  isImage?: boolean;
 };
 
-type ContentGroup = {
+type SimpleSection = {
   id: string;
   title: string;
-  fields: ContentField[];
+  fields: SimpleField[];
 };
 
-const contentGroups: ContentGroup[] = [
+const simpleSections: SimpleSection[] = [
   {
     id: "hero",
-    title: "Hero Section",
+    title: "Hero",
     fields: [
       {
         key: "hero_badge",
@@ -792,11 +901,33 @@ const contentGroups: ContentGroup[] = [
         label: "CTA Button 2",
         placeholder: "Book Live Demo",
       },
+      {
+        key: "hero_image",
+        label: "Hero Background Image",
+        placeholder: "https://...",
+        isImage: true,
+      },
+    ],
+  },
+  {
+    id: "navigation",
+    title: "Navigation",
+    fields: [
+      {
+        key: "nav_logo",
+        label: "Logo / Brand Name",
+        placeholder: "Tattva Innovation",
+      },
+      {
+        key: "nav_cta",
+        label: "Nav CTA Button Label",
+        placeholder: "Book Demo",
+      },
     ],
   },
   {
     id: "products",
-    title: "Products Section",
+    title: "Products",
     fields: [
       {
         key: "products_title",
@@ -875,7 +1006,7 @@ const contentGroups: ContentGroup[] = [
   },
   {
     id: "solutions",
-    title: "Solutions Section",
+    title: "Solutions",
     fields: [
       {
         key: "solutions_title",
@@ -921,171 +1052,6 @@ const contentGroups: ContentGroup[] = [
     ],
   },
   {
-    id: "solution_pages",
-    title: "Solution Detail Pages",
-    fields: [
-      {
-        key: "sol_page_1_bg",
-        label: "Page 1 Background CSS",
-        placeholder: "linear-gradient(135deg, #0A0F1F 0%, #131A2B 100%)",
-      },
-      {
-        key: "sol_page_1_headline",
-        label: "Page 1 Headline",
-        placeholder: "Political Campaign Technology",
-      },
-      {
-        key: "sol_page_1_tagline",
-        label: "Page 1 Tagline",
-        placeholder:
-          "End-to-end digital infrastructure for modern political campaigns",
-      },
-      {
-        key: "sol_page_1_desc",
-        label: "Page 1 Description",
-        multiline: true,
-        placeholder:
-          "Our Political Campaign Technology platform gives campaigns the tools they need to win.",
-      },
-      {
-        key: "sol_page_1_demo_link",
-        label: "Page 1 Demo Link",
-        placeholder: "https://demo.tattvainnovation.ai/election-platform",
-      },
-      {
-        key: "sol_page_1_demo_label",
-        label: "Page 1 Demo Button Label",
-        placeholder: "View Live Demo",
-      },
-      {
-        key: "sol_page_1_img_caption",
-        label: "Page 1 Image Caption",
-        placeholder: "Voter Analytics Dashboard",
-      },
-      {
-        key: "sol_page_1_slide_1_img",
-        label: "Page 1 - Slide 1 Image URL",
-        placeholder: "https://...",
-      },
-      {
-        key: "sol_page_1_slide_2_img",
-        label: "Page 1 - Slide 2 Image URL",
-        placeholder: "https://...",
-      },
-      {
-        key: "sol_page_1_slide_3_img",
-        label: "Page 1 - Slide 3 Image URL",
-        placeholder: "https://...",
-      },
-      {
-        key: "sol_page_2_bg",
-        label: "Page 2 Background CSS",
-        placeholder: "linear-gradient(135deg, #0A0F1F 0%, #0D1F1A 100%)",
-      },
-      {
-        key: "sol_page_2_headline",
-        label: "Page 2 Headline",
-        placeholder: "Business Automation",
-      },
-      {
-        key: "sol_page_2_tagline",
-        label: "Page 2 Tagline",
-        placeholder:
-          "Intelligent systems that automate operations and accelerate growth",
-      },
-      {
-        key: "sol_page_2_desc",
-        label: "Page 2 Description",
-        multiline: true,
-        placeholder:
-          "Our Business Automation AI platform replaces manual workflows with intelligent processes.",
-      },
-      {
-        key: "sol_page_2_demo_link",
-        label: "Page 2 Demo Link",
-        placeholder: "https://demo.tattvainnovation.ai/business-ai",
-      },
-      {
-        key: "sol_page_2_demo_label",
-        label: "Page 2 Demo Button Label",
-        placeholder: "View Live Demo",
-      },
-      {
-        key: "sol_page_2_img_caption",
-        label: "Page 2 Image Caption",
-        placeholder: "Automation Control Center",
-      },
-      {
-        key: "sol_page_2_slide_1_img",
-        label: "Page 2 - Slide 1 Image URL",
-        placeholder: "https://...",
-      },
-      {
-        key: "sol_page_2_slide_2_img",
-        label: "Page 2 - Slide 2 Image URL",
-        placeholder: "https://...",
-      },
-      {
-        key: "sol_page_2_slide_3_img",
-        label: "Page 2 - Slide 3 Image URL",
-        placeholder: "https://...",
-      },
-      {
-        key: "sol_page_3_bg",
-        label: "Page 3 Background CSS",
-        placeholder: "linear-gradient(135deg, #0A0F1F 0%, #130A1F 100%)",
-      },
-      {
-        key: "sol_page_3_headline",
-        label: "Page 3 Headline",
-        placeholder: "Enterprise AI Systems",
-      },
-      {
-        key: "sol_page_3_tagline",
-        label: "Page 3 Tagline",
-        placeholder:
-          "Custom AI platforms for government institutions and large enterprises",
-      },
-      {
-        key: "sol_page_3_desc",
-        label: "Page 3 Description",
-        multiline: true,
-        placeholder:
-          "Our Enterprise AI Systems are built for organizations that require scale, security, and precision.",
-      },
-      {
-        key: "sol_page_3_demo_link",
-        label: "Page 3 Demo Link",
-        placeholder: "https://demo.tattvainnovation.ai/business-ai",
-      },
-      {
-        key: "sol_page_3_demo_label",
-        label: "Page 3 Demo Button Label",
-        placeholder: "View Live Demo",
-      },
-      {
-        key: "sol_page_3_img_caption",
-        label: "Page 3 Image Caption",
-        placeholder: "Enterprise AI Control Panel",
-      },
-      {
-        key: "sol_page_3_slide_1_img",
-        label: "Page 3 - Slide 1 Image URL",
-        placeholder: "https://...",
-      },
-      {
-        key: "sol_page_3_slide_2_img",
-        label: "Page 3 - Slide 2 Image URL",
-        placeholder: "https://...",
-      },
-      {
-        key: "sol_page_3_slide_3_img",
-        label: "Page 3 - Slide 3 Image URL",
-        placeholder: "https://...",
-      },
-    ],
-  },
-  {
     id: "preview",
     title: "Dashboard Preview Section",
     fields: [
@@ -1109,7 +1075,7 @@ const contentGroups: ContentGroup[] = [
   },
   {
     id: "stats",
-    title: "Why Tattva / Stats Section",
+    title: "Why Tattva / Stats",
     fields: [
       {
         key: "stats_title",
@@ -1144,7 +1110,7 @@ const contentGroups: ContentGroup[] = [
   },
   {
     id: "pricing",
-    title: "Pricing Section",
+    title: "Pricing",
     fields: [
       {
         key: "pricing_title",
@@ -1201,8 +1167,7 @@ const contentGroups: ContentGroup[] = [
         key: "plan_growth_features",
         label: "Growth Features (pipe-separated)",
         multiline: true,
-        placeholder:
-          "All AI Modules|Advanced Analytics|Priority Support|5 Users|Custom Integrations",
+        placeholder: "7 AI Modules|Advanced Analytics|Priority Support|5 Users",
       },
       {
         key: "plan_enterprise_name",
@@ -1210,13 +1175,8 @@ const contentGroups: ContentGroup[] = [
         placeholder: "Enterprise",
       },
       {
-        key: "plan_enterprise_price_monthly",
-        label: "Enterprise Monthly Price",
-        placeholder: "Custom",
-      },
-      {
-        key: "plan_enterprise_price_yearly",
-        label: "Enterprise Yearly Price",
+        key: "plan_enterprise_price",
+        label: "Enterprise Price Label",
         placeholder: "Custom",
       },
       {
@@ -1224,13 +1184,13 @@ const contentGroups: ContentGroup[] = [
         label: "Enterprise Features (pipe-separated)",
         multiline: true,
         placeholder:
-          "Unlimited Modules|Full Analytics Suite|Dedicated Support|Unlimited Users|Custom AI Training|SLA Guarantee",
+          "Unlimited AI Modules|Custom Integrations|Dedicated Support|Unlimited Users",
       },
     ],
   },
   {
     id: "demo",
-    title: "Demo Section",
+    title: "Demo",
     fields: [
       {
         key: "demo_title",
@@ -1240,88 +1200,495 @@ const contentGroups: ContentGroup[] = [
       {
         key: "demo_subtitle",
         label: "Subtitle",
-        placeholder: "Explore live demos of our AI-powered products",
+        multiline: true,
+        placeholder: "Live demonstrations of our AI products.",
       },
-      {
-        key: "demo_1_title",
-        label: "Demo 1 Title",
-        placeholder: "AI Sales Agent Demo",
-      },
-      {
-        key: "demo_1_link",
-        label: "Demo 1 Link",
-        placeholder: "https://demo.tattvainnovation.ai/sales-agent",
-      },
-      {
-        key: "demo_2_title",
-        label: "Demo 2 Title",
-        placeholder: "Election Platform Demo",
-      },
-      {
-        key: "demo_2_link",
-        label: "Demo 2 Link",
-        placeholder: "https://demo.tattvainnovation.ai/election",
-      },
-      {
-        key: "demo_3_title",
-        label: "Demo 3 Title",
-        placeholder: "Business Automation Demo",
-      },
-      {
-        key: "demo_3_link",
-        label: "Demo 3 Link",
-        placeholder: "https://demo.tattvainnovation.ai/business",
-      },
+      { key: "demo_cta", label: "CTA Label", placeholder: "Book a Live Demo" },
     ],
   },
   {
-    id: "lead",
-    title: "Contact / Lead Capture Section",
+    id: "contact",
+    title: "Contact / Lead Capture",
     fields: [
       {
-        key: "lead_headline",
-        label: "Headline",
-        placeholder: "Start Working with Tattva AI Today",
+        key: "contact_title",
+        label: "Section Title",
+        placeholder: "Strategic Consultation",
       },
       {
-        key: "lead_subtext",
-        label: "Sub-text",
+        key: "contact_subtitle",
+        label: "Subtitle",
         multiline: true,
         placeholder:
-          "Fill in the form below and our team will reach out within 24 hours to discuss your needs.",
+          "Speak with our team to explore how Tattva AI can serve your organisation.",
       },
-      { key: "lead_cta", label: "CTA Button", placeholder: "Request Demo" },
+      {
+        key: "contact_email",
+        label: "Contact Email",
+        placeholder: "contact@tattvainnovation.in",
+      },
+      {
+        key: "contact_phone",
+        label: "Contact Phone",
+        placeholder: "+91 9822422123",
+      },
+      {
+        key: "contact_hours",
+        label: "Hours of Operation",
+        placeholder: "Mon–Sat, 9am–7pm IST",
+      },
     ],
   },
 ];
 
-function ContentGroupCard({
-  group,
+// ─── Solution page defaults (mirror what SolutionDetailPage uses) ───────────
+
+const SOL_DEFAULTS = {
+  1: {
+    label: "Solution 1 – Political",
+    headline: "Political Campaign Technology",
+    tagline: "End-to-end digital infrastructure for modern political campaigns",
+    slides: [
+      {
+        title: "Voter Intelligence Dashboard",
+        subtitle: "Real-time voter analytics & segmentation",
+        desc: "Centralise your voter database with AI-powered segmentation.",
+        features:
+          "AI voter segmentation|Real-time field updates|Demographic heat maps|Outreach history tracking",
+      },
+      {
+        title: "Field Operations Command",
+        subtitle: "Coordinate ground teams at scale",
+        desc: "Assign tasks, monitor canvassing progress, and communicate with field workers.",
+        features:
+          "Task assignment & tracking|Live canvassing map|Team performance metrics|Two-way field communication",
+      },
+      {
+        title: "Campaign Analytics Suite",
+        subtitle: "Data-driven strategy decisions",
+        desc: "Convert raw campaign data into strategic intelligence.",
+        features:
+          "Win-probability modelling|Message A/B testing|Sentiment tracking|Multi-channel ROI reports",
+      },
+    ],
+  },
+  2: {
+    label: "Solution 2 – Business",
+    headline: "Business Automation",
+    tagline:
+      "Intelligent systems that automate operations and accelerate growth",
+    slides: [
+      {
+        title: "Process Automation Hub",
+        subtitle: "Eliminate repetitive workflows",
+        desc: "Map, automate, and monitor every business process from a single hub.",
+        features:
+          "Visual workflow builder|AI bottleneck detection|Cross-department automation|Real-time process monitoring",
+      },
+      {
+        title: "Document Intelligence",
+        subtitle: "Smart document processing at scale",
+        desc: "Extract, classify, and route documents automatically.",
+        features:
+          "OCR + AI extraction|Auto-classification|ERP / CRM integration|Audit trail & compliance",
+      },
+      {
+        title: "Sales Intelligence",
+        subtitle: "AI-powered revenue acceleration",
+        desc: "Predict deal outcomes and optimise your pipeline with AI.",
+        features:
+          "Lead scoring|Pipeline forecasting|Automated follow-ups|Revenue analytics",
+      },
+    ],
+  },
+  3: {
+    label: "Solution 3 – Enterprise",
+    headline: "Enterprise AI Systems",
+    tagline:
+      "Custom AI platforms for government institutions and large enterprises",
+    slides: [
+      {
+        title: "Enterprise AI Control",
+        subtitle: "Centralised AI governance",
+        desc: "Deploy, monitor, and govern multiple AI models from a single control plane.",
+        features:
+          "Multi-model orchestration|Audit & compliance|Role-based access|SLA monitoring",
+      },
+      {
+        title: "Data Intelligence Hub",
+        subtitle: "Unified data & insights",
+        desc: "Connect all your data sources and get unified intelligence in real time.",
+        features:
+          "Data connectors|Real-time pipelines|Custom dashboards|Anomaly detection",
+      },
+      {
+        title: "Security & Compliance",
+        subtitle: "Enterprise-grade protection",
+        desc: "End-to-end encryption, access control, and compliance automation.",
+        features:
+          "Zero-trust architecture|Compliance reporting|Threat detection|Data sovereignty",
+      },
+    ],
+  },
+} as const;
+
+// ─── SolutionSubTab ──────────────────────────────────────────────────────────
+
+type SolFields = Record<string, string>;
+
+function SolutionSubTab({
+  solIdx,
   contentMap,
 }: {
-  group: ContentGroup;
+  solIdx: 1 | 2 | 3;
+  contentMap: Map<string, string>;
+}) {
+  const defaults = SOL_DEFAULTS[solIdx];
+  const prefix = `sol_page_${solIdx}_`;
+
+  const rawSlideCount = contentMap.get(`${prefix}slide_count`);
+  const initialSlideCount = rawSlideCount
+    ? Math.min(5, Math.max(1, Number.parseInt(rawSlideCount, 10)))
+    : defaults.slides.length;
+
+  // Build initial values for page-level fields
+  const pageFields: SimpleField[] = [
+    {
+      key: `${prefix}bg`,
+      label: "Background CSS",
+      placeholder: "linear-gradient(135deg, #0A0F1F 0%, #131A2B 100%)",
+    },
+    {
+      key: `${prefix}headline`,
+      label: "Headline",
+      placeholder: defaults.headline,
+    },
+    {
+      key: `${prefix}tagline`,
+      label: "Tagline",
+      placeholder: defaults.tagline,
+    },
+    {
+      key: `${prefix}desc`,
+      label: "Description",
+      multiline: true,
+      placeholder: "",
+    },
+    {
+      key: `${prefix}demo_link`,
+      label: "Demo Link",
+      placeholder: "https://demo.tattvainnovation.ai/",
+    },
+    {
+      key: `${prefix}demo_label`,
+      label: "Demo Button Label",
+      placeholder: "View Live Demo",
+    },
+    {
+      key: `${prefix}img_caption`,
+      label: "Image Caption",
+      placeholder: "Dashboard",
+    },
+  ];
+
+  const allKeys: string[] = [...pageFields.map((f) => f.key)];
+  // Add slide keys for max 5 slides
+  for (let s = 1; s <= 5; s++) {
+    allKeys.push(
+      `${prefix}slide_${s}_title`,
+      `${prefix}slide_${s}_subtitle`,
+      `${prefix}slide_${s}_desc`,
+      `${prefix}slide_${s}_features`,
+      `${prefix}slide_${s}_img`,
+    );
+  }
+  allKeys.push(`${prefix}slide_count`);
+
+  const buildInitial = () => {
+    const init: SolFields = {};
+    for (const key of allKeys) {
+      init[key] = contentMap.get(key) ?? "";
+    }
+    // Set slide_count if not yet stored
+    if (!init[`${prefix}slide_count`]) {
+      init[`${prefix}slide_count`] = String(initialSlideCount);
+    }
+    return init;
+  };
+
+  const [values, setValues] = useState<SolFields>(buildInitial);
+  const [saving, setSaving] = useState(false);
+  const setSiteContent = useSetSiteContent();
+
+  const slideCount = Math.min(
+    5,
+    Math.max(
+      1,
+      Number.parseInt(
+        values[`${prefix}slide_count`] || String(initialSlideCount),
+        10,
+      ),
+    ),
+  );
+
+  const handleChange = (key: string, val: string) => {
+    setValues((prev) => ({ ...prev, [key]: val }));
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      const entries = Object.entries(values).filter(([, v]) => v !== "");
+      await Promise.all(
+        entries.map(([key, value]) =>
+          setSiteContent.mutateAsync({ key, value }),
+        ),
+      );
+      toast.success(`Solution ${solIdx} saved`);
+    } catch {
+      toast.error(`Failed to save Solution ${solIdx}`);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const addSlide = async () => {
+    if (slideCount >= 5) return;
+    const newCount = slideCount + 1;
+    const countKey = `${prefix}slide_count`;
+    setValues((prev) => ({ ...prev, [countKey]: String(newCount) }));
+    try {
+      await setSiteContent.mutateAsync({
+        key: countKey,
+        value: String(newCount),
+      });
+      toast.success(`Slide ${newCount} added`);
+    } catch {
+      toast.error("Failed to add slide");
+    }
+  };
+
+  const removeLastSlide = async () => {
+    if (slideCount <= 1) return;
+    const newCount = slideCount - 1;
+    const countKey = `${prefix}slide_count`;
+    setValues((prev) => ({ ...prev, [countKey]: String(newCount) }));
+    try {
+      await setSiteContent.mutateAsync({
+        key: countKey,
+        value: String(newCount),
+      });
+      toast.success(`Slide ${slideCount} removed`);
+    } catch {
+      toast.error("Failed to remove slide");
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Page-level fields */}
+      <Card className="border border-border">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-sm font-semibold text-foreground">
+            Page Settings
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {pageFields.map((field) => (
+            <div key={field.key} className="space-y-1.5">
+              <Label className="text-sm font-medium text-foreground">
+                {field.label}
+                <span className="ml-2 text-xs font-normal text-muted-foreground font-mono">
+                  {field.key}
+                </span>
+              </Label>
+              {field.multiline ? (
+                <Textarea
+                  value={values[field.key] ?? ""}
+                  onChange={(e) => handleChange(field.key, e.target.value)}
+                  placeholder={field.placeholder}
+                  rows={3}
+                  className="resize-y text-sm"
+                />
+              ) : (
+                <Input
+                  value={values[field.key] ?? ""}
+                  onChange={(e) => handleChange(field.key, e.target.value)}
+                  placeholder={field.placeholder}
+                  className="text-sm"
+                />
+              )}
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+
+      {/* Slides */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h4 className="font-semibold text-foreground text-sm">
+            Slides ({slideCount} / 5)
+          </h4>
+          <div className="flex gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={removeLastSlide}
+              disabled={slideCount <= 1}
+              className="gap-1 text-xs"
+              data-ocid="admin.secondary_button"
+            >
+              Remove Last
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={addSlide}
+              disabled={slideCount >= 5}
+              className="gap-1 text-xs"
+              data-ocid="admin.primary_button"
+            >
+              <Plus className="w-3.5 h-3.5" /> Add Slide
+            </Button>
+          </div>
+        </div>
+
+        {Array.from({ length: slideCount }, (_, i) => i + 1).map((s) => {
+          const defSlide = defaults.slides[s - 1];
+          return (
+            <Card key={s} className="border border-border">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-semibold text-foreground flex items-center gap-2">
+                  <span className="w-6 h-6 rounded-full bg-primary/10 text-primary text-xs flex items-center justify-center font-bold">
+                    {s}
+                  </span>
+                  Slide {s}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <Label className="text-sm font-medium">Slide Title</Label>
+                    <Input
+                      value={values[`${prefix}slide_${s}_title`] ?? ""}
+                      onChange={(e) =>
+                        handleChange(
+                          `${prefix}slide_${s}_title`,
+                          e.target.value,
+                        )
+                      }
+                      placeholder={defSlide?.title ?? `Slide ${s} Title`}
+                      className="text-sm"
+                      data-ocid="admin.input"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-sm font-medium">Subtitle</Label>
+                    <Input
+                      value={values[`${prefix}slide_${s}_subtitle`] ?? ""}
+                      onChange={(e) =>
+                        handleChange(
+                          `${prefix}slide_${s}_subtitle`,
+                          e.target.value,
+                        )
+                      }
+                      placeholder={defSlide?.subtitle ?? `Slide ${s} Subtitle`}
+                      className="text-sm"
+                      data-ocid="admin.input"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-1.5">
+                  <Label className="text-sm font-medium">Description</Label>
+                  <Textarea
+                    value={values[`${prefix}slide_${s}_desc`] ?? ""}
+                    onChange={(e) =>
+                      handleChange(`${prefix}slide_${s}_desc`, e.target.value)
+                    }
+                    placeholder={defSlide?.desc ?? "Slide description..."}
+                    rows={3}
+                    className="resize-y text-sm"
+                    data-ocid="admin.textarea"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label className="text-sm font-medium">
+                    Features (pipe-separated)
+                  </Label>
+                  <Textarea
+                    value={values[`${prefix}slide_${s}_features`] ?? ""}
+                    onChange={(e) =>
+                      handleChange(
+                        `${prefix}slide_${s}_features`,
+                        e.target.value,
+                      )
+                    }
+                    placeholder={
+                      defSlide?.features ?? "Feature 1|Feature 2|Feature 3"
+                    }
+                    rows={2}
+                    className="resize-y text-sm"
+                    data-ocid="admin.textarea"
+                  />
+                </div>
+                <ImageUploadField
+                  label="Slide Image"
+                  value={values[`${prefix}slide_${s}_img`] ?? ""}
+                  onChange={(url) =>
+                    handleChange(`${prefix}slide_${s}_img`, url)
+                  }
+                />
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
+
+      <div className="pt-2">
+        <Button
+          onClick={handleSave}
+          disabled={saving}
+          className="gap-2 font-semibold"
+          data-ocid="admin.save_button"
+        >
+          {saving && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+          {saving ? "Saving..." : `Save Solution ${solIdx}`}
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+// ─── SimpleSectionPanel ──────────────────────────────────────────────────────
+
+function SimpleSectionPanel({
+  section,
+  contentMap,
+}: {
+  section: SimpleSection;
   contentMap: Map<string, string>;
 }) {
   const [localValues, setLocalValues] = useState<Record<string, string>>(() => {
     const init: Record<string, string> = {};
-    for (const field of group.fields) {
+    for (const field of section.fields) {
       init[field.key] = contentMap.get(field.key) ?? "";
     }
     return init;
   });
-  const [savingGroup, setSavingGroup] = useState(false);
-
+  const [saving, setSaving] = useState(false);
   const setSiteContent = useSetSiteContent();
 
-  const handleChange = (key: string, value: string) => {
-    setLocalValues((prev) => ({ ...prev, [key]: value }));
+  const handleChange = (key: string, val: string) => {
+    setLocalValues((prev) => ({ ...prev, [key]: val }));
   };
 
   const handleSave = async () => {
-    setSavingGroup(true);
+    setSaving(true);
     try {
       await Promise.all(
-        group.fields
+        section.fields
           .filter(
             (f) =>
               localValues[f.key] !== undefined && localValues[f.key] !== "",
@@ -1333,68 +1700,68 @@ function ContentGroupCard({
             }),
           ),
       );
-      toast.success(`${group.title} saved successfully`);
+      toast.success(`${section.title} saved`);
     } catch {
-      toast.error(`Failed to save ${group.title}`);
+      toast.error(`Failed to save ${section.title}`);
     } finally {
-      setSavingGroup(false);
+      setSaving(false);
     }
   };
 
   return (
-    <Card className="border border-border shadow-xs">
-      <CardHeader className="pb-4">
-        <CardTitle className="font-display text-base font-bold text-foreground">
-          {group.title}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {group.fields.map((field) => (
-          <div key={field.key} className="space-y-1.5">
-            <Label className="text-sm font-semibold text-foreground">
-              {field.label}
-              <span className="ml-2 text-xs font-normal text-muted-foreground font-mono">
-                {field.key}
-              </span>
-            </Label>
-            {field.multiline ? (
-              <Textarea
-                value={localValues[field.key] ?? ""}
-                onChange={(e) => handleChange(field.key, e.target.value)}
-                placeholder={field.placeholder}
-                rows={3}
-                className="resize-y text-sm"
-              />
-            ) : (
-              <Input
-                value={localValues[field.key] ?? ""}
-                onChange={(e) => handleChange(field.key, e.target.value)}
-                placeholder={field.placeholder}
-                className="text-sm"
-              />
-            )}
-          </div>
-        ))}
-
-        <div className="pt-2">
-          <Button
-            onClick={handleSave}
-            disabled={savingGroup}
-            size="sm"
-            className="gap-2 font-semibold"
-          >
-            {savingGroup && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
-            {savingGroup ? "Saving..." : `Save ${group.title}`}
-          </Button>
+    <div className="space-y-4 py-2">
+      {section.fields.map((field) => (
+        <div key={field.key} className="space-y-1.5">
+          <Label className="text-sm font-semibold text-foreground">
+            {field.label}
+            <span className="ml-2 text-xs font-normal text-muted-foreground font-mono">
+              {field.key}
+            </span>
+          </Label>
+          {field.isImage ? (
+            <ImageUploadField
+              label=""
+              value={localValues[field.key] ?? ""}
+              onChange={(url) => handleChange(field.key, url)}
+            />
+          ) : field.multiline ? (
+            <Textarea
+              value={localValues[field.key] ?? ""}
+              onChange={(e) => handleChange(field.key, e.target.value)}
+              placeholder={field.placeholder}
+              rows={3}
+              className="resize-y text-sm"
+            />
+          ) : (
+            <Input
+              value={localValues[field.key] ?? ""}
+              onChange={(e) => handleChange(field.key, e.target.value)}
+              placeholder={field.placeholder}
+              className="text-sm"
+            />
+          )}
         </div>
-      </CardContent>
-    </Card>
+      ))}
+      <div className="pt-2">
+        <Button
+          onClick={handleSave}
+          disabled={saving}
+          size="sm"
+          className="gap-2 font-semibold"
+          data-ocid="admin.save_button"
+        >
+          {saving && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+          {saving ? "Saving..." : `Save ${section.title}`}
+        </Button>
+      </div>
+    </div>
   );
 }
 
+// ─── SiteContentTab ──────────────────────────────────────────────────────────
+
 function SiteContentTab() {
   const { data: rawContent, isLoading } = useGetAllSiteContent();
-
   const contentMap = new Map<string, string>(rawContent ?? []);
 
   if (isLoading) {
@@ -1409,27 +1776,68 @@ function SiteContentTab() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h2 className="font-display font-bold text-foreground text-xl">
-            Site Content
-          </h2>
-          <p className="text-muted-foreground text-sm mt-0.5">
-            Edit all visible text on the website. Leave a field empty to use the
-            built-in default text.
-          </p>
-        </div>
+      <div className="mb-6">
+        <h2 className="font-display font-bold text-foreground text-xl">
+          Site Content
+        </h2>
+        <p className="text-muted-foreground text-sm mt-0.5">
+          Edit all visible text and images on the website. Leave a field empty
+          to use the built-in default.
+        </p>
       </div>
 
-      <div className="space-y-6">
-        {contentGroups.map((group) => (
-          <ContentGroupCard
-            key={group.id}
-            group={group}
-            contentMap={contentMap}
-          />
+      <Accordion type="multiple" defaultValue={["hero"]} className="space-y-2">
+        {simpleSections.map((section) => (
+          <AccordionItem
+            key={section.id}
+            value={section.id}
+            className="border border-border rounded-xl px-4 overflow-hidden"
+          >
+            <AccordionTrigger className="font-semibold text-foreground hover:no-underline py-4">
+              {section.title}
+            </AccordionTrigger>
+            <AccordionContent>
+              <SimpleSectionPanel section={section} contentMap={contentMap} />
+            </AccordionContent>
+          </AccordionItem>
         ))}
-      </div>
+
+        {/* Solution Detail Pages */}
+        <AccordionItem
+          value="solution_pages"
+          className="border border-border rounded-xl px-4 overflow-hidden"
+        >
+          <AccordionTrigger className="font-semibold text-foreground hover:no-underline py-4">
+            Solution Detail Pages
+          </AccordionTrigger>
+          <AccordionContent>
+            <div className="py-2">
+              <Tabs defaultValue="sol1">
+                <TabsList className="mb-6 flex-wrap h-auto gap-1">
+                  <TabsTrigger value="sol1" data-ocid="admin.tab">
+                    Solution 1 – Political
+                  </TabsTrigger>
+                  <TabsTrigger value="sol2" data-ocid="admin.tab">
+                    Solution 2 – Business
+                  </TabsTrigger>
+                  <TabsTrigger value="sol3" data-ocid="admin.tab">
+                    Solution 3 – Enterprise
+                  </TabsTrigger>
+                </TabsList>
+                <TabsContent value="sol1">
+                  <SolutionSubTab solIdx={1} contentMap={contentMap} />
+                </TabsContent>
+                <TabsContent value="sol2">
+                  <SolutionSubTab solIdx={2} contentMap={contentMap} />
+                </TabsContent>
+                <TabsContent value="sol3">
+                  <SolutionSubTab solIdx={3} contentMap={contentMap} />
+                </TabsContent>
+              </Tabs>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
     </div>
   );
 }
@@ -1450,7 +1858,6 @@ export function AdminPage() {
   const isAuthenticated = !!identity;
   const principal = identity?.getPrincipal().toString();
 
-  // Still initializing auth
   if (isInitializing || (isAuthenticated && isCheckingAdmin)) {
     return (
       <main className="pt-24 pb-20 min-h-screen">
@@ -1463,7 +1870,6 @@ export function AdminPage() {
     );
   }
 
-  // Not logged in
   if (!isAuthenticated) {
     return (
       <main className="pt-24 pb-20 min-h-screen bg-section-alt">
@@ -1487,6 +1893,7 @@ export function AdminPage() {
               disabled={isLoggingIn}
               className="w-full gap-2 font-semibold"
               size="lg"
+              data-ocid="admin.primary_button"
             >
               {isLoggingIn ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -1501,7 +1908,6 @@ export function AdminPage() {
     );
   }
 
-  // Logged in but not admin
   if (!isAdmin) {
     const isOwner = principal === OWNER_PRINCIPAL;
 
@@ -1540,7 +1946,6 @@ export function AdminPage() {
             className="bg-white rounded-2xl p-10 shadow-card mt-12"
           >
             {isOwner ? (
-              /* ── Owner: one-click claim ── */
               <>
                 <div className="w-16 h-16 rounded-2xl bg-[#0B1F3A]/10 flex items-center justify-center mx-auto mb-5">
                   <ShieldAlert className="w-8 h-8 text-[#0B1F3A]" />
@@ -1563,6 +1968,7 @@ export function AdminPage() {
                   className="w-full font-semibold gap-2"
                   size="lg"
                   style={{ background: "#C8A951", color: "#0B1F3A" }}
+                  data-ocid="admin.primary_button"
                 >
                   {claimOwnerAdmin.isPending ? (
                     <>
@@ -1575,7 +1981,6 @@ export function AdminPage() {
                 </Button>
               </>
             ) : (
-              /* ── Other principal: secret key form ── */
               <>
                 <div className="w-16 h-16 rounded-2xl bg-destructive/10 flex items-center justify-center mx-auto mb-5">
                   <ShieldAlert className="w-8 h-8 text-destructive" />
@@ -1591,7 +1996,6 @@ export function AdminPage() {
                     {principal}
                   </p>
                 )}
-
                 <div className="border-t border-border pt-6 mt-2">
                   <p className="text-sm font-semibold text-foreground mb-1">
                     Claim Admin Access
@@ -1616,12 +2020,14 @@ export function AdminPage() {
                         onChange={(e) => setAdminSecret(e.target.value)}
                         autoComplete="off"
                         className="h-11"
+                        data-ocid="admin.input"
                       />
                     </div>
                     <Button
                       type="submit"
                       className="w-full font-semibold"
                       disabled={initializeAdmin.isPending}
+                      data-ocid="admin.submit_button"
                     >
                       {initializeAdmin.isPending ? (
                         <>
@@ -1643,6 +2049,7 @@ export function AdminPage() {
                 size="sm"
                 onClick={clear}
                 className="gap-2 text-foreground/50"
+                data-ocid="admin.secondary_button"
               >
                 <LogOut className="w-4 h-4" />
                 Log Out
@@ -1654,7 +2061,6 @@ export function AdminPage() {
     );
   }
 
-  // Admin dashboard
   return (
     <main className="pt-24 pb-20 min-h-screen">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
@@ -1663,7 +2069,6 @@ export function AdminPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
         >
-          {/* Header */}
           <div className="flex items-center justify-between py-8">
             <div>
               <h1 className="font-display font-bold text-foreground text-3xl">
@@ -1673,28 +2078,48 @@ export function AdminPage() {
                 Tattva Innovation — Manage your content
               </p>
             </div>
-            <Button variant="outline" onClick={clear} className="gap-2 text-sm">
+            <Button
+              variant="outline"
+              onClick={clear}
+              className="gap-2 text-sm"
+              data-ocid="admin.secondary_button"
+            >
               <LogOut className="w-4 h-4" />
               Log Out
             </Button>
           </div>
 
-          {/* Tabs */}
           <Tabs defaultValue="posts">
             <TabsList className="mb-8 gap-1 flex-wrap h-auto">
-              <TabsTrigger value="posts" className="gap-2">
+              <TabsTrigger
+                value="posts"
+                className="gap-2"
+                data-ocid="admin.tab"
+              >
                 <FileText className="w-4 h-4" />
                 Blog Posts
               </TabsTrigger>
-              <TabsTrigger value="testimonials" className="gap-2">
+              <TabsTrigger
+                value="testimonials"
+                className="gap-2"
+                data-ocid="admin.tab"
+              >
                 <Star className="w-4 h-4" />
                 Testimonials
               </TabsTrigger>
-              <TabsTrigger value="leads" className="gap-2">
+              <TabsTrigger
+                value="leads"
+                className="gap-2"
+                data-ocid="admin.tab"
+              >
                 <Inbox className="w-4 h-4" />
                 Leads
               </TabsTrigger>
-              <TabsTrigger value="site-content" className="gap-2">
+              <TabsTrigger
+                value="site-content"
+                className="gap-2"
+                data-ocid="admin.tab"
+              >
                 <LayoutTemplate className="w-4 h-4" />
                 Site Content
               </TabsTrigger>
